@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4A84F"/>
+      <stop offset="50%" stop-color="#E8C56A"/>
+      <stop offset="100%" stop-color="#B8922E"/>
+    </linearGradient>
+    <linearGradient id="darkBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050505"/>
+      <stop offset="100%" stop-color="#0A0A0A"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Diamond outline -->
+  <polygon points="90,6 168,84 90,162 12,84" fill="url(#darkBg)" stroke="url(#goldGrad)" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Inner diamond -->
+  <polygon points="90,22 146,84 90,130 34,84" fill="none" stroke="url(#goldGrad)" stroke-width="1" stroke-dasharray="3 4"/>
+  <!-- K letter with subtle glow -->
+  <text x="90" y="100" text-anchor="middle" fill="url(#goldGrad)" font-family="Georgia, 'Times New Roman', serif" font-size="60" font-weight="600" letter-spacing="-2" filter="url(#glow)">K</text>
+  <!-- Small accent dots on diamond corners -->
+  <circle cx="90" cy="6" r="3" fill="url(#goldGrad)" opacity="0.6"/>
+  <circle cx="168" cy="84" r="3" fill="url(#goldGrad)" opacity="0.6"/>
+  <circle cx="90" cy="162" r="3" fill="url(#goldGrad)" opacity="0.6"/>
+  <circle cx="12" cy="84" r="3" fill="url(#goldGrad)" opacity="0.6"/>
+</svg>

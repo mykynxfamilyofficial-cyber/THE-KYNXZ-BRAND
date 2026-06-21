@@ -1,0 +1,1594 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  /* Luxury semantic tokens (Light) — Premium Cream / Champagne Ivory */
+  --color-background: #F8F6F1;
+  --color-background-alt: #F5F1E8;
+  --color-background-muted: #F2EDE3;
+  --color-surface: rgba(255, 255, 255, 0.72);
+  --color-text-primary: #1A1815;
+  --color-text-muted: rgba(26, 24, 21, 0.65);
+  --color-border: rgba(184, 134, 11, 0.18);
+  --color-shadow: rgba(139, 115, 85, 0.12);
+  --color-accent: #D4A84F;
+  --color-glow: rgba(212, 168, 79, 0.2);
+  --color-focus: rgba(212, 168, 79, 0.35);
+  --color-input-bg: rgba(255, 255, 255, 0.12);
+  --color-input-border: rgba(184, 134, 11, 0.22);
+
+  /* transitions */
+  --theme-transition: 600ms;
+}
+
+html[data-theme="dark"] {
+  /* Deep luxury black (not pure black) */
+  --color-background: #050505;
+  --color-background-alt: #0A0A0A;
+  --color-background-muted: #0F0F0F;
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-text-primary: #E8E6E1;
+  --color-text-muted: rgba(232, 230, 225, 0.72);
+  --color-border: rgba(255, 255, 255, 0.14);
+  --color-shadow: rgba(0, 0, 0, 0.55);
+  --color-accent: #D4A84F;
+  --color-glow: rgba(212, 168, 79, 0.2);
+  --color-focus: rgba(212, 168, 79, 0.35);
+  --color-input-bg: rgba(255, 255, 255, 0.02);
+  --color-input-border: rgba(255, 255, 255, 0.18);
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-background);
+}
+
+/* Premium grain / dust overlays (no layout changes) */
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.22) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.14) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px;
+  background-position: 0 0, 1px 2px;
+  mix-blend-mode: multiply;
+}
+
+html[data-theme="dark"]::before {
+  opacity: 0.08;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
+    radial-gradient(rgba(255, 215, 160, 0.12) 1px, transparent 1px);
+  mix-blend-mode: screen;
+}
+
+/* Champagne dust: premium texture layers */
+html[data-theme="dark"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(242, 209, 140, 0.15), transparent 38%),
+    radial-gradient(circle at 80% 30%, rgba(255, 236, 190, 0.12), transparent 40%),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.10), transparent 45%);
+  filter: blur(1px);
+  animation: luxuryDustDrift 9s ease-in-out infinite;
+}
+
+/* LIGHT-only: premium champagne glow + paper texture + golden ambient lighting */
+html[data-theme="light"]::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  background:
+    radial-gradient(900px 600px at 15% 8%, rgba(212, 168, 79, 0.12), transparent 50%),
+    radial-gradient(800px 520px at 75% 12%, rgba(242, 209, 140, 0.1), transparent 50%),
+    radial-gradient(700px 450px at 50% 40%, rgba(248, 245, 238, 0.15), transparent 50%),
+    radial-gradient(600px 400px at 25% 70%, rgba(232, 223, 208, 0.08), transparent 45%),
+    radial-gradient(500px 350px at 80% 60%, rgba(212, 168, 79, 0.06), transparent 45%);
+  filter: blur(2px);
+  animation: lightAmbientDrift 12s ease-in-out infinite;
+}
+
+@keyframes lightAmbientDrift {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.06;
+  }
+  33% {
+    transform: translate3d(0.8%, -0.5%, 0);
+    opacity: 0.08;
+  }
+  66% {
+    transform: translate3d(-0.5%, 0.8%, 0);
+    opacity: 0.05;
+  }
+}
+
+/* LIGHT-only: elegant vignette overlay with warm depth */
+html[data-theme="light"] .luxury-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.35;
+  background:
+    radial-gradient(ellipse at center, transparent 30%, rgba(245, 241, 232, 0.3)),
+    radial-gradient(ellipse at top, rgba(242, 237, 227, 0.4), transparent 25%),
+    radial-gradient(ellipse at bottom, rgba(245, 241, 232, 0.35), transparent 25%),
+    radial-gradient(ellipse at left, rgba(242, 237, 227, 0.25), transparent 20%),
+    radial-gradient(ellipse at right, rgba(242, 237, 227, 0.25), transparent 20%);
+}
+
+
+@keyframes luxuryDustDrift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(-1.2%, 1.2%, 0);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background:
+    radial-gradient(1200px 800px at 20% -10%, rgba(214, 182, 120, 0.08), transparent 55%),
+    radial-gradient(900px 600px at 85% 0%, rgba(255, 255, 255, 0.06), transparent 50%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+  color: var(--color-text-primary);
+  font-family: Arial, Helvetica, sans-serif;
+
+  /* Smooth theme transition (avoid flashing) */
+  transition:
+    background var(--theme-transition) ease,
+    color var(--theme-transition) ease,
+    border-color var(--theme-transition) ease,
+    box-shadow var(--theme-transition) ease;
+}
+
+/* Light theme only — premium cream body enrichment */
+html[data-theme="light"] body {
+  background:
+    radial-gradient(1300px 900px at 15% -5%, rgba(245, 241, 232, 0.55), transparent 50%),
+    radial-gradient(1100px 700px at 85% 15%, rgba(242, 237, 227, 0.45), transparent 45%),
+    radial-gradient(1000px 800px at 50% 60%, rgba(248, 246, 241, 0.3), transparent 50%),
+    radial-gradient(800px 600px at 30% 70%, rgba(232, 223, 208, 0.15), transparent 45%),
+    radial-gradient(1200px 800px at 20% -10%, rgba(214, 182, 120, 0.08), transparent 55%),
+    radial-gradient(900px 600px at 85% 0%, rgba(255, 255, 255, 0.06), transparent 50%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.luxury-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.glass-card {
+  backdrop-filter: blur(18px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition:
+    background var(--theme-transition) ease,
+    border-color var(--theme-transition) ease,
+    box-shadow var(--theme-transition) ease;
+}
+
+/* Light theme: premium card depth with warm gold border and soft inner glow */
+html[data-theme="light"] .glass-card {
+  border-color: rgba(184, 134, 11, 0.15);
+  box-shadow:
+    0 20px 60px rgba(139, 115, 85, 0.08),
+    0 8px 24px rgba(139, 115, 85, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -1px 0 rgba(184, 134, 11, 0.04);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.section-spacing {
+  padding-top: 72px;
+  padding-bottom: 72px;
+}
+
+.luxury-text {
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+}
+
+/* Utility classes for semantic tokens */
+.bg-theme { background-color: var(--color-background); }
+.bg-theme-alt { background-color: var(--color-background-alt); }
+.bg-theme-muted { background-color: var(--color-background-muted); }
+.text-theme { color: var(--color-text-primary); }
+.text-theme-muted { color: var(--color-text-muted); }
+.border-theme { border-color: var(--color-border); }
+.shadow-theme { box-shadow: var(--color-shadow); }
+.accent-theme { color: var(--color-accent); }
+.glow-theme { box-shadow: 0 0 20px var(--color-glow); }
+
+/* =============================================
+   Loading Screen – Luxury Initial Load
+   ============================================= */
+
+/* Loading diamond glow pulse — GPU-accelerated (transform + opacity only) */
+.loading-diamond {
+  animation: loadingDiamondGlow 2s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes loadingDiamondGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+/* Loading dots */
+.loading-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: loadingDotPulse 1.8s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes loadingDotPulse {
+  0%, 100% {
+    transform: scale(0.8);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+}
+
+/* Each individual letter in the title */
+.loading-letter {
+  will-change: transform, opacity;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .loading-screen {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .loading-letter,
+  .loading-title,
+  .loading-subtitle,
+  .loading-logo {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .loading-diamond {
+    filter: none !important;
+    transform: none !important;
+  }
+}
+
+/* =============================================
+   Philosophy Section – The KYNXZ Philosophy
+   ============================================= */
+
+/* Scroll-reveal keyframes */
+@keyframes philosophyFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes philosophyPulse {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.06); opacity: 0.9; }
+}
+
+@keyframes philosophyFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-6px) scale(1.08); }
+}
+
+@keyframes philosophyRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-philosophy-pulse {
+  animation: philosophyPulse 5s ease-in-out infinite;
+}
+
+.animate-philosophy-float {
+  animation: philosophyFloat 4.5s ease-in-out infinite;
+}
+
+.animate-philosophy-rotate {
+  animation: philosophyRotate 20s linear infinite;
+  transform-origin: center;
+}
+
+/* Reveal classes — each element gets a staggered delay */
+.philosophy-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.philosophy-reveal[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.philosophy-reveal-1 { transition-delay: 100ms; }
+.philosophy-reveal-2 { transition-delay: 250ms; }
+.philosophy-reveal-3 { transition-delay: 400ms; }
+.philosophy-reveal-4 { transition-delay: 520ms; }
+.philosophy-reveal-5 { transition-delay: 640ms; }
+.philosophy-reveal-6 { transition-delay: 760ms; }
+
+/* Artwork entrance */
+.philosophy-art {
+  opacity: 0;
+  transform: translateY(20px) scale(0.97);
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 150ms;
+}
+
+.philosophy-art[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Philosophy section background — blends with hero using theme vars */
+.philosophy-section {
+  background: var(--color-background);
+}
+
+/* Light theme specific — enriched with cream depth and golden ambient glow */
+html[data-theme="light"] .philosophy-section {
+  background:
+    radial-gradient(ellipse 80% 60% at 25% 35%, rgba(245, 241, 232, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 75% 55%, rgba(242, 237, 227, 0.4) 0%, transparent 50%),
+    radial-gradient(600px 400px at 40% 50%, rgba(212, 168, 79, 0.04), transparent 55%),
+    radial-gradient(500px 300px at 60% 40%, rgba(248, 245, 238, 0.12), transparent 50%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+/* Dark theme specific */
+html[data-theme="dark"] .philosophy-section {
+  background:
+    radial-gradient(ellipse 75% 55% at 40% 50%, rgba(255, 255, 255, 0.015) 0%, transparent 60%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .philosophy-reveal,
+  .philosophy-art,
+  .animate-philosophy-pulse,
+  .animate-philosophy-float,
+  .animate-philosophy-rotate {
+    animation: none !important;
+    transition-duration: 0.001ms !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* =============================================
+   Collections Section – Our Collections
+   ============================================= */
+
+/* Card hover lift — replaces transition that can't be done in Tailwind alone */
+.collection-card {
+  transition-property: transform, box-shadow, border-color, background-color;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.collection-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-accent) !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="light"] .collection-card:hover {
+  box-shadow:
+    0 20px 60px rgba(139, 115, 85, 0.1),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.collection-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* Philosophy section override note: also includes the older .collection-card[data-visible] pattern */
+
+/* Theme-specific backgrounds */
+html[data-theme="light"] .collections-section {
+  background:
+    radial-gradient(ellipse 80% 55% at 30% 25%, rgba(245, 241, 232, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 70% 65%, rgba(242, 237, 227, 0.4) 0%, transparent 48%),
+    radial-gradient(700px 450px at 50% 30%, rgba(212, 168, 79, 0.035), transparent 55%),
+    radial-gradient(500px 350px at 30% 60%, rgba(232, 223, 208, 0.08), transparent 50%),
+    radial-gradient(400px 300px at 70% 40%, rgba(248, 245, 238, 0.1), transparent 45%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+html[data-theme="dark"] .collections-section {
+  background:
+    radial-gradient(ellipse 75% 50% at 50% 30%, rgba(255, 255, 255, 0.012) 0%, transparent 55%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .collection-card,
+  .collection-card:hover {
+    transition-duration: 0.001ms !important;
+    transform: none !important;
+  }
+}
+
+/* =============================================
+   Experience Section – Signature Experience
+   ============================================= */
+
+.experience-card {
+  transition-property: transform, box-shadow, border-color, background-color;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.experience-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-accent) !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="light"] .experience-card:hover {
+  box-shadow:
+    0 20px 60px rgba(139, 115, 85, 0.1),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.experience-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* Theme-specific backgrounds */
+html[data-theme="light"] .experience-section {
+  background:
+    radial-gradient(ellipse 75% 50% at 35% 20%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 65% 45% at 65% 70%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
+    radial-gradient(600px 400px at 45% 35%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(500px 350px at 55% 60%, rgba(248, 245, 238, 0.1), transparent 48%),
+    radial-gradient(400px 300px at 25% 65%, rgba(232, 223, 208, 0.07), transparent 45%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+html[data-theme="dark"] .experience-section {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 25%, rgba(255, 255, 255, 0.01) 0%, transparent 50%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .experience-card,
+  .experience-card:hover {
+    transition-duration: 0.001ms !important;
+    transform: none !important;
+  }
+}
+
+/* =============================================
+   World Section – The KYNXZ Brand World
+   ============================================= */
+
+.world-card {
+  transition-property: transform, box-shadow, border-color, background-color;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.world-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-accent) !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="light"] .world-card:hover {
+  box-shadow:
+    0 20px 60px rgba(139, 115, 85, 0.1),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.world-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+html[data-theme="light"] .world-section {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 18%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 78%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
+    radial-gradient(600px 400px at 40% 30%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(500px 350px at 60% 50%, rgba(248, 245, 238, 0.1), transparent 48%),
+    radial-gradient(400px 280px at 35% 70%, rgba(232, 223, 208, 0.07), transparent 45%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+html[data-theme="dark"] .world-section {
+  background:
+    radial-gradient(ellipse 65% 40% at 50% 20%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .world-card,
+  .world-card:hover {
+    transition-duration: 0.001ms !important;
+    transform: none !important;
+  }
+}
+
+/* =============================================
+   Why Section – Why The KYNXZ Brand
+   ============================================= */
+
+.why-card {
+  transition-property: transform, box-shadow, border-color, background-color;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.why-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-accent) !important;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.12),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="light"] .why-card:hover {
+  box-shadow:
+    0 20px 60px rgba(139, 115, 85, 0.1),
+    0 0 40px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.why-card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+html[data-theme="light"] .why-section {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 22%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 72%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
+    radial-gradient(600px 400px at 40% 35%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(500px 350px at 60% 55%, rgba(248, 245, 238, 0.1), transparent 48%),
+    radial-gradient(400px 280px at 30% 65%, rgba(232, 223, 208, 0.07), transparent 45%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+html[data-theme="dark"] .why-section {
+  background:
+    radial-gradient(ellipse 65% 40% at 50% 25%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-card,
+  .why-card:hover {
+    transition-duration: 0.001ms !important;
+    transform: none !important;
+  }
+}
+
+/* =============================================
+   Mobile Menu – Premium Full-Screen Overlay
+   ============================================= */
+
+/* Mobile menu link hover – subtle lift + champagne glow */
+.mobile-menu-link:hover {
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 24px var(--color-glow), 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px) !important;
+}
+
+/* Menu link active/press state */
+.mobile-menu-link:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* Menu link focus-visible ring */
+.mobile-menu-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-overlay *,
+  .mobile-menu-overlay *::before,
+  .mobile-menu-overlay *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+.focus-ring { box-shadow: 0 0 0 3px var(--color-focus); }
+.input-bg { background-color: var(--color-input-bg); }
+.input-border { border-color: var(--color-input-border); }
+
+/* Home hero: app-controlled light theme overrides device-level dark variants. */
+html[data-theme="light"] .home-hero-eyebrow {
+  color: #555555;
+}
+
+html[data-theme="light"] .home-hero-heading {
+  color: #111111;
+}
+
+html[data-theme="light"] .home-hero-description {
+  color: #444444;
+}
+
+html[data-theme="light"] .home-hero-primary-cta,
+html[data-theme="light"] .home-hero-primary-cta:hover {
+  color: #111111;
+  border-color: #111111;
+}
+
+/* Header: light-theme enriched — cream depth, warm shadow, premium border */
+html[data-theme="light"] .site-header {
+  border-color: rgba(184, 134, 11, 0.12);
+  background: rgba(248, 246, 241, 0.78);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+  backdrop-filter: blur(22px) saturate(135%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.82) inset,
+    0 14px 38px rgba(139, 115, 85, 0.065);
+  animation: lightHeaderEntrance 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="light"] .site-header-logo {
+  transition: opacity 320ms ease;
+}
+
+html[data-theme="light"] .site-header-logo:hover {
+  opacity: 0.78;
+}
+
+html[data-theme="light"] .site-header-nav a {
+  position: relative;
+  color: rgba(17, 17, 17, 0.88);
+}
+
+html[data-theme="light"] .site-header-nav a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -9px;
+  left: 0;
+  height: 1px;
+  background: rgba(17, 17, 17, 0.72);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html[data-theme="light"] .site-header-nav a:hover {
+  color: #000000;
+}
+
+html[data-theme="light"] .site-header-nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+html[data-theme="light"] .site-header-theme-toggle {
+  color: #111111;
+  border-color: rgba(17, 17, 17, 0.22);
+  background: rgba(255, 255, 255, 0.42);
+}
+
+html[data-theme="light"] .site-header-theme-toggle:hover {
+  border-color: rgba(17, 17, 17, 0.4);
+  background: rgba(17, 17, 17, 0.06);
+}
+
+html[data-theme="light"] .site-header-theme-dot {
+  background: #111111;
+}
+
+html[data-theme="light"] .site-header-theme-dot {
+  box-shadow: 0 0 18px rgba(17, 17, 17, 0.2);
+}
+
+html[data-theme="light"] .site-header-menu-button {
+  color: #111111;
+  border-color: rgba(17, 17, 17, 0.22);
+  background: rgba(255, 255, 255, 0.42);
+}
+
+html[data-theme="light"] .site-header-menu-button:hover {
+  border-color: rgba(17, 17, 17, 0.4);
+  background: rgba(17, 17, 17, 0.06);
+}
+
+html[data-theme="light"] .site-header-menu-line {
+  background: #111111;
+}
+
+/* =============================================
+   Hero Section – Light Theme Panel + FX
+   ============================================= */
+
+/* Light-theme-only: premium floating glassmorphism panel */
+html[data-theme="light"] .home-hero-panel {
+  border-radius: 32px;
+  border: 1px solid rgba(184, 134, 11, 0.18);
+  background:
+    radial-gradient(ellipse 80% 70% at 30% 20%, rgba(255, 255, 255, 0.55), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 70% 80%, rgba(248, 246, 241, 0.4), transparent 55%),
+    radial-gradient(circle at 50% 40%, rgba(212, 168, 79, 0.04), transparent 50%),
+    radial-gradient(circle at 25% 60%, rgba(232, 223, 208, 0.06), transparent 40%),
+    linear-gradient(160deg, rgba(255, 255, 255, 0.7), rgba(248, 246, 241, 0.5), rgba(245, 241, 232, 0.4));
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
+  box-shadow:
+    0 30px 80px rgba(139, 115, 85, 0.08),
+    0 12px 32px rgba(139, 115, 85, 0.04),
+    0 4px 12px rgba(184, 134, 11, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Light-theme-only: animated ambient glow behind the panel */
+.home-hero-panel-container::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  z-index: -1;
+  border-radius: 40px;
+  background:
+    radial-gradient(800px 500px at 30% 20%, rgba(212, 168, 79, 0.06), transparent 55%),
+    radial-gradient(600px 400px at 70% 80%, rgba(242, 209, 140, 0.04), transparent 50%);
+  filter: blur(30px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+html[data-theme="light"] .home-hero-panel-container::before {
+  animation: heroPanelGlow 6s ease-in-out infinite;
+}
+
+.home-hero-panel-container::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: 33px;
+  background: linear-gradient(135deg, rgba(212, 168, 79, 0.12), transparent 30%, transparent 70%, rgba(212, 168, 79, 0.08));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+html[data-theme="light"] .home-hero-panel-container::after {
+  animation: heroPanelEdgeGlow 8s ease-in-out infinite;
+}
+
+@keyframes heroPanelGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  20%, 80% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.02);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes heroPanelEdgeGlow {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* =============================================
+   Hero Section – Stats, Scroll, Particles
+   ============================================= */
+
+/* Stats row — labels use CSS variables for theme adaptation */
+.home-hero-stats {
+  opacity: 0;
+  animation: heroStatsReveal 1s 920ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-hero-stat-label {
+  color: var(--color-text-muted);
+  letter-spacing: 0.22em;
+  transition: color var(--theme-transition) ease;
+}
+
+.home-hero-stat-divider {
+  background: var(--color-accent);
+  opacity: 0.35;
+  transition: background var(--theme-transition) ease;
+}
+
+@keyframes heroStatsReveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scroll indicator */
+.home-hero-scroll-indicator {
+  opacity: 0;
+  animation: heroScrollReveal 1s 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.home-hero-scroll-indicator span {
+  color: var(--color-text-muted);
+  transition: color var(--theme-transition) ease;
+}
+
+.home-hero-scroll-indicator .rounded-full {
+  border-color: var(--color-border);
+  transition: border-color var(--theme-transition) ease;
+}
+
+.home-hero-scroll-indicator .rounded-full div {
+  background: var(--color-accent);
+}
+
+@keyframes heroScrollReveal {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes scrollMouseAnim {
+  0%, 100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, 10px);
+    opacity: 0.3;
+  }
+}
+
+.animate-scroll-mouse {
+  animation: scrollMouseAnim 2.4s ease-in-out infinite;
+}
+
+/* Floating hero particle clusters — both themes */
+.hero-particle-cluster {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+@keyframes heroParticleDrift1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.04;
+  }
+  50% {
+    transform: translate3d(1.5%, -1%, 0);
+    opacity: 0.06;
+  }
+}
+
+@keyframes heroParticleDrift2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0.03;
+  }
+  50% {
+    transform: translate3d(-1%, 1.2%, 0);
+    opacity: 0.05;
+  }
+}
+
+.hero-particle-cluster-1 {
+  background-image:
+    radial-gradient(1px 1px at 12% 25%, rgba(212, 168, 79, 0.5), transparent),
+    radial-gradient(1.2px 1.2px at 38% 15%, rgba(255, 236, 190, 0.4), transparent),
+    radial-gradient(1px 1px at 55% 30%, rgba(212, 168, 79, 0.4), transparent),
+    radial-gradient(1px 1px at 78% 22%, rgba(255, 236, 190, 0.35), transparent),
+    radial-gradient(1.2px 1.2px at 22% 45%, rgba(212, 168, 79, 0.35), transparent),
+    radial-gradient(1px 1px at 62% 55%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 88% 48%, rgba(212, 168, 79, 0.35), transparent),
+    radial-gradient(1.2px 1.2px at 45% 70%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 15% 78%, rgba(212, 168, 79, 0.35), transparent),
+    radial-gradient(1px 1px at 72% 82%, rgba(255, 236, 190, 0.25), transparent);
+  background-size: 100% 100%;
+  animation: heroParticleDrift1 25s ease-in-out infinite;
+}
+
+.hero-particle-cluster-2 {
+  background-image:
+    radial-gradient(1.2px 1.2px at 8% 18%, rgba(242, 209, 140, 0.4), transparent),
+    radial-gradient(1px 1px at 28% 35%, rgba(212, 168, 79, 0.35), transparent),
+    radial-gradient(1px 1px at 48% 12%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1.2px 1.2px at 65% 38%, rgba(242, 209, 140, 0.35), transparent),
+    radial-gradient(1px 1px at 82% 58%, rgba(212, 168, 79, 0.3), transparent),
+    radial-gradient(1px 1px at 18% 62%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1.2px 1.2px at 52% 48%, rgba(242, 209, 140, 0.25), transparent),
+    radial-gradient(1px 1px at 75% 72%, rgba(212, 168, 79, 0.3), transparent),
+    radial-gradient(1px 1px at 35% 85%, rgba(255, 236, 190, 0.25), transparent),
+    radial-gradient(1.2px 1.2px at 92% 15%, rgba(242, 209, 140, 0.3), transparent);
+  background-size: 100% 100%;
+  animation: heroParticleDrift2 32s ease-in-out infinite;
+}
+
+/* Reduce motion for hero FX */
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-stats,
+  .home-hero-scroll-indicator {
+    animation: none;
+    opacity: 1;
+  }
+
+  .animate-scroll-mouse {
+    animation: none !important;
+  }
+
+  .hero-particle-cluster-1,
+  .hero-particle-cluster-2 {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* Light Home: enriched cream depth, golden ambient glow, premium entrance sequence. */
+html[data-theme="light"] .light-home-page {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255, 255, 255, 0.92) 0%, rgba(248, 246, 241, 0.6) 45%, transparent 72%),
+    radial-gradient(ellipse 60% 40% at 25% 20%, rgba(245, 241, 232, 0.4), transparent 40%),
+    radial-gradient(ellipse 55% 35% at 78% 70%, rgba(242, 237, 227, 0.3), transparent 38%),
+    radial-gradient(circle at 50% 45%, rgba(212, 168, 79, 0.04), transparent 45%),
+    radial-gradient(circle at 30% 15%, rgba(232, 223, 208, 0.12), transparent 35%),
+    radial-gradient(circle at 70% 80%, rgba(248, 245, 238, 0.08), transparent 35%),
+    linear-gradient(150deg, #F8F6F1 0%, #F5F1E8 40%, #F2EDE3 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -90px 150px rgba(194, 180, 157, 0.06);
+  animation: lightPageEntrance 1.25s ease-out both;
+}
+
+html[data-theme="light"] .home-hero-content {
+  filter: drop-shadow(0 24px 70px rgba(139, 115, 85, 0.04));
+}
+
+html[data-theme="light"] .home-hero-eyebrow {
+  --light-reveal-opacity: 0.8;
+  animation: lightHeroReveal 1s 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="light"] .home-hero-heading {
+  --light-reveal-opacity: 1;
+  animation: lightHeroReveal 1.15s 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="light"] .home-hero-description {
+  --light-reveal-opacity: 0.85;
+  animation: lightHeroReveal 1.05s 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="light"] .home-hero-actions {
+  --light-reveal-opacity: 1;
+  animation: lightHeroReveal 1s 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="light"] .home-hero-primary-cta,
+html[data-theme="light"] .home-hero-secondary-cta {
+  transition:
+    scale 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease,
+    color 300ms ease;
+}
+
+html[data-theme="light"] .home-hero-primary-cta:hover,
+html[data-theme="light"] .home-hero-secondary-cta:hover {
+  scale: 1.025;
+}
+
+@keyframes lightPageEntrance {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lightHeaderEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lightHeroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: var(--light-reveal-opacity, 1);
+    transform: translateY(0);
+  }
+}
+
+/* Dark Hero: same reveal animation as light */
+@keyframes darkHeroReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: var(--dark-reveal-opacity, 1);
+    transform: translateY(0);
+  }
+}
+
+html[data-theme="dark"] .home-hero-eyebrow {
+  --dark-reveal-opacity: 0.8;
+  animation: darkHeroReveal 1s 180ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="dark"] .home-hero-heading {
+  --dark-reveal-opacity: 1;
+  animation: darkHeroReveal 1.15s 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="dark"] .home-hero-description {
+  --dark-reveal-opacity: 0.85;
+  animation: darkHeroReveal 1.05s 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html[data-theme="dark"] .home-hero-actions {
+  --dark-reveal-opacity: 1;
+  animation: darkHeroReveal 1s 720ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Also apply same transition to buttons */
+html[data-theme="dark"] .home-hero-primary-cta,
+html[data-theme="dark"] .home-hero-secondary-cta {
+  transition:
+    scale 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 300ms ease,
+    border-color 300ms ease,
+    box-shadow 300ms ease,
+    color 300ms ease;
+}
+
+html[data-theme="dark"] .home-hero-primary-cta:hover,
+html[data-theme="dark"] .home-hero-secondary-cta:hover {
+  scale: 1.025;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="light"] .site-header,
+  html[data-theme="light"] .light-home-page,
+  html[data-theme="light"] .home-hero-eyebrow,
+  html[data-theme="light"] .home-hero-heading,
+  html[data-theme="light"] .home-hero-description,
+  html[data-theme="light"] .home-hero-actions,
+  html[data-theme="dark"] .site-header,
+  html[data-theme="dark"] .light-home-page,
+  html[data-theme="dark"] .home-hero-eyebrow,
+  html[data-theme="dark"] .home-hero-heading,
+  html[data-theme="dark"] .home-hero-description,
+  html[data-theme="dark"] .home-hero-actions {
+    animation: none;
+  }
+
+  html[data-theme="light"] .site-header-logo,
+  html[data-theme="light"] .site-header-nav a::after,
+  html[data-theme="light"] .home-hero-primary-cta,
+  html[data-theme="light"] .home-hero-secondary-cta,
+  html[data-theme="dark"] .site-header-logo,
+  html[data-theme="dark"] .site-header-nav a::after,
+  html[data-theme="dark"] .home-hero-primary-cta,
+  html[data-theme="dark"] .home-hero-secondary-cta {
+    transition-duration: 0.01ms;
+  }
+}
+
+/* =============================================
+   CTA Section – Begin Your KYNXZ Journey
+   ============================================= */
+
+@keyframes ctaFloat {
+  0%, 100% {
+    transform: translate(-50%, -33.33%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -33.33%) translateY(-8px);
+  }
+}
+
+.animate-cta-float {
+  animation: ctaFloat 7s ease-in-out infinite;
+}
+
+html[data-theme="light"] .cta-section {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 28%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 68%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
+    radial-gradient(700px 450px at 50% 35%, rgba(212, 168, 79, 0.035), transparent 55%),
+    radial-gradient(500px 350px at 50% 60%, rgba(248, 245, 238, 0.1), transparent 48%),
+    radial-gradient(400px 280px at 30% 40%, rgba(232, 223, 208, 0.07), transparent 45%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+html[data-theme="dark"] .cta-section {
+  background:
+    radial-gradient(ellipse 65% 40% at 50% 30%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cta-float {
+    animation: none !important;
+  }
+
+  /* Dark theme background FX — respect reduced motion */
+  html[data-theme="dark"] .dark-particle-cluster-1,
+  html[data-theme="dark"] .dark-particle-cluster-2,
+  html[data-theme="dark"] .dark-ambient-orb-1,
+  html[data-theme="dark"] .dark-ambient-orb-2,
+  html[data-theme="dark"] .dark-light-sweep {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
+
+/* =============================================
+   Dark Theme – Animated Background FX
+   Only active when data-theme="dark" on <html>
+   All elements are between 3% – 10% opacity.
+   ============================================= */
+
+/* ---- Floating gold particles (tiny dots via box-shadow) ---- */
+
+@keyframes darkParticleDrift1 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  25% {
+    transform: translate3d(2%, -1.5%, 0) scale(1.02);
+  }
+  50% {
+    transform: translate3d(-1%, 2%, 0) scale(0.98);
+  }
+  75% {
+    transform: translate3d(-2%, -0.5%, 0) scale(1.01);
+  }
+}
+
+@keyframes darkParticleDrift2 {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(-1.5%, 1%, 0) scale(1.01);
+  }
+  66% {
+    transform: translate3d(1.5%, -1%, 0) scale(0.99);
+  }
+}
+
+@keyframes darkShimmerPulse {
+  0%, 100% {
+    opacity: 0.04;
+  }
+  50% {
+    opacity: 0.08;
+  }
+}
+
+@keyframes darkShimmerPulse2 {
+  0%, 100% {
+    opacity: 0.03;
+  }
+  33% {
+    opacity: 0.07;
+  }
+  66% {
+    opacity: 0.04;
+  }
+}
+
+@keyframes darkOrbFloat1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.04;
+  }
+  25% {
+    transform: translate(30px, -20px) scale(1.1);
+    opacity: 0.07;
+  }
+  50% {
+    transform: translate(15px, 25px) scale(0.95);
+    opacity: 0.05;
+  }
+  75% {
+    transform: translate(-20px, 10px) scale(1.05);
+    opacity: 0.06;
+  }
+}
+
+@keyframes darkOrbFloat2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.03;
+  }
+  25% {
+    transform: translate(-25px, 15px) scale(1.08);
+    opacity: 0.06;
+  }
+  50% {
+    transform: translate(20px, -20px) scale(0.95);
+    opacity: 0.04;
+  }
+  75% {
+    transform: translate(10px, 25px) scale(1.03);
+    opacity: 0.05;
+  }
+}
+
+@keyframes darkLightSweep {
+  0%, 100% {
+    transform: translateX(-100%) scaleX(0.5);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.06;
+  }
+  50% {
+    transform: translateX(200%) scaleX(1.5);
+    opacity: 0.03;
+  }
+  90% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(300%) scaleX(0.5);
+    opacity: 0;
+  }
+}
+
+/* Particle clusters — sets of dots via box-shadow distributed across viewport */
+.dark-particle-cluster {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+html[data-theme="dark"] .dark-particle-cluster-1 {
+  background-image:
+    radial-gradient(1px 1px at 8% 12%, rgba(212, 168, 79, 0.6), transparent),
+    radial-gradient(1px 1px at 22% 7%, rgba(255, 236, 190, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 35% 22%, rgba(212, 168, 79, 0.5), transparent),
+    radial-gradient(1px 1px at 48% 5%, rgba(255, 236, 190, 0.4), transparent),
+    radial-gradient(1px 1px at 62% 18%, rgba(212, 168, 79, 0.6), transparent),
+    radial-gradient(1.2px 1.2px at 75% 8%, rgba(255, 236, 190, 0.4), transparent),
+    radial-gradient(1px 1px at 88% 15%, rgba(212, 168, 79, 0.5), transparent),
+    radial-gradient(1px 1px at 15% 45%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1.2px 1.2px at 55% 60%, rgba(212, 168, 79, 0.4), transparent),
+    radial-gradient(1px 1px at 82% 48%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 92% 82%, rgba(212, 168, 79, 0.4), transparent),
+    radial-gradient(1.2px 1.2px at 30% 78%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 68% 90%, rgba(212, 168, 79, 0.5), transparent),
+    radial-gradient(1px 1px at 42% 92%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 5% 68%, rgba(212, 168, 79, 0.4), transparent);
+  background-size: 100% 100%;
+  animation:
+    darkParticleDrift1 22s ease-in-out infinite,
+    darkShimmerPulse 6s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .dark-particle-cluster-2 {
+  background-image:
+    radial-gradient(1.2px 1.2px at 12% 32%, rgba(242, 209, 140, 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 28% 52%, rgba(212, 168, 79, 0.4), transparent),
+    radial-gradient(1px 1px at 44% 38%, rgba(255, 236, 190, 0.4), transparent),
+    radial-gradient(1.2px 1.2px at 58% 72%, rgba(242, 209, 140, 0.5), transparent),
+    radial-gradient(1px 1px at 72% 42%, rgba(212, 168, 79, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 86% 62%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 18% 85%, rgba(242, 209, 140, 0.4), transparent),
+    radial-gradient(1.2px 1.2px at 38% 12%, rgba(212, 168, 79, 0.5), transparent),
+    radial-gradient(1px 1px at 65% 28%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 50% 50%, rgba(242, 209, 140, 0.35), transparent),
+    radial-gradient(1.2px 1.2px at 78% 78%, rgba(212, 168, 79, 0.4), transparent),
+    radial-gradient(1px 1px at 95% 35%, rgba(255, 236, 190, 0.3), transparent),
+    radial-gradient(1px 1px at 8% 55%, rgba(242, 209, 140, 0.4), transparent),
+    radial-gradient(1.2px 1.2px at 48% 8%, rgba(212, 168, 79, 0.5), transparent),
+    radial-gradient(1px 1px at 88% 95%, rgba(255, 236, 190, 0.3), transparent);
+  background-size: 100% 100%;
+  animation:
+    darkParticleDrift2 28s ease-in-out infinite,
+    darkShimmerPulse2 8s ease-in-out infinite;
+}
+
+/* Ambient light orbs — large blurred circles floating slowly */
+html[data-theme="dark"] .dark-ambient-orb-1 {
+  width: 520px;
+  height: 520px;
+  top: 8%;
+  right: 5%;
+  background: radial-gradient(circle at center, rgba(212, 168, 79, 0.08), transparent 65%);
+  filter: blur(80px);
+  will-change: transform, opacity;
+  animation: darkOrbFloat1 35s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .dark-ambient-orb-2 {
+  width: 420px;
+  height: 420px;
+  bottom: 10%;
+  left: 3%;
+  background: radial-gradient(circle at center, rgba(255, 236, 190, 0.06), transparent 60%);
+  filter: blur(70px);
+  will-change: transform, opacity;
+  animation: darkOrbFloat2 40s ease-in-out infinite;
+}
+
+/* Very subtle horizontal light sweep */
+html[data-theme="dark"] .dark-light-sweep {
+  top: 45%;
+  left: 0;
+  width: 50%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212, 168, 79, 0.08), transparent);
+  filter: blur(2px);
+  will-change: transform, opacity;
+  animation: darkLightSweep 18s ease-in-out infinite;
+}
+
+/* =============================================
+   Contact Section – Connect With The KYNXZ BRAND
+   ============================================= */
+
+/* Contact form input base styles */
+.contact-input {
+  transition-property: border-color, box-shadow, background-color;
+  transition-duration: 300ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.contact-input:hover {
+  border-color: rgba(212, 168, 79, 0.35) !important;
+}
+
+.contact-input:focus {
+  border-color: rgba(212, 168, 79, 0.5) !important;
+}
+
+.contact-textarea {
+  min-height: 120px;
+  line-height: 1.7;
+}
+
+/* Contact submit button hover — premium gold fill + shadow */
+.contact-submit:hover {
+  box-shadow:
+    0 20px 60px rgba(212, 168, 79, 0.15),
+    0 0 30px rgba(212, 168, 79, 0.06);
+}
+
+/* Theme-specific backgrounds */
+html[data-theme="light"] .contact-section {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 15%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 80%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
+    radial-gradient(600px 400px at 40% 30%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(500px 350px at 60% 55%, rgba(248, 245, 238, 0.1), transparent 48%),
+    radial-gradient(400px 280px at 50% 70%, rgba(232, 223, 208, 0.07), transparent 45%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+html[data-theme="dark"] .contact-section {
+  background:
+    radial-gradient(ellipse 65% 40% at 50% 20%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+/* Light theme: glassmorphism form card refinement */
+html[data-theme="light"] .contact-form-card {
+  border-color: rgba(184, 134, 11, 0.12);
+  box-shadow:
+    0 20px 60px rgba(139, 115, 85, 0.06),
+    0 8px 24px rgba(139, 115, 85, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+/* Dark theme: glassmorphism form card refinement */
+html[data-theme="dark"] .contact-form-card {
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .contact-input,
+  .contact-submit {
+    transition-duration: 0.001ms !important;
+  }
+
+  .contact-section * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* =============================================
+   Footer Section – THE KYNXZ BRAND Footer
+   ============================================= */
+
+.kynxz-footer {
+  transition: background var(--theme-transition) ease;
+}
+
+/* Footer link hover — gold accent */
+.footer-link:hover {
+  color: var(--color-accent) !important;
+}
+
+/* Theme-specific backgrounds */
+html[data-theme="light"] .kynxz-footer {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 12%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 82%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
+    radial-gradient(600px 400px at 40% 25%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(500px 350px at 60% 50%, rgba(248, 245, 238, 0.1), transparent 48%),
+    radial-gradient(400px 280px at 50% 75%, rgba(232, 223, 208, 0.07), transparent 45%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+html[data-theme="dark"] .kynxz-footer {
+  background:
+    radial-gradient(ellipse 65% 40% at 50% 15%, rgba(255, 255, 255, 0.01) 0%, transparent 45%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .kynxz-footer * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+
+  .footer-link:hover {
+    transform: none !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.32);
+}
+
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+
