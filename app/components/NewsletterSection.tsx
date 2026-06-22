@@ -240,7 +240,7 @@ export default function NewsletterSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="text-center"
           >
             <CircleMark C={C} />
@@ -258,7 +258,7 @@ export default function NewsletterSection() {
             id="newsletter-heading"
             initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
             animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className={`${playfair.className} mt-8 text-[clamp(2.2rem,6vw,4rem)] font-bold leading-[1.08] tracking-[-0.01em] text-center`}
             style={{ color: C.ivory }}
           >
@@ -272,7 +272,7 @@ export default function NewsletterSection() {
               <motion.span
                 initial={{ scaleX: 0 }}
                 animate={isInView ? { scaleX: 1 } : {}}
-                transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 className="absolute -bottom-2 left-0 right-0 h-px origin-left"
                 style={{ background: `linear-gradient(to right, ${C.champagne}, transparent)` }}
               />
@@ -283,7 +283,7 @@ export default function NewsletterSection() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className={`${cormorant.className} mt-8 text-base md:text-lg lg:text-xl text-center leading-relaxed italic font-light max-w-xl mx-auto`}
             style={{ color: C.champagne }}
           >
@@ -294,7 +294,7 @@ export default function NewsletterSection() {
           <motion.div
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mx-auto mt-10 w-16 h-px"
             style={{ background: C.bronze, opacity: 0.4 }}
           />
@@ -303,7 +303,7 @@ export default function NewsletterSection() {
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3"
           >
             {[
@@ -330,14 +330,14 @@ export default function NewsletterSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mt-10 max-w-lg mx-auto"
           >
             {subscribed ? (
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 className="text-center py-6"
               >
                 <div
@@ -468,7 +468,7 @@ export default function NewsletterSection() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 1.5, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.5, delay: 0.9, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mt-14 text-center"
           >
             <div

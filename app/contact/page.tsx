@@ -64,7 +64,7 @@ const fadeUp = {
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -72,7 +72,7 @@ const fadeIn = {
   hidden: { opacity: 0 },
   visible: (i = 0) => ({
     opacity: 1,
-    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -85,7 +85,7 @@ const wordReveal = {
     transition: {
       duration: 1,
       delay: i * 0.12,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   }),
 };
@@ -100,12 +100,12 @@ const heroLines = [
    ─────────────────────────────────────────────── */
 const Section = forwardRef<
   HTMLElement,
-  { children: React.ReactNode; className?: string; id?: string }
->(({ children, className = "", id }, ref) => (
+  React.HTMLAttributes<HTMLElement>
+>(({ children, className = "", ...props }, ref) => (
   <section
     ref={ref}
-    id={id}
     className={`relative overflow-hidden ${className}`}
+    {...props}
   >
     {children}
   </section>
@@ -330,7 +330,7 @@ function ContactInfo({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="space-y-10"
           >
             <p
@@ -357,7 +357,7 @@ function ContactInfo({ C }: { C: (typeof THEME)["dark"] }) {
                   key={detail.label}
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 1, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 1, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                   className="group"
                 >
                   <p
@@ -392,7 +392,7 @@ function ContactInfo({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="relative flex items-center justify-center"
           >
             <div className="relative w-full max-w-[440px] aspect-square">
@@ -594,7 +594,7 @@ function HeadquartersSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="lg:col-span-2 relative"
           >
             <div className="relative w-full aspect-[4/3] lg:aspect-square max-w-[420px] mx-auto">
@@ -657,7 +657,7 @@ function HeadquartersSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="lg:col-span-3 space-y-8"
           >
             {/* Eyebrow */}
@@ -711,7 +711,7 @@ function HeadquartersSection({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : {}}
-              transition={{ duration: 1.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="w-24 h-px"
               style={{ background: C.bronze, opacity: 0.4 }}
             />
@@ -720,7 +720,7 @@ function HeadquartersSection({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${cormorant.className} italic text-lg md:text-xl`}
               style={{ color: C.muted }}
             >
@@ -749,7 +749,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3 w-[800px] h-[500px] rounded-full"
           style={{
             background: `radial-gradient(ellipse at center, ${C.champagne}, transparent 65%)`,
@@ -781,7 +781,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.g
             initial={{ opacity: 0 }}
             animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             {/* Central hub cluster */}
             <circle cx="720" cy="400" r="3" fill={C.champagne} opacity="0.6" />
@@ -871,7 +871,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.9, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-6 text-center`}
             style={{ color: C.bronze }}
           >
@@ -882,7 +882,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.h2
             initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
             animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className={`${playfair.className} text-[clamp(2.5rem,7vw,5rem)] font-bold leading-[1.08] text-center mb-12`}
             style={{ color: C.ivory }}
           >
@@ -907,7 +907,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
                 transition={{
                   duration: 1,
                   delay: 0.35 + i * 0.1,
-                  ease: [0.22, 1, 0.36, 1],
+                  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
                 }}
                 className={`${cormorant.className} text-[clamp(1.1rem,2vw,1.5rem)] leading-[1.75] tracking-[0.02em] text-center`}
                 style={{ color: C.muted }}
@@ -921,7 +921,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="relative mt-12 mb-10 mx-auto w-full max-w-[300px] h-px"
           >
             <div
@@ -941,7 +941,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, y: 30, scale: 0.98, filter: "blur(2px)" }}
             animate={isInView ? { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="text-center max-w-3xl mx-auto"
           >
             <p
@@ -956,7 +956,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
             animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="relative mt-16 md:mt-20 pt-10 md:pt-12 text-center"
           >
             {/* Top accent line */}
@@ -979,7 +979,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mx-auto mt-12 w-16 h-px"
             style={{ background: C.bronze, opacity: 0.4 }}
           />
@@ -1004,7 +1004,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute left-1/2 top-[30%] -translate-x-1/2 -translate-y-1/3 w-[900px] h-[600px] rounded-full"
           style={{
             background: `radial-gradient(ellipse at center, ${C.champagne}, transparent 65%)`,
@@ -1067,13 +1067,13 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, delay: 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="text-center mb-12 md:mb-14"
           >
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-5`}
               style={{ color: C.bronze }}
             >
@@ -1083,7 +1083,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.h2
               initial={{ opacity: 0, y: 35, filter: "blur(4px)" }}
               animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-              transition={{ duration: 1.3, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.3, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${playfair.className} text-[clamp(2rem,5.5vw,4rem)] font-bold leading-[1.1] mb-6`}
               style={{ color: C.ivory }}
             >
@@ -1096,7 +1096,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${cormorant.className} text-lg md:text-xl leading-[1.65] max-w-2xl mx-auto`}
               style={{ color: C.muted }}
             >
@@ -1108,7 +1108,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ scaleX: 0 }}
               animate={isInView ? { scaleX: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="mx-auto mt-8 w-20 h-px"
               style={{ background: C.bronze, opacity: 0.25 }}
             />
@@ -1118,7 +1118,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.98 }}
             animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-            transition={{ duration: 1.4, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, delay: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="relative rounded-3xl border overflow-hidden"
             style={{
               borderColor: `${C.champagne}18`,
@@ -1146,7 +1146,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 >
                   <label
                     htmlFor="form-name"
@@ -1173,7 +1173,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.9, delay: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 >
                   <label
                     htmlFor="form-email"
@@ -1200,7 +1200,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.9, delay: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.9, delay: 0.65, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 >
                   <label
                     htmlFor="form-subject"
@@ -1242,7 +1242,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.9, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.9, delay: 0.75, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 >
                   <label
                     htmlFor="form-message"
@@ -1269,7 +1269,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.9, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 0.9, delay: 0.85, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                   className="pt-2"
                 >
                   <button
@@ -1320,7 +1320,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ scaleX: 0 }}
             animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mx-auto mt-12 w-16 h-px"
             style={{ background: C.bronze, opacity: 0.3 }}
           />

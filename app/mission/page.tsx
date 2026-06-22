@@ -6,7 +6,6 @@ import {
   useScroll,
   useTransform,
   useInView,
-  AnimatePresence,
 } from "framer-motion";
 import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
@@ -65,7 +64,7 @@ const fadeUp = {
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -73,7 +72,7 @@ const fadeIn = {
   hidden: { opacity: 0 },
   visible: (i = 0) => ({
     opacity: 1,
-    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -86,7 +85,7 @@ const wordReveal = {
     transition: {
       duration: 1,
       delay: i * 0.12,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   }),
 };
@@ -307,7 +306,7 @@ function ArtImage({
       transition={{
         duration: 1.4,
         delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
       }}
       className="relative w-full h-full min-h-[320px] md:min-h-[460px] lg:min-h-[540px] rounded-[2px] overflow-hidden"
     >
@@ -361,12 +360,12 @@ function ArtImage({
    ─────────────────────────────────────────────── */
 const Section = forwardRef<
   HTMLElement,
-  { children: React.ReactNode; className?: string; id?: string }
->(({ children, className = "", id }, ref) => (
+  React.HTMLAttributes<HTMLElement>
+>(({ children, className = "", ...props }, ref) => (
   <section
     ref={ref}
-    id={id}
     className={`relative overflow-hidden ${className}`}
+    {...props}
   >
     {children}
   </section>
@@ -388,7 +387,7 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <ArtImage
               gradient={`
@@ -406,7 +405,7 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${inter.className} text-xs tracking-[0.25em] uppercase`}
               style={{ color: C.bronze }}
             >
@@ -416,7 +415,7 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${playfair.className} text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1]`}
               style={{ color: C.ivory }}
             >
@@ -430,7 +429,7 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="space-y-6"
             >
               <p
@@ -464,7 +463,7 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="pt-4"
             >
               <div className="flex items-center gap-4">
@@ -575,7 +574,7 @@ function ValueCard({
       ref={cardRef}
       initial={{ opacity: 0, y: 60 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 1, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
       whileHover={{ y: -8, scale: 1.02 }}
       className="group relative p-8 md:p-10 rounded-[2px] cursor-default overflow-hidden"
       style={{
@@ -670,7 +669,7 @@ function CoreValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
         >
           <p
@@ -781,7 +780,7 @@ function TimelineEvent({
         <motion.div
           initial={{ scaleY: 0 }}
           animate={isInView ? { scaleY: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="w-full h-full origin-top"
           style={{ background: `linear-gradient(to bottom, ${C.bronze}, ${C.champagne}40, transparent)` }}
         />
@@ -792,7 +791,7 @@ function TimelineEvent({
         <motion.div
           initial={{ scaleY: 0 }}
           animate={isInView ? { scaleY: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="w-full h-full origin-top"
           style={{ background: `linear-gradient(to bottom, ${C.bronze}, ${C.champagne}40, transparent)` }}
         />
@@ -803,7 +802,7 @@ function TimelineEvent({
         <motion.div
           initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
           animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="relative z-10 w-full md:w-[calc(50%-40px)] pl-14 md:pl-0"
         >
           <div
@@ -851,7 +850,7 @@ function TimelineEvent({
           <motion.div
             initial={{ scale: 0 }}
             animate={isInView ? { scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="w-5 h-5 rounded-full border-2 flex items-center justify-center"
             style={{
               borderColor: C.bronze,
@@ -870,7 +869,7 @@ function TimelineEvent({
           <motion.div
             initial={{ scale: 0 }}
             animate={isInView ? { scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="w-4 h-4 rounded-full border-2 flex items-center justify-center"
             style={{
               borderColor: C.bronze,
@@ -897,7 +896,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-full"
           style={{
             background: `linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.04), transparent)`,
@@ -908,7 +907,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 2.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute top-0 left-[25%] w-[1px] h-full"
           style={{
             background: `linear-gradient(to bottom, transparent, rgba(139, 115, 85, 0.03), transparent)`,
@@ -918,7 +917,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 2.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute top-0 right-[25%] w-[1px] h-full"
           style={{
             background: `linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.03), transparent)`,
@@ -941,7 +940,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
           background:
@@ -956,7 +955,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
         >
           <p
@@ -1005,7 +1004,7 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
@@ -1050,7 +1049,7 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mb-10"
         >
           <span
@@ -1064,7 +1063,7 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.blockquote
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         >
           <p
             className={`${playfair.className} text-[clamp(1.8rem,5vw,4rem)] font-light italic leading-[1.3] max-w-5xl mx-auto`}
@@ -1077,7 +1076,7 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mt-10"
         >
           <span
@@ -1091,7 +1090,7 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mx-auto mt-14 w-24 h-px"
           style={{ background: C.bronze }}
         />
@@ -1234,7 +1233,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mb-6"
           >
             <span
@@ -1250,7 +1249,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="w-16 h-px mb-10"
             style={{ background: C.bronze, opacity: 0.5 }}
           />
@@ -1260,7 +1259,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             initial={{ opacity: 0, y: 50, filter: "blur(6px)" }}
             whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true }}
-            transition={{ duration: 1.4, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, delay: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className={`${playfair.className} text-[clamp(2.8rem,9vw,6.5rem)] font-bold leading-[1.05] tracking-[-0.02em]`}
             style={{ color: C.ivory }}
           >
@@ -1276,7 +1275,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mt-8 w-20 h-px mb-12"
             style={{ background: C.champagne, opacity: 0.3 }}
           />
@@ -1300,7 +1299,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
                 transition={{
                   duration: 1.1,
                   delay: 0.6 + i * 0.12,
-                  ease: [0.22, 1, 0.36, 1],
+                  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
                 }}
                 className={`${cormorant.className} text-[clamp(1.1rem,2.2vw,1.6rem)] leading-[1.75] tracking-[0.03em]`}
                 style={{ color: C.muted }}
@@ -1315,7 +1314,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.5, delay: 1.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.5, delay: 1.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="relative mt-16 mb-16 w-full max-w-[400px] h-px"
           >
             <div
@@ -1337,7 +1336,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             >
               <p
                 className={`${inter.className} text-[10px] md:text-xs tracking-[0.25em] uppercase mb-8`}
@@ -1362,7 +1361,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
                 transition={{
                   duration: 1,
                   delay: 0.5 + i * 0.1,
-                  ease: [0.22, 1, 0.36, 1],
+                  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
                 }}
                 className={`${inter.className} text-sm md:text-base leading-[1.9] tracking-[0.02em]`}
                 style={{ color: C.muted }}
@@ -1376,7 +1375,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 1.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="mt-10"
             >
               <div
@@ -1409,7 +1408,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             initial={{ opacity: 0, y: 60, scale: 0.97, filter: "blur(4px)" }}
             whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             viewport={{ once: true }}
-            transition={{ duration: 1.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="relative mt-24 md:mt-28 pt-14 md:pt-16 w-full max-w-[1000px] mx-auto"
           >
             {/* Top decorative line */}
@@ -1451,7 +1450,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="mt-14 w-16 h-px mx-auto"
             style={{ background: C.bronze, opacity: 0.5 }}
           />

@@ -6,7 +6,6 @@ import {
   useScroll,
   useTransform,
   useInView,
-  AnimatePresence,
 } from "framer-motion";
 import Link from "next/link";
 import { playfair, cormorant, inter } from "../fonts";
@@ -81,7 +80,7 @@ const fadeUp = {
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -89,7 +88,7 @@ const fadeIn = {
   hidden: { opacity: 0 },
   visible: (i = 0) => ({
     opacity: 1,
-    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -102,7 +101,7 @@ const wordReveal = {
     transition: {
       duration: 1,
       delay: i * 0.12,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   }),
 };
@@ -125,7 +124,7 @@ const cardReveal = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   },
 };
 
@@ -377,7 +376,7 @@ function ComingSoonCard({
       transition={{
         duration: 0.9,
         delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
       }}
       className="luxury-coming-soon relative rounded-[2px] overflow-hidden p-8 md:p-10 text-center cursor-default"
       style={{
@@ -881,7 +880,7 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="text-center max-w-3xl mx-auto"
         >
           <p
@@ -1042,7 +1041,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
@@ -1057,7 +1056,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mb-10"
         >
           <span
@@ -1071,7 +1070,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.p
           initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
           animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${playfair.className} text-[clamp(2rem,6vw,4.5rem)] font-light italic leading-[1.2] max-w-5xl mx-auto`}
           style={{ color: C.ivory }}
         >
@@ -1085,7 +1084,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mt-10"
         >
           <span
@@ -1099,7 +1098,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mx-auto mt-14 w-24 h-px"
           style={{ background: C.bronze, opacity: 0.5 }}
         />
@@ -1107,7 +1106,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.9, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} mt-10 text-sm md:text-base max-w-2xl mx-auto leading-relaxed`}
           style={{ color: C.muted }}
         >
@@ -1178,7 +1177,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
           style={{ color: C.bronze }}
         >
@@ -1189,7 +1188,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${playfair.className} text-[clamp(2.8rem,9vw,6rem)] font-bold leading-[1.05] tracking-[-0.02em]`}
           style={{ color: C.ivory }}
         >
@@ -1204,7 +1203,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} mt-8 text-base md:text-lg max-w-xl mx-auto leading-relaxed`}
           style={{ color: C.muted }}
         >
@@ -1215,7 +1214,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mt-12"
         >
           <a
@@ -1245,7 +1244,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mx-auto mt-16 w-24 h-px"
           style={{ background: C.bronze }}
         />

@@ -8,7 +8,6 @@ import {
   useScroll,
   useTransform,
   useInView,
-  AnimatePresence,
 } from "framer-motion";
 import { playfair, cormorant, inter } from "../../fonts";
 import Header from "../../components/Header";
@@ -72,7 +71,7 @@ const fadeUp = {
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.9, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.9, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -81,7 +80,7 @@ const scaleIn = {
   visible: {
     opacity: 1,
     scale: 1,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   },
 };
 
@@ -343,7 +342,7 @@ function ReviewsSection({
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mb-10"
         >
           <div className="flex items-center gap-4 mb-2">
@@ -378,7 +377,7 @@ function ReviewsSection({
               transition={{
                 duration: 0.7,
                 delay: i * 0.1,
-                ease: [0.22, 1, 0.36, 1],
+                ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
               }}
               className="detail-review-card p-6 md:p-7 rounded-[2px]"
               style={{
@@ -484,7 +483,7 @@ function RelatedProducts({
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mb-10 text-center"
         >
           <p
@@ -517,7 +516,7 @@ function RelatedProducts({
               transition={{
                 duration: 0.7,
                 delay: i * 0.08,
-                ease: [0.22, 1, 0.36, 1],
+                ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
               }}
             >
               <Link
@@ -953,7 +952,7 @@ export default function ProductDetailPage() {
                   initial={{ opacity: 0, x: -40 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                   className="hidden lg:block"
                 >
                   <div
@@ -993,7 +992,7 @@ export default function ProductDetailPage() {
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                   >
                     <p
                       className={`${inter.className} text-[10px] tracking-[0.25em] uppercase mb-3`}
@@ -1026,7 +1025,7 @@ export default function ProductDetailPage() {
                         transition={{
                           duration: 0.6,
                           delay: i * 0.08,
-                          ease: [0.22, 1, 0.36, 1],
+                          ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
                         }}
                         className="detail-feature-item flex items-start gap-4 p-4 rounded-[2px]"
                         style={{
@@ -1062,7 +1061,7 @@ export default function ProductDetailPage() {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 className="mb-10 text-center"
               >
                 <p
@@ -1090,7 +1089,7 @@ export default function ProductDetailPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                 className="max-w-3xl mx-auto"
                 style={{
                   border: "1px solid var(--color-border)",
@@ -1147,7 +1146,7 @@ export default function ProductDetailPage() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             >
               <Link
                 href="/collections"

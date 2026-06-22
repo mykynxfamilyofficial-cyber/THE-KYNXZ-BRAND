@@ -63,7 +63,7 @@ const fadeUp = {
   visible: (i = 0) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -71,7 +71,7 @@ const fadeIn = {
   hidden: { opacity: 0 },
   visible: (i = 0) => ({
     opacity: 1,
-    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   }),
 };
 
@@ -85,7 +85,7 @@ const wordReveal = {
     transition: {
       duration: 1,
       delay: i * 0.12,
-      ease: [0.22, 1, 0.36, 1],
+      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
     },
   }),
 };
@@ -117,7 +117,7 @@ function ArtImage({
       ref={ref}
       initial={{ opacity: 0, scale: 0.95 }}
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{ duration: 1.4, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 1.4, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
       className="relative w-full h-full min-h-[320px] md:min-h-[460px] lg:min-h-[540px] rounded-[2px] overflow-hidden"
     >
       {/* Main artistic gradient */}
@@ -170,12 +170,12 @@ function ArtImage({
    ─────────────────────────────────────────────── */
 const Section = forwardRef<
   HTMLElement,
-  { children: React.ReactNode; className?: string; id?: string }
->(({ children, className = "", id }, ref) => (
+  React.HTMLAttributes<HTMLElement>
+>(({ children, className = "", ...props }, ref) => (
   <section
     ref={ref}
-    id={id}
     className={`relative overflow-hidden ${className}`}
+    {...props}
   >
     {children}
   </section>
@@ -358,7 +358,7 @@ function TheStory({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <ArtImage
               gradient={`
@@ -376,7 +376,7 @@ function TheStory({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${inter.className} text-xs tracking-[0.25em] uppercase`}
               style={{ color: C.bronze }}
             >
@@ -386,7 +386,7 @@ function TheStory({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${playfair.className} text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1]`}
               style={{ color: C.ivory }}
             >
@@ -400,7 +400,7 @@ function TheStory({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="space-y-6"
             >
               <p className={`${inter.className} text-base md:text-lg leading-[1.9]`} style={{ color: C.muted }}>
@@ -419,7 +419,7 @@ function TheStory({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="pt-4"
             >
               <div className="flex items-center gap-4">
@@ -509,7 +509,7 @@ function PhilosophyScene({
           <motion.div style={{ y }} initial={{ opacity: 0, x: -40 }}>
             <motion.div
               animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             >
               <ArtImage gradient={item.gradient} label={item.title} index={index} />
             </motion.div>
@@ -517,7 +517,7 @@ function PhilosophyScene({
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="space-y-6"
           >
             <p className={`${inter.className} text-xs tracking-[0.25em] uppercase`} style={{ color: C.bronze }}>
@@ -539,7 +539,7 @@ function PhilosophyScene({
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className="space-y-6 lg:order-2"
           >
             <p className={`${inter.className} text-xs tracking-[0.25em] uppercase`} style={{ color: C.bronze }}>
@@ -558,7 +558,7 @@ function PhilosophyScene({
           <motion.div style={{ y }} initial={{ opacity: 0, x: 40 }}>
             <motion.div
               animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             >
               <ArtImage gradient={item.gradient} label={item.title} index={index} />
             </motion.div>
@@ -577,7 +577,7 @@ function PhilosophyGallery({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="text-center max-w-3xl mx-auto mb-6"
         >
           <p className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-4`} style={{ color: C.bronze }}>
@@ -669,7 +669,7 @@ function DreamWall({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-16`}
           style={{ color: C.bronze }}
         >
@@ -683,7 +683,7 @@ function DreamWall({ C }: { C: (typeof THEME)["dark"] }) {
               initial={{ opacity: 0, y: 40, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -40, scale: 0.97 }}
-              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${playfair.className} absolute text-[clamp(1.8rem,5vw,3.5rem)] font-light italic leading-[1.3] max-w-4xl mx-auto px-4`}
               style={{ color: C.ivory }}
             >
@@ -712,7 +712,7 @@ function DreamWall({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mx-auto mt-14 w-32 h-px"
           style={{ background: C.bronze }}
         />
@@ -761,7 +761,7 @@ function ValueIsland({
       initial={{ opacity: 0, y: 60 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 1, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 1, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
       whileHover={{ y: -8, scale: 1.02 }}
       className="group relative p-8 md:p-10 rounded-[2px] cursor-default"
       style={{
@@ -814,7 +814,7 @@ function ValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
         >
           <p className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-4`} style={{ color: C.bronze }}>
@@ -852,7 +852,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-full"
           style={{
             background: `linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.04), transparent)`,
@@ -862,14 +862,14 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 2.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute top-0 left-[30%] w-[1px] h-full"
           style={{ background: `linear-gradient(to bottom, transparent, rgba(139, 115, 85, 0.03), transparent)` }}
         />
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 2.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 2.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="absolute top-0 right-[30%] w-[1px] h-full"
           style={{ background: `linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.03), transparent)` }}
         />
@@ -886,7 +886,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={isInView ? { opacity: 1, scale: 1 } : {}}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
           background: "radial-gradient(circle at center, rgba(214, 207, 199, 0.04), transparent 60%)",
@@ -898,7 +898,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-6`}
           style={{ color: C.bronze }}
         >
@@ -908,7 +908,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.2, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${playfair.className} text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[1.05]`}
           style={{ color: C.ivory }}
         >
@@ -921,7 +921,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} mt-8 text-base md:text-lg max-w-2xl mx-auto leading-[1.9]`}
           style={{ color: C.muted }}
         >
@@ -933,7 +933,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mx-auto mt-12 w-20 h-px"
           style={{ background: C.bronze }}
         />
@@ -944,7 +944,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
               key={label}
               initial={{ opacity: 0, y: 10 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.9 + i * 0.15, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.8, delay: 0.9 + i * 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${cormorant.className} italic text-sm tracking-[0.15em]`}
               style={{ color: C.muted }}
             >
@@ -981,7 +981,7 @@ function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <ArtImage
               gradient={`
@@ -999,7 +999,7 @@ function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${inter.className} text-xs tracking-[0.25em] uppercase`}
               style={{ color: C.bronze }}
             >
@@ -1009,7 +1009,7 @@ function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className={`${playfair.className} text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1]`}
               style={{ color: C.ivory }}
             >
@@ -1022,7 +1022,7 @@ function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="space-y-6"
             >
               <p className={`${inter.className} text-base md:text-lg leading-[1.9]`} style={{ color: C.muted }}>
@@ -1047,7 +1047,7 @@ function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
             <motion.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="pt-2"
             >
               <div className="flex items-start gap-4">
@@ -1120,7 +1120,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
           style={{ color: C.bronze }}
         >
@@ -1131,7 +1131,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${playfair.className} text-[clamp(2.8rem,9vw,6rem)] font-bold leading-[1.05] tracking-[-0.02em]`}
           style={{ color: C.ivory }}
         >
@@ -1146,7 +1146,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} mt-8 text-base md:text-lg max-w-xl mx-auto leading-relaxed`}
           style={{ color: C.muted }}
         >
@@ -1157,7 +1157,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mt-12"
         >
           <a
@@ -1187,7 +1187,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           viewport={{ once: true }}
-          transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] }}
+          transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mx-auto mt-16 w-24 h-px"
           style={{ background: C.bronze }}
         />
