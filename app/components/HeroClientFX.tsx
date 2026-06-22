@@ -79,17 +79,13 @@ export default function HeroClientFX() {
 
   return (
     <>
-      {/* ---- Mouse-follow ambient gold glow ---- */}
+      {/* ---- Mouse-follow ambient glow (theme-aware) ---- */}
       <div
         ref={glowRef}
         aria-hidden
-        className={`pointer-events-none fixed inset-0 z-[2] transition-all duration-700 ${
+        className={`hero-mouse-glow pointer-events-none fixed inset-0 z-[2] transition-all duration-700 ${
           heroVisible ? "opacity-100" : "opacity-0"
         }`}
-        style={{
-          background:
-            "radial-gradient(600px 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 168, 79, 0.06), transparent 60%)",
-        }}
       />
 
       {/* Floating luxury particle clusters (both themes) — single instance */}

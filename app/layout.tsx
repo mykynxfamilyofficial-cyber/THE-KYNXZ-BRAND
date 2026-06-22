@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import DarkBackgroundFX from "./components/DarkBackgroundFX";
+import GlobalScrollIndicator from "./components/GlobalScrollIndicator";
 import LoadingScreen from "./components/LoadingScreen";
+import PageTransition from "./components/PageTransition";
 
 export const metadata: Metadata = {
   title: "THE KYNXZ BRAND | Timeless Luxury. Refined Living.",
@@ -81,7 +83,8 @@ export default function RootLayout({
       <body>
         <LoadingScreen />
         <DarkBackgroundFX />
-        {children}
+        <GlobalScrollIndicator />
+        <PageTransition>{children}</PageTransition>
       </body>
     </html>
   );

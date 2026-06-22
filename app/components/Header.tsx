@@ -7,7 +7,7 @@ const navItems = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/mission", label: "Mission" },
-  { href: "/categories", label: "Categories" },
+  { href: "/collections", label: "Collections" },
   { href: "/contact", label: "Contact" },
 ];
 
@@ -90,7 +90,7 @@ export default function Header() {
       className="site-header fixed top-0 left-0 w-full z-50 border-b border-white/10 backdrop-blur-xl"
       style={theme === "light" ? { borderColor: "rgba(17, 17, 17, 0.12)" } : undefined}
     >
-      <div className="luxury-container h-20 flex items-center justify-between">
+      <div className="luxury-container h-16 md:h-20 flex items-center justify-between">
         <div className="site-header-logo flex items-center">
 <Image
             src={theme === "dark"
@@ -110,7 +110,7 @@ export default function Header() {
           <a href="/" className="text-white/90 hover:text-white transition-colors" style={theme === "light" ? { color: "#111111" } : undefined}>Home</a>
           <a href="/about" className="text-white/90 hover:text-white transition-colors" style={theme === "light" ? { color: "#111111" } : undefined}>About</a>
           <a href="/mission" className="text-white/90 hover:text-white transition-colors" style={theme === "light" ? { color: "#111111" } : undefined}>Mission</a>
-          <a href="/categories" className="text-white/90 hover:text-white transition-colors" style={theme === "light" ? { color: "#111111" } : undefined}>Categories</a>
+          <a href="/collections" className="text-white/90 hover:text-white transition-colors" style={theme === "light" ? { color: "#111111" } : undefined}>Collections</a>
           <a href="/contact" className="text-white/90 hover:text-white transition-colors" style={theme === "light" ? { color: "#111111" } : undefined}>Contact</a>
         </nav>
 
@@ -206,8 +206,9 @@ export default function Header() {
           type="button"
           aria-label="Close menu"
           onClick={() => setMenuOpen(false)}
-          className="absolute right-5 top-5 z-20 inline-flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 hover:scale-110 hover:rotate-90 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/50"
+          className="absolute right-5 z-20 inline-flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 hover:scale-110 hover:rotate-90 focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/50"
           style={{
+            top: "calc(env(safe-area-inset-top) + 8px)",
             borderColor:
               theme === "dark"
                 ? "rgba(255,255,255,0.2)"
@@ -247,7 +248,43 @@ export default function Header() {
               ? "translate-y-0 opacity-100"
               : "translate-y-8 opacity-0"
           }`}
+          style={{
+            paddingTop: "calc(env(safe-area-inset-top) + 28px)",
+          }}
         >
+          {/* Theme toggle — positioned near the top, below close button */}
+          <div
+            className="w-full flex justify-center py-4"
+            style={{
+              transitionDelay: menuOpen ? `0ms` : "0ms",
+              transition: "all 500ms cubic-bezier(0.22, 1, 0.36, 1)",
+              opacity: menuOpen ? 1 : 0,
+              transform: menuOpen ? "translateY(0)" : "translateY(16px)",
+            }}
+          >
+            <button
+              type="button"
+              onClick={toggleTheme}
+              aria-label={`Toggle theme (currently ${themeLabel})`}
+              className="site-header-theme-toggle group inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs tracking-[0.18em] backdrop-blur transition-all duration-300 hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/30"
+              style={theme === "light" ? {
+                color: "#111111",
+                borderColor: "rgba(17, 17, 17, 0.22)",
+                background: "rgba(255, 255, 255, 0.42)",
+              } : undefined}
+            >
+              <span className="mr-2 opacity-90">{theme === "dark" ? "DARK" : "LIGHT"}</span>
+              <span
+                aria-hidden
+                className="site-header-theme-dot h-2 w-2 rounded-full bg-white/80 shadow-[0_0_18px_rgba(255,255,255,0.35)] opacity-90 transition-transform duration-300 group-hover:scale-110"
+                style={theme === "light" ? {
+                  background: "#111111",
+                  boxShadow: "0 0 18px rgba(17, 17, 17, 0.2)",
+                } : undefined}
+              />
+            </button>
+          </div>
+
           {/* Top spacer — pushes nav to vertical center */}
           <div className="flex-1 min-h-0" />
 
@@ -292,38 +329,8 @@ export default function Header() {
           {/* Bottom spacer — balances top spacer for perfect centering */}
           <div className="flex-1 min-h-0" />
 
-          {/* Theme toggle at the bottom of the menu */}
-          <div
-            className="pb-14"
-            style={{
-              transitionDelay: menuOpen ? `${navItems.length * 60}ms` : "0ms",
-              transition: "all 500ms cubic-bezier(0.22, 1, 0.36, 1)",
-              opacity: menuOpen ? 1 : 0,
-              transform: menuOpen ? "translateY(0)" : "translateY(16px)",
-            }}
-          >
-            <button
-              type="button"
-              onClick={toggleTheme}
-              aria-label={`Toggle theme (currently ${themeLabel})`}
-              className="site-header-theme-toggle group inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-xs tracking-[0.18em] backdrop-blur transition-all duration-300 hover:bg-white/10 hover:border-white/30 focus:outline-none focus:ring-2 focus:ring-white/30"
-              style={theme === "light" ? {
-                color: "#111111",
-                borderColor: "rgba(17, 17, 17, 0.22)",
-                background: "rgba(255, 255, 255, 0.42)",
-              } : undefined}
-            >
-              <span className="mr-2 opacity-90">{theme === "dark" ? "DARK" : "LIGHT"}</span>
-              <span
-                aria-hidden
-                className="site-header-theme-dot h-2 w-2 rounded-full bg-white/80 shadow-[0_0_18px_rgba(255,255,255,0.35)] opacity-90 transition-transform duration-300 group-hover:scale-110"
-                style={theme === "light" ? {
-                  background: "#111111",
-                  boxShadow: "0 0 18px rgba(17, 17, 17, 0.2)",
-                } : undefined}
-              />
-            </button>
-          </div>
+          {/* Bottom padding for safe area bottom */}
+          <div className="h-6" />
         </div>
       </div>
     </header>

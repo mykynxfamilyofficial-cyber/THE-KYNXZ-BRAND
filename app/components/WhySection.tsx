@@ -115,13 +115,13 @@ export default function WhySection() {
   return (
     <section
       ref={sectionRef}
-      className="why-section relative overflow-hidden py-16 md:py-20 lg:py-24"
+      className="why-section relative overflow-hidden py-8 md:py-10 lg:py-12"
       aria-labelledby="why-heading"
     >
       {/* Gradient bridge from World section */}
       <div
         aria-hidden
-        className="absolute top-0 left-0 right-0 h-20 lg:h-24 -translate-y-full pointer-events-none z-10"
+        className="absolute top-0 left-0 right-0 h-10 lg:h-12 -translate-y-full pointer-events-none z-10"
         style={{
           background: "linear-gradient(to bottom, transparent, var(--color-background))",
         }}
@@ -158,7 +158,7 @@ export default function WhySection() {
               transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
             }}
           >
-            
+            Why Choose
           </p>
 
           <h2

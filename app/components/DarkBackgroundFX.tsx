@@ -1,11 +1,14 @@
 "use client";
 
+import DarkParticlesCanvas from "./DarkParticlesCanvas";
+
 /**
  * DarkBackgroundFX
  *
  * Renders a set of ultra-subtle animated background elements exclusively for
- * the dark theme — floating gold particles, shimmering dust motes, and slow
- * ambient light orbs. Everything stays between 3 % – 10 % opacity and uses
+ * the dark theme — floating gold particles, shimmering dust motes, slow
+ * ambient light orbs, and a canvas-based particle system with connecting
+ * lines. Everything stays between 3 % – 10 % opacity and uses
  * GPU-accelerated transform / opacity animations for smooth 60 fps playback.
  *
  * Visibility is controlled via `data-[theme="dark"]:opacity-100` so the
@@ -19,25 +22,31 @@ export default function DarkBackgroundFX() {
       className="fixed inset-0 z-0 pointer-events-none overflow-hidden
       opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-1000"
     >
-      {/* ---- Layer 1: Floating gold particles (tiny dots) ---- */}
+      {/* ---- Layer 0: Warm champagne vignette overlay ---- */}
+      <div className="dark-vignette" />
+
+      {/* ---- Layer 1: Canvas-based warm particles (entire page) ---- */}
+      <DarkParticlesCanvas />
+
+      {/* ---- Layer 2: Floating gold particles (tiny dots) ---- */}
       <div className="dark-particle-cluster dark-particle-cluster-1" />
 
-      {/* ---- Layer 2: Larger shimmering motes ---- */}
+      {/* ---- Layer 3: Larger shimmering motes ---- */}
       <div className="dark-particle-cluster dark-particle-cluster-2" />
 
-      {/* ---- Layer 3: Slow-moving ambient light orb (top-right) ---- */}
+      {/* ---- Layer 4: Slow-moving ambient light orb (top-right) ---- */}
       <div
         aria-hidden
         className="absolute rounded-full dark-ambient-orb-1"
       />
 
-      {/* ---- Layer 4: Slow-moving ambient light orb (bottom-left) ---- */}
+      {/* ---- Layer 5: Slow-moving ambient light orb (bottom-left) ---- */}
       <div
         aria-hidden
         className="absolute rounded-full dark-ambient-orb-2"
       />
 
-      {/* ---- Layer 5: Very subtle horizontal light sweep ---- */}
+      {/* ---- Layer 6: Very subtle horizontal light sweep ---- */}
       <div
         aria-hidden
         className="absolute h-px dark-light-sweep"

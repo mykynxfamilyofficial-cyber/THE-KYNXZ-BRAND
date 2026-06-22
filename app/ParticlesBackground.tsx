@@ -46,18 +46,21 @@ export default function ParticlesBackground() {
 
       const isDarkNow = isDark();
 
-      // Subtle count for luxury look (LIGHT: fewer + softer)
+      // Only render in light theme — dark theme has its own enhanced canvas
+      if (isDarkNow) {
+        particlesRef.current = [];
+        return;
+      }
+
       const base = Math.floor((innerWidth * innerHeight) / 45000);
-      const count = Math.max(20, isDarkNow ? Math.floor(base) : Math.floor(base * 0.55));
+      const count = Math.max(20, Math.floor(base * 0.55));
 
       const next: Particle[] = [];
       for (let i = 0; i < count; i++) {
-        const r = (isDarkNow ? 0.5 : 0.45) + Math.random() * (isDarkNow ? 1.35 : 1.05);
-
-        // LIGHT: slower drift, lower alpha for a premium “dust” feel
-        const speedMul = isDarkNow ? 1 : 0.55;
-        const alphaBase = isDarkNow ? 0.05 : 0.028;
-        const alphaSpan = isDarkNow ? 0.12 : 0.055;
+        const r = 0.45 + Math.random() * 1.05;
+        const speedMul = 0.55;
+        const alphaBase = 0.028;
+        const alphaSpan = 0.055;
 
         next.push({
           x: Math.random() * innerWidth,
@@ -72,42 +75,30 @@ export default function ParticlesBackground() {
     };
 
     const draw = () => {
-      const dark = isDark();
-
       const { w, h } = sizeRef.current;
       ctx.clearRect(0, 0, w, h);
 
       const particles = particlesRef.current;
 
-      // Very soft cinematic glow (no heavy blurs)
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx;
         p.y += p.vy;
 
-        // wrap
         if (p.x < -10) p.x = w + 10;
         if (p.x > w + 10) p.x = -10;
         if (p.y < -10) p.y = h + 10;
         if (p.y > h + 10) p.y = -10;
 
-        // LIGHT: almost-white ivory dust, with very slight champagne tint
-        if (!dark) {
-          const warm = 245 + Math.sin((i + p.x) * 0.0018) * 6; // ~239-251
-          ctx.fillStyle = `rgba(${warm.toFixed(0)}, ${warm.toFixed(0)}, 232, ${p.a.toFixed(3)})`;
-        } else {
-          // DARK: champagne-ish highlights
-          const warm = 218 + Math.sin((i + p.x) * 0.002) * 18; // 200-236
-          ctx.fillStyle = `rgba(${warm.toFixed(0)}, ${warm.toFixed(0)}, 180, ${p.a.toFixed(3)})`;
-        }
+        const warm = 245 + Math.sin((i + p.x) * 0.0018) * 6;
+        ctx.fillStyle = `rgba(${warm.toFixed(0)}, ${warm.toFixed(0)}, 232, ${p.a.toFixed(3)})`;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fill();
       }
 
-      // subtle filmic haze
-      ctx.fillStyle = dark ? "rgba(255, 215, 160, 0.015)" : "rgba(246, 245, 242, 0.03)";
+      ctx.fillStyle = "rgba(246, 245, 242, 0.03)";
       ctx.fillRect(0, 0, w, h);
 
       rafRef.current = window.requestAnimationFrame(draw);
@@ -117,7 +108,10 @@ export default function ParticlesBackground() {
       if (prefersReduced) return;
       stop();
       setup();
-      rafRef.current = window.requestAnimationFrame(draw);
+      // Only start RAF if we actually have particles (light theme)
+      if (particlesRef.current.length > 0) {
+        rafRef.current = window.requestAnimationFrame(draw);
+      }
     };
 
     const stop = () => {
@@ -129,16 +123,18 @@ export default function ParticlesBackground() {
     };
 
     const onResize = () => {
-      if (isDark()) start();
+      if (!isDark()) start();
     };
 
     const onThemeChange = () => {
-      // Render in both themes, but with different softness handled in setup/draw
-      start();
+      if (!isDark()) {
+        start();
+      } else {
+        stop();
+      }
     };
 
-    // Initial
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && !isDark()) {
       start();
     }
 

@@ -3,30 +3,30 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
-  /* Luxury semantic tokens (Light) — Premium Cream / Champagne Ivory */
+  /* Warm taupe luxury palette — soft, elegant, refined */
   --color-background: #F8F6F1;
   --color-background-alt: #F5F1E8;
   --color-background-muted: #F2EDE3;
   --color-surface: rgba(255, 255, 255, 0.72);
   --color-text-primary: #1A1815;
   --color-text-muted: rgba(26, 24, 21, 0.65);
-  --color-border: rgba(184, 134, 11, 0.18);
+  --color-border: rgba(139, 115, 85, 0.18);
   --color-shadow: rgba(139, 115, 85, 0.12);
-  --color-accent: #D4A84F;
-  --color-glow: rgba(212, 168, 79, 0.2);
-  --color-focus: rgba(212, 168, 79, 0.35);
+  --color-accent: #8B7355;
+  --color-glow: rgba(139, 115, 85, 0.15);
+  --color-focus: rgba(139, 115, 85, 0.28);
   --color-input-bg: rgba(255, 255, 255, 0.12);
-  --color-input-border: rgba(184, 134, 11, 0.22);
+  --color-input-border: rgba(139, 115, 85, 0.22);
 
   /* transitions */
   --theme-transition: 600ms;
 }
 
 html[data-theme="dark"] {
-  /* Deep luxury black (not pure black) */
-  --color-background: #050505;
-  --color-background-alt: #0A0A0A;
-  --color-background-muted: #0F0F0F;
+  /* Warm charcoal luxury palette — deep but not flat black */
+  --color-background: #0B0B0D;
+  --color-background-alt: #111114;
+  --color-background-muted: #151417;
   --color-surface: rgba(255, 255, 255, 0.06);
   --color-text-primary: #E8E6E1;
   --color-text-muted: rgba(232, 230, 225, 0.72);
@@ -61,43 +61,56 @@ html::before {
 }
 
 html[data-theme="dark"]::before {
-  opacity: 0.08;
+  opacity: 0.1;
   background-image:
-    radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
-    radial-gradient(rgba(255, 215, 160, 0.12) 1px, transparent 1px);
+    radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    radial-gradient(rgba(212, 168, 79, 0.14) 1px, transparent 1px),
+    radial-gradient(rgba(255, 236, 190, 0.08) 1px, transparent 1px);
+  background-size: 3px 3px, 5px 5px, 7px 7px;
+  background-position: 0 0, 1px 2px, 3px 1px;
   mix-blend-mode: screen;
 }
 
-/* Champagne dust: premium texture layers */
+/* Champagne dust + warm ambient lighting: premium texture layers */
 html[data-theme="dark"]::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.12;
   background:
-    radial-gradient(circle at 10% 20%, rgba(242, 209, 140, 0.15), transparent 38%),
+    /* Warm gold ambient glow — top right */
+    radial-gradient(1400px 900px at 75% -8%, rgba(212, 168, 79, 0.1), transparent 42%),
+    /* Warm glow — bottom left */
+    radial-gradient(1200px 800px at 18% 92%, rgba(212, 168, 79, 0.07), transparent 40%),
+    /* Champagne wash across hero area */
+    radial-gradient(1000px 700px at 45% 30%, rgba(242, 209, 140, 0.06), transparent 48%),
+    /* Soft ivory float from top */
+    radial-gradient(900px 600px at 50% 10%, rgba(255, 236, 190, 0.045), transparent 50%),
+    /* Champagne dust textures */
+    radial-gradient(circle at 10% 20%, rgba(242, 209, 140, 0.14), transparent 38%),
     radial-gradient(circle at 80% 30%, rgba(255, 236, 190, 0.12), transparent 40%),
-    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.10), transparent 45%);
-  filter: blur(1px);
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1), transparent 45%),
+    radial-gradient(circle at 65% 55%, rgba(212, 168, 79, 0.08), transparent 42%);
+  filter: blur(2px);
   animation: luxuryDustDrift 9s ease-in-out infinite;
 }
 
-/* LIGHT-only: premium champagne glow + paper texture + golden ambient lighting */
+/* LIGHT-only: soft warm taupe ambient lighting */
 html[data-theme="light"]::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.06;
+  opacity: 0.05;
   background:
-    radial-gradient(900px 600px at 15% 8%, rgba(212, 168, 79, 0.12), transparent 50%),
-    radial-gradient(800px 520px at 75% 12%, rgba(242, 209, 140, 0.1), transparent 50%),
-    radial-gradient(700px 450px at 50% 40%, rgba(248, 245, 238, 0.15), transparent 50%),
-    radial-gradient(600px 400px at 25% 70%, rgba(232, 223, 208, 0.08), transparent 45%),
-    radial-gradient(500px 350px at 80% 60%, rgba(212, 168, 79, 0.06), transparent 45%);
+    radial-gradient(900px 600px at 15% 8%, rgba(139, 115, 85, 0.08), transparent 50%),
+    radial-gradient(800px 520px at 75% 12%, rgba(214, 207, 199, 0.08), transparent 50%),
+    radial-gradient(700px 450px at 50% 40%, rgba(248, 245, 238, 0.12), transparent 50%),
+    radial-gradient(600px 400px at 25% 70%, rgba(168, 154, 138, 0.06), transparent 45%),
+    radial-gradient(500px 350px at 80% 60%, rgba(139, 115, 85, 0.04), transparent 45%);
   filter: blur(2px);
   animation: lightAmbientDrift 12s ease-in-out infinite;
 }
@@ -130,6 +143,21 @@ html[data-theme="light"] .luxury-vignette {
     radial-gradient(ellipse at bottom, rgba(245, 241, 232, 0.35), transparent 25%),
     radial-gradient(ellipse at left, rgba(242, 237, 227, 0.25), transparent 20%),
     radial-gradient(ellipse at right, rgba(242, 237, 227, 0.25), transparent 20%);
+}
+
+/* DARK-only: warm champagne vignette overlay for emotional depth */
+html[data-theme="dark"] .dark-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.6;
+  background:
+    radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.25)),
+    radial-gradient(ellipse at top, rgba(212, 168, 79, 0.03), transparent 30%),
+    radial-gradient(ellipse at bottom, rgba(0, 0, 0, 0.2), transparent 25%),
+    radial-gradient(ellipse at left, rgba(0, 0, 0, 0.08), transparent 20%),
+    radial-gradient(ellipse at right, rgba(0, 0, 0, 0.08), transparent 20%);
 }
 
 
@@ -174,6 +202,23 @@ html[data-theme="light"] body {
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
 }
 
+/* Dark theme only — warm charcoal depth with ambient lighting */
+html[data-theme="dark"] body {
+  background:
+    /* Primary warm ambient glow from top-right — more luminous */
+    radial-gradient(1500px 1000px at 80% -10%, rgba(212, 168, 79, 0.07), transparent 50%),
+    /* Secondary warm glow from bottom-left */
+    radial-gradient(1200px 900px at 15% 90%, rgba(212, 168, 79, 0.045), transparent 48%),
+    /* Rich champagne highlight across center */
+    radial-gradient(1000px 700px at 50% 40%, rgba(242, 209, 140, 0.035), transparent 45%),
+    /* Warm ivory tint from top-center */
+    radial-gradient(1300px 800px at 40% 15%, rgba(255, 236, 190, 0.025), transparent 42%),
+    /* Subtle warm glow from bottom-right */
+    radial-gradient(900px 600px at 70% 75%, rgba(212, 168, 79, 0.02), transparent 50%),
+    /* Deep charcoal gradient base with warm undertone */
+    linear-gradient(180deg, #0B0B0F 0%, #0E0E12 25%, #121215 50%, #111114 75%, #0D0D10 100%);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -200,14 +245,14 @@ html[data-theme="light"] body {
     box-shadow var(--theme-transition) ease;
 }
 
-/* Light theme: premium card depth with warm gold border and soft inner glow */
+/* Light theme: premium card depth with warm taupe border and soft inner glow */
 html[data-theme="light"] .glass-card {
-  border-color: rgba(184, 134, 11, 0.15);
+  border-color: rgba(139, 115, 85, 0.18);
   box-shadow:
     0 20px 60px rgba(139, 115, 85, 0.08),
     0 8px 24px rgba(139, 115, 85, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
-    inset 0 -1px 0 rgba(184, 134, 11, 0.04);
+    inset 0 -1px 0 rgba(139, 115, 85, 0.04);
   background: rgba(255, 255, 255, 0.78);
 }
 
@@ -280,6 +325,50 @@ html[data-theme="light"] .glass-card {
   will-change: transform, opacity;
 }
 
+/* Ambient floating particles — gold motes */
+.loading-particle {
+  background: radial-gradient(
+    circle at center,
+    rgba(212, 168, 79, 0.8),
+    transparent
+  );
+  animation: particleFloat 16s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.03;
+  }
+  25% {
+    transform: translate3d(10px, -15px, 0) scale(1.3);
+    opacity: 0.07;
+  }
+  50% {
+    transform: translate3d(-5px, -8px, 0) scale(0.9);
+    opacity: 0.04;
+  }
+  75% {
+    transform: translate3d(8px, -20px, 0) scale(1.1);
+    opacity: 0.06;
+  }
+}
+
+/* Page transition overlay background */
+.page-transition-overlay {
+  background: linear-gradient(
+    180deg,
+    var(--color-background) 0%,
+    var(--color-background-alt) 100%
+  );
+}
+
+/* Page transition content wrapper */
+.page-transition-content {
+  will-change: opacity, transform, filter;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .loading-screen * {
@@ -289,6 +378,7 @@ html[data-theme="light"] .glass-card {
 
   .loading-screen {
     opacity: 1 !important;
+    filter: none !important;
     transform: none !important;
   }
 
@@ -298,11 +388,28 @@ html[data-theme="light"] .glass-card {
   .loading-logo {
     opacity: 1 !important;
     transform: none !important;
+    filter: none !important;
   }
 
   .loading-diamond {
     filter: none !important;
     transform: none !important;
+  }
+
+  .loading-particle {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .page-transition-content {
+    transition-duration: 0.001ms !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  .page-transition-overlay {
+    display: none !important;
   }
 }
 
@@ -389,20 +496,25 @@ html[data-theme="light"] .glass-card {
   background: var(--color-background);
 }
 
-/* Light theme specific — enriched with cream depth and golden ambient glow */
+/* Light theme specific — enriched with cream depth and soft taupe ambient glow */
 html[data-theme="light"] .philosophy-section {
   background:
     radial-gradient(ellipse 80% 60% at 25% 35%, rgba(245, 241, 232, 0.55) 0%, transparent 55%),
     radial-gradient(ellipse 70% 50% at 75% 55%, rgba(242, 237, 227, 0.4) 0%, transparent 50%),
-    radial-gradient(600px 400px at 40% 50%, rgba(212, 168, 79, 0.04), transparent 55%),
+    radial-gradient(600px 400px at 40% 50%, rgba(139, 115, 85, 0.03), transparent 55%),
     radial-gradient(500px 300px at 60% 40%, rgba(248, 245, 238, 0.12), transparent 50%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
 }
 
-/* Dark theme specific */
+/* Dark theme specific — warm charcoal depth with ambient gold glow */
 html[data-theme="dark"] .philosophy-section {
   background:
-    radial-gradient(ellipse 75% 55% at 40% 50%, rgba(255, 255, 255, 0.015) 0%, transparent 60%),
+    /* Warm gold ambient glow from top */
+    radial-gradient(ellipse 70% 45% at 45% 15%, rgba(212, 168, 79, 0.035) 0%, transparent 50%),
+    /* Subtle warm tint from bottom */
+    radial-gradient(ellipse 60% 40% at 50% 85%, rgba(242, 209, 140, 0.02) 0%, transparent 45%),
+    /* Soft center depth */
+    radial-gradient(ellipse 50% 35% at 50% 50%, rgba(255, 236, 190, 0.01) 0%, transparent 40%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
 }
 
@@ -443,7 +555,7 @@ html[data-theme="dark"] .philosophy-section {
 html[data-theme="light"] .collection-card:hover {
   box-shadow:
     0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 40px var(--color-glow),
+    0 0 30px rgba(139, 115, 85, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -458,7 +570,7 @@ html[data-theme="light"] .collections-section {
   background:
     radial-gradient(ellipse 80% 55% at 30% 25%, rgba(245, 241, 232, 0.5) 0%, transparent 50%),
     radial-gradient(ellipse 70% 50% at 70% 65%, rgba(242, 237, 227, 0.4) 0%, transparent 48%),
-    radial-gradient(700px 450px at 50% 30%, rgba(212, 168, 79, 0.035), transparent 55%),
+    radial-gradient(700px 450px at 50% 30%, rgba(139, 115, 85, 0.025), transparent 55%),
     radial-gradient(500px 350px at 30% 60%, rgba(232, 223, 208, 0.08), transparent 50%),
     radial-gradient(400px 300px at 70% 40%, rgba(248, 245, 238, 0.1), transparent 45%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
@@ -466,7 +578,12 @@ html[data-theme="light"] .collections-section {
 
 html[data-theme="dark"] .collections-section {
   background:
-    radial-gradient(ellipse 75% 50% at 50% 30%, rgba(255, 255, 255, 0.012) 0%, transparent 55%),
+    /* Warm gold ambient glow from upper-center */
+    radial-gradient(ellipse 70% 45% at 50% 20%, rgba(212, 168, 79, 0.03) 0%, transparent 50%),
+    /* Subtle warm wash from bottom */
+    radial-gradient(ellipse 55% 35% at 45% 80%, rgba(242, 209, 140, 0.018) 0%, transparent 42%),
+    /* Soft center fill */
+    radial-gradient(ellipse 50% 30% at 50% 50%, rgba(255, 236, 190, 0.008) 0%, transparent 40%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
 }
 
@@ -501,7 +618,7 @@ html[data-theme="dark"] .collections-section {
 html[data-theme="light"] .experience-card:hover {
   box-shadow:
     0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 40px var(--color-glow),
+    0 0 30px rgba(139, 115, 85, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -514,7 +631,7 @@ html[data-theme="light"] .experience-section {
   background:
     radial-gradient(ellipse 75% 50% at 35% 20%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
     radial-gradient(ellipse 65% 45% at 65% 70%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
-    radial-gradient(600px 400px at 45% 35%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(600px 400px at 45% 35%, rgba(139, 115, 85, 0.02), transparent 50%),
     radial-gradient(500px 350px at 55% 60%, rgba(248, 245, 238, 0.1), transparent 48%),
     radial-gradient(400px 300px at 25% 65%, rgba(232, 223, 208, 0.07), transparent 45%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
@@ -522,7 +639,12 @@ html[data-theme="light"] .experience-section {
 
 html[data-theme="dark"] .experience-section {
   background:
-    radial-gradient(ellipse 70% 45% at 50% 25%, rgba(255, 255, 255, 0.01) 0%, transparent 50%),
+    /* Warm gold ambient glow from upper area */
+    radial-gradient(ellipse 65% 40% at 50% 18%, rgba(212, 168, 79, 0.028) 0%, transparent 48%),
+    /* Subtle warm tint from lower-right */
+    radial-gradient(ellipse 50% 35% at 60% 82%, rgba(242, 209, 140, 0.015) 0%, transparent 42%),
+    /* Soft fill */
+    radial-gradient(ellipse 45% 30% at 50% 50%, rgba(255, 236, 190, 0.008) 0%, transparent 40%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
 }
 
@@ -557,7 +679,7 @@ html[data-theme="dark"] .experience-section {
 html[data-theme="light"] .world-card:hover {
   box-shadow:
     0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 40px var(--color-glow),
+    0 0 30px rgba(139, 115, 85, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -569,7 +691,7 @@ html[data-theme="light"] .world-section {
   background:
     radial-gradient(ellipse 70% 45% at 50% 18%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
     radial-gradient(ellipse 60% 40% at 50% 78%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
-    radial-gradient(600px 400px at 40% 30%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(600px 400px at 40% 30%, rgba(139, 115, 85, 0.02), transparent 50%),
     radial-gradient(500px 350px at 60% 50%, rgba(248, 245, 238, 0.1), transparent 48%),
     radial-gradient(400px 280px at 35% 70%, rgba(232, 223, 208, 0.07), transparent 45%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
@@ -577,7 +699,12 @@ html[data-theme="light"] .world-section {
 
 html[data-theme="dark"] .world-section {
   background:
-    radial-gradient(ellipse 65% 40% at 50% 20%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    /* Warm gold ambient glow from top-center */
+    radial-gradient(ellipse 65% 42% at 50% 15%, rgba(212, 168, 79, 0.03) 0%, transparent 48%),
+    /* Subtle warm tint from bottom */
+    radial-gradient(ellipse 50% 35% at 50% 82%, rgba(242, 209, 140, 0.015) 0%, transparent 42%),
+    /* Soft center depth */
+    radial-gradient(ellipse 45% 28% at 50% 50%, rgba(255, 236, 190, 0.007) 0%, transparent 38%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
 }
 
@@ -611,7 +738,7 @@ html[data-theme="dark"] .world-section {
 html[data-theme="light"] .why-card:hover {
   box-shadow:
     0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 40px var(--color-glow),
+    0 0 30px rgba(139, 115, 85, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -623,7 +750,7 @@ html[data-theme="light"] .why-section {
   background:
     radial-gradient(ellipse 70% 45% at 50% 22%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
     radial-gradient(ellipse 60% 40% at 50% 72%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
-    radial-gradient(600px 400px at 40% 35%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(600px 400px at 40% 35%, rgba(139, 115, 85, 0.02), transparent 50%),
     radial-gradient(500px 350px at 60% 55%, rgba(248, 245, 238, 0.1), transparent 48%),
     radial-gradient(400px 280px at 30% 65%, rgba(232, 223, 208, 0.07), transparent 45%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
@@ -631,7 +758,12 @@ html[data-theme="light"] .why-section {
 
 html[data-theme="dark"] .why-section {
   background:
-    radial-gradient(ellipse 65% 40% at 50% 25%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    /* Warm gold ambient glow from upper area */
+    radial-gradient(ellipse 65% 40% at 50% 18%, rgba(212, 168, 79, 0.028) 0%, transparent 48%),
+    /* Subtle warm tint from lower-left */
+    radial-gradient(ellipse 50% 35% at 40% 82%, rgba(242, 209, 140, 0.015) 0%, transparent 42%),
+    /* Soft center fill */
+    radial-gradient(ellipse 45% 30% at 50% 50%, rgba(255, 236, 190, 0.007) 0%, transparent 38%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
 }
 
@@ -697,10 +829,10 @@ html[data-theme="light"] .home-hero-primary-cta:hover {
   border-color: #111111;
 }
 
-/* Header: light-theme enriched — cream depth, warm shadow, premium border */
+/* Header: light-theme enriched — cream depth, warm taupe shadow, premium border */
 html[data-theme="light"] .site-header {
-  border-color: rgba(184, 134, 11, 0.12);
-  background: rgba(248, 246, 241, 0.78);
+  border-color: rgba(139, 115, 85, 0.15);
+  background: rgba(248, 246, 241, 0.82);
   -webkit-backdrop-filter: blur(22px) saturate(135%);
   backdrop-filter: blur(22px) saturate(135%);
   box-shadow:
@@ -779,93 +911,6 @@ html[data-theme="light"] .site-header-menu-line {
 }
 
 /* =============================================
-   Hero Section – Light Theme Panel + FX
-   ============================================= */
-
-/* Light-theme-only: premium floating glassmorphism panel */
-html[data-theme="light"] .home-hero-panel {
-  border-radius: 32px;
-  border: 1px solid rgba(184, 134, 11, 0.18);
-  background:
-    radial-gradient(ellipse 80% 70% at 30% 20%, rgba(255, 255, 255, 0.55), transparent 60%),
-    radial-gradient(ellipse 60% 50% at 70% 80%, rgba(248, 246, 241, 0.4), transparent 55%),
-    radial-gradient(circle at 50% 40%, rgba(212, 168, 79, 0.04), transparent 50%),
-    radial-gradient(circle at 25% 60%, rgba(232, 223, 208, 0.06), transparent 40%),
-    linear-gradient(160deg, rgba(255, 255, 255, 0.7), rgba(248, 246, 241, 0.5), rgba(245, 241, 232, 0.4));
-  backdrop-filter: blur(24px) saturate(140%);
-  -webkit-backdrop-filter: blur(24px) saturate(140%);
-  box-shadow:
-    0 30px 80px rgba(139, 115, 85, 0.08),
-    0 12px 32px rgba(139, 115, 85, 0.04),
-    0 4px 12px rgba(184, 134, 11, 0.03),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-/* Light-theme-only: animated ambient glow behind the panel */
-.home-hero-panel-container::before {
-  content: "";
-  position: absolute;
-  inset: -20px;
-  z-index: -1;
-  border-radius: 40px;
-  background:
-    radial-gradient(800px 500px at 30% 20%, rgba(212, 168, 79, 0.06), transparent 55%),
-    radial-gradient(600px 400px at 70% 80%, rgba(242, 209, 140, 0.04), transparent 50%);
-  filter: blur(30px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.7s ease;
-}
-
-html[data-theme="light"] .home-hero-panel-container::before {
-  animation: heroPanelGlow 6s ease-in-out infinite;
-}
-
-.home-hero-panel-container::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: -1;
-  border-radius: 33px;
-  background: linear-gradient(135deg, rgba(212, 168, 79, 0.12), transparent 30%, transparent 70%, rgba(212, 168, 79, 0.08));
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.7s ease;
-}
-
-html[data-theme="light"] .home-hero-panel-container::after {
-  animation: heroPanelEdgeGlow 8s ease-in-out infinite;
-}
-
-@keyframes heroPanelGlow {
-  0% {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-  20%, 80% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.9;
-    transform: scale(1.02);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.98);
-  }
-}
-
-@keyframes heroPanelEdgeGlow {
-  0%, 100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-/* =============================================
    Hero Section – Stats, Scroll, Particles
    ============================================= */
 
@@ -898,50 +943,180 @@ html[data-theme="light"] .home-hero-panel-container::after {
   }
 }
 
-/* Scroll indicator */
-.home-hero-scroll-indicator {
-  opacity: 0;
-  animation: heroScrollReveal 1s 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+/* ────── Premium Scroll Indicator (global persistent) ────── */
+
+/* Clickable link wrapper */
+.scroll-indicator-link {
+  text-decoration: none;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  outline: none;
 }
 
-.home-hero-scroll-indicator span {
+.scroll-indicator-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+.scroll-indicator-link:active {
+  transform: scale(0.97) !important;
+}
+
+/* Text label */
+.scroll-indicator-text {
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  font-weight: 600;
   color: var(--color-text-muted);
-  transition: color var(--theme-transition) ease;
+  transition:
+    color var(--theme-transition) ease,
+    letter-spacing 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.home-hero-scroll-indicator .rounded-full {
-  border-color: var(--color-border);
-  transition: border-color var(--theme-transition) ease;
+.scroll-indicator-link:hover .scroll-indicator-text {
+  letter-spacing: 0.38em;
 }
 
-.home-hero-scroll-indicator .rounded-full div {
+@media (min-width: 640px) {
+  .scroll-indicator-text {
+    font-size: 10px;
+  }
+}
+
+/* Premium scroll capsule — champagne gold border, soft glow */
+.scroll-indicator-capsule {
+  width: 18px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1.5px solid var(--color-accent);
+  position: relative;
+  overflow: hidden;
+  background: rgba(212, 168, 79, 0.04);
+  transition:
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.4s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Soft ambient glow */
+  box-shadow:
+    0 0 14px rgba(212, 168, 79, 0.15),
+    0 0 4px rgba(212, 168, 79, 0.06),
+    inset 0 0 6px rgba(212, 168, 79, 0.03);
+
+  /* Subtle slow floating */
+  animation: scrollCapsuleFloat 4.5s ease-in-out infinite;
+}
+
+@media (min-width: 768px) {
+  .scroll-indicator-capsule {
+    width: 20px;
+    height: 34px;
+  }
+}
+
+/* Hover: enhanced glow + subtle lift */
+.scroll-indicator-link:hover .scroll-indicator-capsule {
+  box-shadow:
+    0 0 32px rgba(212, 168, 79, 0.28),
+    0 0 12px rgba(212, 168, 79, 0.12),
+    inset 0 0 10px rgba(212, 168, 79, 0.04);
+  border-color: var(--color-accent);
+}
+
+.scroll-indicator-link:hover {
+  transform: scale(1.05);
+}
+
+/* Animated glowing dot inside the capsule */
+.scroll-indicator-dot {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
   background: var(--color-accent);
+  will-change: transform, opacity;
+
+  /* Soft gold glow */
+  box-shadow:
+    0 0 6px rgba(212, 168, 79, 0.7),
+    0 0 14px rgba(212, 168, 79, 0.3);
+
+  /* Smooth bounce animation */
+  animation: scrollDotAnim 2.6s cubic-bezier(0.45, 0.05, 0.25, 1) infinite;
 }
 
-@keyframes heroScrollReveal {
-  from {
-    opacity: 0;
-    transform: translate(-50%, 12px);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, 0);
+@media (min-width: 768px) {
+  .scroll-indicator-dot {
+    width: 3.5px;
+    height: 3.5px;
+    top: 7px;
   }
 }
 
-@keyframes scrollMouseAnim {
+/* ────── Animations ────── */
+
+/* Floating — extremely slow and subtle */
+@keyframes scrollCapsuleFloat {
   0%, 100% {
-    transform: translate(-50%, 0);
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Dot moving inside the capsule */
+@keyframes scrollDotAnim {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
   50% {
-    transform: translate(-50%, 10px);
-    opacity: 0.3;
+    transform: translateX(-50%) translateY(14px);
+    opacity: 0.25;
   }
 }
 
-.animate-scroll-mouse {
-  animation: scrollMouseAnim 2.4s ease-in-out infinite;
+@media (min-width: 768px) {
+  @keyframes scrollDotAnim {
+    0%, 100% {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateX(-50%) translateY(17px);
+      opacity: 0.25;
+    }
+  }
+}
+
+/* Light theme — taupe/champagne glow */
+html[data-theme="light"] .scroll-indicator-capsule {
+  background: rgba(139, 115, 85, 0.03);
+  box-shadow:
+    0 0 12px rgba(139, 115, 85, 0.08),
+    0 0 3px rgba(139, 115, 85, 0.04),
+    inset 0 0 4px rgba(139, 115, 85, 0.02);
+}
+
+html[data-theme="light"] .scroll-indicator-link:hover .scroll-indicator-capsule {
+  box-shadow:
+    0 0 24px rgba(139, 115, 85, 0.15),
+    0 0 8px rgba(139, 115, 85, 0.06),
+    inset 0 0 8px rgba(139, 115, 85, 0.03);
+}
+
+/* Mouse-follow ambient glow — theme-aware */
+.hero-mouse-glow {
+  background: radial-gradient(600px 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 115, 85, 0.05), transparent 60%);
+}
+
+html[data-theme="dark"] .hero-mouse-glow {
+  background: radial-gradient(600px 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(212, 168, 79, 0.06), transparent 60%);
 }
 
 /* Floating hero particle clusters — both themes */
@@ -976,6 +1151,22 @@ html[data-theme="light"] .home-hero-panel-container::after {
 
 .hero-particle-cluster-1 {
   background-image:
+    radial-gradient(1px 1px at 12% 25%, rgba(139, 115, 85, 0.35), transparent),
+    radial-gradient(1.2px 1.2px at 38% 15%, rgba(214, 207, 199, 0.3), transparent),
+    radial-gradient(1px 1px at 55% 30%, rgba(139, 115, 85, 0.3), transparent),
+    radial-gradient(1px 1px at 78% 22%, rgba(214, 207, 199, 0.25), transparent),
+    radial-gradient(1.2px 1.2px at 22% 45%, rgba(139, 115, 85, 0.25), transparent),
+    radial-gradient(1px 1px at 62% 55%, rgba(214, 207, 199, 0.2), transparent),
+    radial-gradient(1px 1px at 88% 48%, rgba(139, 115, 85, 0.25), transparent),
+    radial-gradient(1.2px 1.2px at 45% 70%, rgba(214, 207, 199, 0.2), transparent),
+    radial-gradient(1px 1px at 15% 78%, rgba(139, 115, 85, 0.25), transparent),
+    radial-gradient(1px 1px at 72% 82%, rgba(214, 207, 199, 0.18), transparent);
+  background-size: 100% 100%;
+  animation: heroParticleDrift1 25s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .hero-particle-cluster-1 {
+  background-image:
     radial-gradient(1px 1px at 12% 25%, rgba(212, 168, 79, 0.5), transparent),
     radial-gradient(1.2px 1.2px at 38% 15%, rgba(255, 236, 190, 0.4), transparent),
     radial-gradient(1px 1px at 55% 30%, rgba(212, 168, 79, 0.4), transparent),
@@ -987,10 +1178,25 @@ html[data-theme="light"] .home-hero-panel-container::after {
     radial-gradient(1px 1px at 15% 78%, rgba(212, 168, 79, 0.35), transparent),
     radial-gradient(1px 1px at 72% 82%, rgba(255, 236, 190, 0.25), transparent);
   background-size: 100% 100%;
-  animation: heroParticleDrift1 25s ease-in-out infinite;
 }
 
 .hero-particle-cluster-2 {
+  background-image:
+    radial-gradient(1.2px 1.2px at 8% 18%, rgba(168, 154, 138, 0.3), transparent),
+    radial-gradient(1px 1px at 28% 35%, rgba(139, 115, 85, 0.25), transparent),
+    radial-gradient(1px 1px at 48% 12%, rgba(214, 207, 199, 0.2), transparent),
+    radial-gradient(1.2px 1.2px at 65% 38%, rgba(168, 154, 138, 0.25), transparent),
+    radial-gradient(1px 1px at 82% 58%, rgba(139, 115, 85, 0.2), transparent),
+    radial-gradient(1px 1px at 18% 62%, rgba(214, 207, 199, 0.2), transparent),
+    radial-gradient(1.2px 1.2px at 52% 48%, rgba(168, 154, 138, 0.18), transparent),
+    radial-gradient(1px 1px at 75% 72%, rgba(139, 115, 85, 0.2), transparent),
+    radial-gradient(1px 1px at 35% 85%, rgba(214, 207, 199, 0.18), transparent),
+    radial-gradient(1.2px 1.2px at 92% 15%, rgba(168, 154, 138, 0.2), transparent);
+  background-size: 100% 100%;
+  animation: heroParticleDrift2 32s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .hero-particle-cluster-2 {
   background-image:
     radial-gradient(1.2px 1.2px at 8% 18%, rgba(242, 209, 140, 0.4), transparent),
     radial-gradient(1px 1px at 28% 35%, rgba(212, 168, 79, 0.35), transparent),
@@ -1003,19 +1209,18 @@ html[data-theme="light"] .home-hero-panel-container::after {
     radial-gradient(1px 1px at 35% 85%, rgba(255, 236, 190, 0.25), transparent),
     radial-gradient(1.2px 1.2px at 92% 15%, rgba(242, 209, 140, 0.3), transparent);
   background-size: 100% 100%;
-  animation: heroParticleDrift2 32s ease-in-out infinite;
 }
 
 /* Reduce motion for hero FX */
 @media (prefers-reduced-motion: reduce) {
   .home-hero-stats,
-  .home-hero-scroll-indicator {
-    animation: none;
-    opacity: 1;
+  .scroll-indicator-capsule,
+  .scroll-indicator-dot {
+    animation: none !important;
   }
 
-  .animate-scroll-mouse {
-    animation: none !important;
+  .scroll-indicator-link {
+    transform: none !important;
   }
 
   .hero-particle-cluster-1,
@@ -1025,13 +1230,13 @@ html[data-theme="light"] .home-hero-panel-container::after {
   }
 }
 
-/* Light Home: enriched cream depth, golden ambient glow, premium entrance sequence. */
+/* Light Home: enriched cream depth, warm taupe ambient glow, premium entrance sequence. */
 html[data-theme="light"] .light-home-page {
   background:
     radial-gradient(ellipse 80% 60% at 50% 40%, rgba(255, 255, 255, 0.92) 0%, rgba(248, 246, 241, 0.6) 45%, transparent 72%),
     radial-gradient(ellipse 60% 40% at 25% 20%, rgba(245, 241, 232, 0.4), transparent 40%),
     radial-gradient(ellipse 55% 35% at 78% 70%, rgba(242, 237, 227, 0.3), transparent 38%),
-    radial-gradient(circle at 50% 45%, rgba(212, 168, 79, 0.04), transparent 45%),
+    radial-gradient(circle at 50% 45%, rgba(139, 115, 85, 0.03), transparent 45%),
     radial-gradient(circle at 30% 15%, rgba(232, 223, 208, 0.12), transparent 35%),
     radial-gradient(circle at 70% 80%, rgba(248, 245, 238, 0.08), transparent 35%),
     linear-gradient(150deg, #F8F6F1 0%, #F5F1E8 40%, #F2EDE3 100%);
@@ -1208,7 +1413,7 @@ html[data-theme="light"] .cta-section {
   background:
     radial-gradient(ellipse 70% 45% at 50% 28%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
     radial-gradient(ellipse 60% 40% at 50% 68%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
-    radial-gradient(700px 450px at 50% 35%, rgba(212, 168, 79, 0.035), transparent 55%),
+    radial-gradient(700px 450px at 50% 35%, rgba(139, 115, 85, 0.025), transparent 55%),
     radial-gradient(500px 350px at 50% 60%, rgba(248, 245, 238, 0.1), transparent 48%),
     radial-gradient(400px 280px at 30% 40%, rgba(232, 223, 208, 0.07), transparent 45%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
@@ -1216,7 +1421,12 @@ html[data-theme="light"] .cta-section {
 
 html[data-theme="dark"] .cta-section {
   background:
-    radial-gradient(ellipse 65% 40% at 50% 30%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    /* Warmer gold ambient glow (CTA is a focal point) */
+    radial-gradient(ellipse 70% 45% at 50% 25%, rgba(212, 168, 79, 0.04) 0%, transparent 48%),
+    /* Subtle warm tint from bottom-right */
+    radial-gradient(ellipse 55% 38% at 55% 80%, rgba(242, 209, 140, 0.02) 0%, transparent 42%),
+    /* Soft fill */
+    radial-gradient(ellipse 50% 32% at 50% 50%, rgba(255, 236, 190, 0.01) 0%, transparent 40%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
 }
 
@@ -1452,10 +1662,18 @@ html[data-theme="dark"] .dark-light-sweep {
 }
 
 .contact-input:hover {
-  border-color: rgba(212, 168, 79, 0.35) !important;
+  border-color: rgba(139, 115, 85, 0.35) !important;
 }
 
 .contact-input:focus {
+  border-color: rgba(139, 115, 85, 0.5) !important;
+}
+
+html[data-theme="dark"] .contact-input:hover {
+  border-color: rgba(212, 168, 79, 0.35) !important;
+}
+
+html[data-theme="dark"] .contact-input:focus {
   border-color: rgba(212, 168, 79, 0.5) !important;
 }
 
@@ -1464,8 +1682,14 @@ html[data-theme="dark"] .dark-light-sweep {
   line-height: 1.7;
 }
 
-/* Contact submit button hover — premium gold fill + shadow */
+/* Contact submit button hover — premium taupe fill + shadow */
 .contact-submit:hover {
+  box-shadow:
+    0 20px 60px rgba(139, 115, 85, 0.12),
+    0 0 30px rgba(139, 115, 85, 0.05);
+}
+
+html[data-theme="dark"] .contact-submit:hover {
   box-shadow:
     0 20px 60px rgba(212, 168, 79, 0.15),
     0 0 30px rgba(212, 168, 79, 0.06);
@@ -1476,7 +1700,7 @@ html[data-theme="light"] .contact-section {
   background:
     radial-gradient(ellipse 70% 45% at 50% 15%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
     radial-gradient(ellipse 60% 40% at 50% 80%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
-    radial-gradient(600px 400px at 40% 30%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(600px 400px at 40% 30%, rgba(139, 115, 85, 0.02), transparent 50%),
     radial-gradient(500px 350px at 60% 55%, rgba(248, 245, 238, 0.1), transparent 48%),
     radial-gradient(400px 280px at 50% 70%, rgba(232, 223, 208, 0.07), transparent 45%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
@@ -1484,13 +1708,18 @@ html[data-theme="light"] .contact-section {
 
 html[data-theme="dark"] .contact-section {
   background:
-    radial-gradient(ellipse 65% 40% at 50% 20%, rgba(255, 255, 255, 0.008) 0%, transparent 45%),
+    /* Warm gold ambient glow from top */
+    radial-gradient(ellipse 65% 40% at 50% 15%, rgba(212, 168, 79, 0.03) 0%, transparent 48%),
+    /* Subtle warm tint from bottom-left */
+    radial-gradient(ellipse 50% 35% at 42% 82%, rgba(242, 209, 140, 0.015) 0%, transparent 42%),
+    /* Soft fill */
+    radial-gradient(ellipse 45% 28% at 50% 50%, rgba(255, 236, 190, 0.007) 0%, transparent 38%),
     linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
 }
 
 /* Light theme: glassmorphism form card refinement */
 html[data-theme="light"] .contact-form-card {
-  border-color: rgba(184, 134, 11, 0.12);
+  border-color: rgba(139, 115, 85, 0.15);
   box-shadow:
     0 20px 60px rgba(139, 115, 85, 0.06),
     0 8px 24px rgba(139, 115, 85, 0.03),
@@ -1521,6 +1750,112 @@ html[data-theme="dark"] .contact-form-card {
 }
 
 /* =============================================
+   Newsletter Section – Join The KYNXZ Circle
+   ============================================= */
+
+.kynxz-newsletter-section {
+  transition: background var(--theme-transition) ease;
+}
+
+html[data-theme="light"] .kynxz-newsletter-section {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 22%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 72%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
+    radial-gradient(600px 400px at 40% 30%, rgba(139, 115, 85, 0.02), transparent 50%),
+    radial-gradient(500px 350px at 60% 55%, rgba(248, 245, 238, 0.1), transparent 48%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+html[data-theme="dark"] .kynxz-newsletter-section {
+  background:
+    radial-gradient(ellipse 65% 40% at 50% 18%, rgba(212, 168, 79, 0.03) 0%, transparent 48%),
+    radial-gradient(ellipse 50% 35% at 50% 82%, rgba(242, 209, 140, 0.018) 0%, transparent 42%),
+    radial-gradient(ellipse 45% 30% at 50% 50%, rgba(255, 236, 190, 0.008) 0%, transparent 38%),
+    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
+}
+
+/* Rotating decorative ring */
+.kynxz-newsletter-ring {
+  animation: kynxzRingSpin 30s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes kynxzRingSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Circle mark subtle entrance */
+.kynxz-circle-mark {
+  animation: kynxzCirclePulse 4s ease-in-out infinite;
+}
+
+@keyframes kynxzCirclePulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+/* Newsletter email input */
+.kynxz-newsletter-input {
+  outline: none;
+}
+
+.kynxz-newsletter-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.45;
+  letter-spacing: 0.06em;
+}
+
+.kynxz-newsletter-focused {
+  box-shadow:
+    0 0 0 2px var(--color-focus),
+    0 0 24px var(--color-glow) !important;
+}
+
+/* Subscribe button hover */
+.kynxz-newsletter-submit {
+  transition: all 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kynxz-newsletter-submit:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 20px rgba(139, 115, 85, 0.15);
+}
+
+.kynxz-newsletter-submit:active {
+  transform: scale(0.97);
+}
+
+html[data-theme="dark"] .kynxz-newsletter-submit:hover {
+  box-shadow: 0 4px 24px rgba(212, 168, 79, 0.25);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .kynxz-newsletter-ring {
+    animation: none !important;
+  }
+
+  .kynxz-circle-mark {
+    animation: none !important;
+  }
+
+  .kynxz-newsletter-submit:hover {
+    transform: none !important;
+  }
+}
+
+/* =============================================
    Footer Section – THE KYNXZ BRAND Footer
    ============================================= */
 
@@ -1538,7 +1873,7 @@ html[data-theme="light"] .kynxz-footer {
   background:
     radial-gradient(ellipse 70% 45% at 50% 12%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
     radial-gradient(ellipse 60% 40% at 50% 82%, rgba(242, 237, 227, 0.4) 0%, transparent 45%),
-    radial-gradient(600px 400px at 40% 25%, rgba(212, 168, 79, 0.03), transparent 50%),
+    radial-gradient(600px 400px at 40% 25%, rgba(139, 115, 85, 0.02), transparent 50%),
     radial-gradient(500px 350px at 60% 50%, rgba(248, 245, 238, 0.1), transparent 48%),
     radial-gradient(400px 280px at 50% 75%, rgba(232, 223, 208, 0.07), transparent 45%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
@@ -1546,7 +1881,12 @@ html[data-theme="light"] .kynxz-footer {
 
 html[data-theme="dark"] .kynxz-footer {
   background:
-    radial-gradient(ellipse 65% 40% at 50% 15%, rgba(255, 255, 255, 0.01) 0%, transparent 45%),
+    /* Warm gold ambient glow from upper area */
+    radial-gradient(ellipse 60% 38% at 50% 12%, rgba(212, 168, 79, 0.028) 0%, transparent 48%),
+    /* Subtle warm tint from bottom */
+    radial-gradient(ellipse 50% 32% at 50% 85%, rgba(242, 209, 140, 0.015) 0%, transparent 42%),
+    /* Soft fill */
+    radial-gradient(ellipse 45% 25% at 50% 50%, rgba(255, 236, 190, 0.006) 0%, transparent 38%),
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
 }
 
@@ -1559,6 +1899,374 @@ html[data-theme="dark"] .kynxz-footer {
 
   .footer-link:hover {
     transform: none !important;
+  }
+}
+
+/* =============================================
+   Collections Storefront – Luxury Product Cards
+   ============================================= */
+
+/* Luxury product card — refined hover lift + champagne glow */
+.luxury-product-card {
+  transition-property: transform, box-shadow, border-color, background-color;
+  transition-duration: 500ms;
+  transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-product-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.15),
+    0 0 48px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="light"] .luxury-product-card:hover {
+  box-shadow:
+    0 24px 64px rgba(139, 115, 85, 0.12),
+    0 0 40px rgba(139, 115, 85, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.luxury-product-card:active {
+  transform: translateY(-2px) scale(0.99);
+}
+
+/* Product image — gradient container with hover zoom */
+.luxury-product-image {
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-product-card:hover .luxury-product-image {
+  transform: scale(1.04);
+}
+
+/* Quick view button — invisible until hover */
+.luxury-quick-view {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 400ms cubic-bezier(0.22, 1, 0.36, 1),
+              transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-product-card:hover .luxury-quick-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.luxury-quick-view:active {
+  transform: scale(0.96) !important;
+}
+
+/* Filter bar styles */
+.luxury-filter-input {
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+
+.luxury-filter-input:focus {
+  outline: none;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 0 2px var(--color-focus);
+}
+
+.luxury-filter-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+/* Category filter button */
+.luxury-filter-btn {
+  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-filter-btn:hover {
+  border-color: var(--color-accent) !important;
+  color: var(--color-accent) !important;
+}
+
+.luxury-filter-btn-active {
+  background: var(--color-accent) !important;
+  color: #fff !important;
+  border-color: var(--color-accent) !important;
+}
+
+html[data-theme="light"] .luxury-filter-btn-active {
+  color: #fff !important;
+}
+
+html[data-theme="dark"] .luxury-filter-btn-active {
+  color: #0B0B0D !important;
+}
+
+/* Sort dropdown */
+.luxury-sort-select {
+  transition: border-color 300ms ease;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%238B7355' stroke-width='1.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 10px 7px;
+  padding-right: 36px;
+}
+
+html[data-theme="dark"] .luxury-sort-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23D4A84F' stroke-width='1.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.luxury-sort-select:focus {
+  outline: none;
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 0 2px var(--color-focus);
+}
+
+/* Coming soon card */
+.luxury-coming-soon {
+  transition: all 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.luxury-coming-soon:hover {
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 40px var(--color-glow);
+}
+
+html[data-theme="light"] .luxury-coming-soon:hover {
+  box-shadow: 0 0 30px rgba(139, 115, 85, 0.06);
+}
+
+/* Empty state */
+.luxury-empty-state {
+  animation: luxuryFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes luxuryFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Price shimmer for coming soon */
+@keyframes luxuryShimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.luxury-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-accent) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: luxuryShimmer 3s ease-in-out infinite;
+}
+
+/* New badge */
+.luxury-new-badge {
+  animation: luxuryNewPulse 3s ease-in-out infinite;
+}
+
+@keyframes luxuryNewPulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.65;
+  }
+}
+
+/* Theme-specific backgrounds for collections storefront sections */
+html[data-theme="light"] .collections-storefront-section {
+  background:
+    radial-gradient(ellipse 80% 55% at 30% 25%, rgba(245, 241, 232, 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 50% at 70% 65%, rgba(242, 237, 227, 0.4) 0%, transparent 48%),
+    radial-gradient(700px 450px at 50% 30%, rgba(139, 115, 85, 0.025), transparent 55%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+html[data-theme="dark"] .collections-storefront-section {
+  background:
+    radial-gradient(ellipse 70% 45% at 50% 20%, rgba(212, 168, 79, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 55% 35% at 45% 80%, rgba(242, 209, 140, 0.018) 0%, transparent 42%),
+    radial-gradient(ellipse 50% 30% at 50% 50%, rgba(255, 236, 190, 0.008) 0%, transparent 40%),
+    linear-gradient(180deg, var(--color-background-alt) 0%, var(--color-background) 100%);
+}
+
+/* =============================================
+   Product Detail Page – Luxury Detail Sections
+   ============================================= */
+
+/* Image gallery thumbnails */
+.detail-thumbnail {
+  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.detail-thumbnail:hover {
+  border-color: var(--color-accent) !important;
+}
+
+.detail-thumbnail-active {
+  border-color: var(--color-accent) !important;
+  box-shadow: 0 0 12px var(--color-glow);
+}
+
+/* Section dividers on detail page */
+.detail-section-divider {
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--color-accent),
+    transparent
+  );
+  opacity: 0.15;
+}
+
+/* Feature list items */
+.detail-feature-item {
+  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.detail-feature-item:hover {
+  transform: translateX(4px);
+}
+
+/* Spec table rows */
+.detail-spec-row {
+  transition: background 300ms ease;
+}
+
+.detail-spec-row:hover {
+  background: rgba(212, 168, 79, 0.03);
+}
+
+html[data-theme="light"] .detail-spec-row:hover {
+  background: rgba(139, 115, 85, 0.04);
+}
+
+/* Review cards */
+.detail-review-card {
+  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.detail-review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px var(--color-shadow);
+}
+
+/* Quantity selector */
+.detail-qty-btn {
+  transition: all 250ms ease;
+  user-select: none;
+}
+
+.detail-qty-btn:hover {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.detail-qty-btn:active {
+  transform: scale(0.92);
+}
+
+/* Sticky add to cart (mobile) */
+.detail-sticky-cart {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  transform: translateY(100%);
+  transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.detail-sticky-cart-visible {
+  transform: translateY(0);
+}
+
+/* Shipping info card */
+.detail-shipping-card {
+  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.detail-shipping-card:hover {
+  border-color: var(--color-accent) !important;
+}
+
+/* Related product card on detail page */
+.detail-related-card {
+  transition: all 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.detail-related-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px var(--color-shadow);
+}
+
+/* Theme-specific backgrounds for detail sections */
+html[data-theme="light"] .detail-section-alt {
+  background:
+    radial-gradient(ellipse 75% 50% at 35% 20%, rgba(245, 241, 232, 0.5) 0%, transparent 48%),
+    radial-gradient(ellipse 65% 45% at 65% 70%, rgba(242, 237, 227, 0.4) 0%, transparent 45%);
+}
+
+html[data-theme="dark"] .detail-section-alt {
+  background:
+    radial-gradient(ellipse 65% 40% at 50% 18%, rgba(212, 168, 79, 0.028) 0%, transparent 48%),
+    radial-gradient(ellipse 50% 35% at 60% 82%, rgba(242, 209, 140, 0.015) 0%, transparent 42%);
+}
+
+/* Reduced motion for detail page */
+@media (prefers-reduced-motion: reduce) {
+  .detail-thumbnail,
+  .detail-feature-item,
+  .detail-review-card,
+  .detail-related-card,
+  .detail-shipping-card,
+  .detail-qty-btn,
+  .detail-sticky-cart,
+  .detail-zoom-lens,
+  .detail-zoom-result {
+    transition-duration: 0.001ms !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* Category section header glow */
+.luxury-category-header {
+  transition: all 600ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Reduce motion for storefront */
+@media (prefers-reduced-motion: reduce) {
+  .luxury-product-card,
+  .luxury-product-card:hover,
+  .luxury-product-image,
+  .luxury-quick-view,
+  .luxury-filter-btn,
+  .luxury-coming-soon,
+  .luxury-shimmer {
+    transition-duration: 0.001ms !important;
+    animation: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
 }
 

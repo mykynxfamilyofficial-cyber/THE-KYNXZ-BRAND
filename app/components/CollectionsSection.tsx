@@ -159,13 +159,13 @@ export default function CollectionsSection() {
   return (
     <section
       ref={sectionRef}
-      className="collections-section relative overflow-hidden py-16 md:py-20 lg:py-24"
+      className="collections-section relative overflow-hidden py-8 md:py-10 lg:py-12"
       aria-labelledby="collections-heading"
     >
       {/* Gradient bridge from Philosophy section */}
       <div
         aria-hidden
-        className="absolute top-0 left-0 right-0 h-20 lg:h-24 -translate-y-full pointer-events-none z-10"
+        className="absolute top-0 left-0 right-0 h-10 lg:h-12 -translate-y-full pointer-events-none z-10"
         style={{
           background:
             "linear-gradient(to bottom, transparent, var(--color-background))",
