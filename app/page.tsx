@@ -2,6 +2,7 @@ import Header from "./components/Header";
 import HeroClientFX from "./components/HeroClientFX";
 import PhilosophySection from "./components/PhilosophySection";
 import CollectionsSection from "./components/CollectionsSection";
+import FeaturedProductsSection from "./components/FeaturedProductsSection";
 import ExperienceSection from "./components/ExperienceSection";
 import WorldSection from "./components/WorldSection";
 import WhySection from "./components/WhySection";
@@ -160,6 +161,7 @@ export default function Home() {
 
         <PhilosophySection />
         <CollectionsSection />
+        <FeaturedProductsSection />
         <ExperienceSection />
         <WorldSection />
         <WhySection />

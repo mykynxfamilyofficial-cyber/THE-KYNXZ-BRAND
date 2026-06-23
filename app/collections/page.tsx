@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useInView,
+  AnimatePresence,
 } from "framer-motion";
 import Link from "next/link";
 import { playfair, cormorant, inter } from "../fonts";
@@ -17,10 +18,6 @@ import {
   ProductCategory,
   SortOption,
   CATEGORIES,
-  PRODUCTS,
-  getProductsByCategory,
-  searchProducts,
-  sortProducts,
 } from "./types";
 
 /* ───────────────────────────────────────────────
@@ -129,7 +126,83 @@ const cardReveal = {
 };
 
 /* ───────────────────────────────────────────────
+   Auto-rotating image carousel for product cards
+   - No visible navigation arrows
+   - Auto-rotates every 4 seconds
+   - Pauses on hover
+   - Smooth crossfade transitions
+   ─────────────────────────────────────────────── */
+function CardImageCarousel({ product }: { product: Product }) {
+  const images = useMemo(
+    () => [product.gradient, ...(product.galleryGradients || [])],
+    [product]
+  );
+  const totalImages = images.length;
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Auto-rotate every 4s, pause on hover
+  useEffect(() => {
+    if (totalImages <= 1) return;
+    if (!isHovering) {
+      intervalRef.current = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % totalImages);
+      }, 4000);
+    }
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [isHovering, totalImages]);
+
+  // Reset index when product changes
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [product.id]);
+
+  // Determine the background style based on whether it's an image URL or gradient
+  const bgStyle = useMemo(() => {
+    const bg = images[activeIndex];
+    const isImageUrl = bg.startsWith("url(");
+    return {
+      background: bg,
+      backgroundSize: isImageUrl ? "contain" : "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    };
+  }, [images, activeIndex]);
+
+  // Neutral background for image containment
+  const neutralBg = "var(--color-surface)";
+
+  return (
+    <div
+      className="absolute inset-0"
+      style={{ background: neutralBg }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeIndex}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute inset-0"
+          style={bgStyle}
+        />
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/* ───────────────────────────────────────────────
    ProductCard – Luxury product card component
+   - Clean images (no watermarks, no overlays)
+   - Auto-rotating image carousel (4s, pause on hover)
+   - Full image visibility with contain sizing
+   - Equal height cards with consistent spacing
    ─────────────────────────────────────────────── */
 function ProductCard({
   product,
@@ -149,206 +222,161 @@ function ProductCard({
       variants={cardReveal}
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
+      className="h-full"
     >
-    <Link
-      href={`/collections/${product.id}`}
-      className="luxury-product-card group relative block rounded-[2px] overflow-hidden"
-      style={{
-        border: "1px solid var(--color-border)",
-        background: C.surface,
-      }}
-    >
-      {/* ── Product Image Area (gradient placeholder) ── */}
-      <div className="relative overflow-hidden aspect-[4/3]">
-        <div
-          className="luxury-product-image absolute inset-0"
-          style={{ background: product.gradient }}
-        >
-          {/* Watercolor texture */}
-          <div
-            className="absolute inset-0 mix-blend-soft-light opacity-25"
-            style={{
-              background: `
-                radial-gradient(ellipse 50% 25% at 30% 20%, rgba(214,207,199,0.1), transparent 60%),
-                radial-gradient(ellipse 40% 20% at 70% 60%, rgba(139,115,85,0.06), transparent 50%)
-              `,
-              filter: "blur(6px)",
-            }}
-          />
-          {/* Paper grain */}
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage:
-                "radial-gradient(circle at 30% 40%, rgba(255,255,255,0.12) 1px, transparent 1px)",
-              backgroundSize: "3px 3px",
-            }}
-          />
-        </div>
+      <Link
+        href={`/collections/${product.id}`}
+        className="luxury-product-card group relative block rounded-[2px] overflow-hidden h-full flex flex-col"
+        style={{
+          border: "1px solid var(--color-border)",
+          background: C.surface,
+        }}
+      >
+        {/* ── Product Image Area (clean, no watermarks) ── */}
+        <div className="relative overflow-hidden aspect-[4/3] shrink-0">
+          <CardImageCarousel product={product} />
 
-        {/* Product name overlay on image */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span
-            className={`${playfair.className} text-[clamp(1.1rem,3vw,1.8rem)] tracking-[0.12em] uppercase opacity-0 group-hover:opacity-20 transition-opacity duration-700`}
-            style={{ color: "#D6CFC7" }}
-          >
-            {product.name}
-          </span>
-        </div>
-
-        {/* Decorative corner lines */}
-        <div className="absolute top-3 left-3 w-8 h-px bg-white/10" />
-        <div className="absolute top-3 left-3 w-px h-8 bg-white/10" />
-        <div className="absolute bottom-3 right-3 w-8 h-px bg-white/10" />
-        <div className="absolute bottom-3 right-3 w-px h-8 bg-white/10" />
-
-        {/* Featured badge */}
-        {product.featured && (
-          <div className="absolute top-3 right-3">
-            <span
-              className="text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border"
-              style={{
-                borderColor: product.accent,
-                color: product.accent,
-                background: `rgba(0,0,0,0.4)`,
-                backdropFilter: "blur(8px)",
-              }}
-            >
-              Featured
-            </span>
-          </div>
-        )}
-
-        {/* New badge */}
-        {product.isNew && (
-          <div className="absolute top-3 left-3">
-            <span
-              className="luxury-new-badge text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border"
-              style={{
-                borderColor: product.accent,
-                color: product.accent,
-                background: `rgba(0,0,0,0.4)`,
-                backdropFilter: "blur(8px)",
-              }}
-            >
-              New
-            </span>
-          </div>
-        )}
-
-        {/* Quick View indicator — View details arrow */}
-        <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-          <span
-            className="inline-flex items-center gap-1.5 text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
-            style={{
-              borderColor: product.accent,
-              color: "#fff",
-              background: "rgba(0,0,0,0.4)",
-            }}
-          >
-            View Details
-            <svg
-              width="10"
-              height="10"
-              viewBox="0 0 10 10"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.2"
-              strokeLinecap="round"
-            >
-              <path d="M3 1L7 5L3 9" />
-            </svg>
-          </span>
-        </div>
-
-        {/* Hover border accent */}
-        <div
-          className="absolute inset-0 border border-transparent group-hover:border-opacity-40 transition-all duration-700 pointer-events-none rounded-[2px]"
-          style={{
-            borderColor: product.accent,
-            opacity: 0,
-          }}
-        />
-      </div>
-
-      {/* ── Product Info ── */}
-      <div className="p-5 md:p-6 space-y-3">
-        {/* Product name */}
-        <h3
-          className={`${playfair.className} text-lg md:text-xl font-bold leading-[1.2] tracking-[0.02em]`}
-          style={{ color: C.ivory }}
-        >
-          {product.name}
-        </h3>
-
-        {/* Tagline */}
-        <p
-          className={`${inter.className} text-xs tracking-[0.15em] uppercase`}
-          style={{ color: C.bronze }}
-        >
-          {product.tagline}
-        </p>
-
-        {/* Description */}
-        <p
-          className={`${inter.className} text-sm leading-[1.7] line-clamp-2`}
-          style={{ color: C.muted }}
-        >
-          {product.description}
-        </p>
-
-        {/* Price & Rating row */}
-        <div className="flex items-center justify-between pt-2">
-          <div className="flex items-baseline gap-2">
-            <span
-              className={`${playfair.className} text-lg font-bold`}
-              style={{ color: C.ivory }}
-            >
-              ${product.price}
-            </span>
-            {product.originalPrice && (
+          {/* Badges */}
+          <div className="absolute top-3 left-3 flex gap-2 z-10">
+            {product.featured && (
               <span
-                className="text-xs line-through"
-                style={{ color: C.muted }}
+                className="text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
+                style={{
+                  borderColor: product.accent,
+                  color: product.accent,
+                  background: "rgba(0,0,0,0.4)",
+                }}
               >
-                ${product.originalPrice}
+                Featured
               </span>
             )}
-            <span className="text-[9px] tracking-[0.12em] uppercase" style={{ color: C.muted }}>
-              USD
+            {product.isNew && (
+              <span
+                className="luxury-new-badge text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
+                style={{
+                  borderColor: product.accent,
+                  color: product.accent,
+                  background: "rgba(0,0,0,0.4)",
+                }}
+              >
+                New
+              </span>
+            )}
+          </div>
+
+          {/* Quick View indicator — View details arrow */}
+          <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-400 z-10">
+            <span
+              className="inline-flex items-center gap-1.5 text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
+              style={{
+                borderColor: product.accent,
+                color: "#fff",
+                background: "rgba(0,0,0,0.4)",
+              }}
+            >
+              View Details
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.2"
+                strokeLinecap="round"
+              >
+                <path d="M3 1L7 5L3 9" />
+              </svg>
             </span>
           </div>
 
-          {product.reviews && (
-            <div className="flex items-center gap-1.5">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill={product.accent} opacity="0.6">
-                <path d="M6 1L7.5 4.5L11 5L8.5 7.5L9 11L6 9L3 11L3.5 7.5L1 5L4.5 4.5L6 1Z" />
-              </svg>
-              <span className="text-[10px] tracking-[0.05em]" style={{ color: C.muted }}>
-                {product.reviews.rating} ({product.reviews.count})
-              </span>
-            </div>
-          )}
+          {/* Hover border accent */}
+          <div
+            className="absolute inset-0 border border-transparent group-hover:border-opacity-40 transition-all duration-700 pointer-events-none rounded-[2px] z-10"
+            style={{
+              borderColor: product.accent,
+              opacity: 0,
+            }}
+          />
         </div>
 
-        {/* Accent line on hover */}
-        <div
-          className="h-px w-8 transition-all duration-500 group-hover:w-full"
-          style={{
-            background: `linear-gradient(to right, ${product.accent}, transparent)`,
-            opacity: 0.3,
-          }}
-        />
+        {/* ── Product Info ── */}
+        <div className="p-5 md:p-6 space-y-3 flex-1 flex flex-col">
+          {/* Product name */}
+          <h3
+            className={`${playfair.className} text-lg md:text-xl font-bold leading-[1.2] tracking-[0.02em] line-clamp-2`}
+            style={{ color: C.ivory }}
+          >
+            {product.name}
+          </h3>
 
-        {/* Add to cart hint */}
-        <p
-          className="text-[9px] tracking-[0.25em] uppercase opacity-0 transition-all duration-500 group-hover:opacity-50 pt-1"
-          style={{ color: product.accent }}
-        >
-          Inquire about this piece &rarr;
-        </p>
-      </div>
-    </Link>
+          {/* Tagline */}
+          <p
+            className={`${inter.className} text-xs tracking-[0.15em] uppercase`}
+            style={{ color: C.bronze }}
+          >
+            {product.tagline}
+          </p>
+
+          {/* Description */}
+          <p
+            className={`${inter.className} text-sm leading-[1.7] line-clamp-2 flex-1`}
+            style={{ color: C.muted }}
+          >
+            {product.description}
+          </p>
+
+          {/* Price & Rating row */}
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex items-baseline gap-2">
+              <span
+                className={`${playfair.className} text-lg font-bold`}
+                style={{ color: C.ivory }}
+              >
+                ${product.price}
+              </span>
+              {product.originalPrice && (
+                <span
+                  className="text-xs line-through"
+                  style={{ color: C.muted }}
+                >
+                  ${product.originalPrice}
+                </span>
+              )}
+              <span className="text-[9px] tracking-[0.12em] uppercase" style={{ color: C.muted }}>
+                USD
+              </span>
+            </div>
+
+            {product.reviews && (
+              <div className="flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill={product.accent} opacity="0.6">
+                  <path d="M6 1L7.5 4.5L11 5L8.5 7.5L9 11L6 9L3 11L3.5 7.5L1 5L4.5 4.5L6 1Z" />
+                </svg>
+                <span className="text-[10px] tracking-[0.05em]" style={{ color: C.muted }}>
+                  {product.reviews.rating} ({product.reviews.count})
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Accent line on hover */}
+          <div
+            className="h-px w-8 transition-all duration-500 group-hover:w-full"
+            style={{
+              background: `linear-gradient(to right, ${product.accent}, transparent)`,
+              opacity: 0.3,
+            }}
+          />
+
+          {/* Add to cart hint */}
+          <p
+            className="text-[9px] tracking-[0.25em] uppercase opacity-0 transition-all duration-500 group-hover:opacity-50 pt-1"
+            style={{ color: product.accent }}
+          >
+            Inquire about this piece &rarr;
+          </p>
+        </div>
+      </Link>
     </motion.div>
   );
 }
@@ -515,7 +543,7 @@ function FilterBar({
     const onScroll = () => {
       setScrolled(window.scrollY > 80);
     };
-    onScroll(); // sync on mount
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -526,18 +554,14 @@ function FilterBar({
         scrolled ? "top-0 shadow-lg" : "top-0"
       }`}
       style={{
-        background: scrolled
-          ? C.bgAlt
-          : "transparent",
+        background: scrolled ? C.bgAlt : "transparent",
         backdropFilter: scrolled ? "blur(16px)" : "none",
         WebkitBackdropFilter: scrolled ? "blur(16px)" : "none",
       }}
     >
       <div className="max-w-[1400px] mx-auto px-6 py-4 md:py-5">
         <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
-          {/* Search + Category filters row */}
           <div className="flex flex-col sm:flex-row gap-3 flex-1">
-            {/* Search input */}
             <div className="relative flex-1 max-w-md">
               <svg
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
@@ -563,7 +587,6 @@ function FilterBar({
               />
             </div>
 
-            {/* Category filter buttons */}
             <div className="flex flex-wrap gap-2 items-center">
               <button
                 type="button"
@@ -574,8 +597,7 @@ function FilterBar({
                 style={{
                   borderColor: "var(--color-border)",
                   color: activeCategory === "all" ? "#fff" : C.muted,
-                  background:
-                    activeCategory === "all" ? "var(--color-accent)" : "transparent",
+                  background: activeCategory === "all" ? "var(--color-accent)" : "transparent",
                 }}
               >
                 All
@@ -591,10 +613,7 @@ function FilterBar({
                   style={{
                     borderColor: "var(--color-border)",
                     color: activeCategory === cat.slug ? "#fff" : C.muted,
-                    background:
-                      activeCategory === cat.slug
-                        ? "var(--color-accent)"
-                        : "transparent",
+                    background: activeCategory === cat.slug ? "var(--color-accent)" : "transparent",
                   }}
                 >
                   {cat.name}
@@ -603,7 +622,6 @@ function FilterBar({
             </div>
           </div>
 
-          {/* Sort + result count */}
           <div className="flex items-center gap-4">
             <span
               className="text-[10px] tracking-[0.15em] whitespace-nowrap"
@@ -637,7 +655,7 @@ function FilterBar({
 }
 
 /* ═══════════════════════════════════════════════
-   SECTION 1 – Cinematic Hero: "Curated Worlds"
+   SECTION 1 – Cinematic Hero
    ═══════════════════════════════════════════════ */
 function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
   const ref = useRef(null);
@@ -650,58 +668,37 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
 
   return (
     <section className="min-h-[85dvh] flex items-center justify-center relative overflow-hidden">
-      {/* Animated floating orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ y: [0, -25, 0], scale: [1, 1.03, 1] }}
           transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.05]"
-          style={{
-            background:
-              "radial-gradient(circle at center, #D6CFC7, transparent 65%)",
-            filter: "blur(100px)",
-          }}
+          style={{ background: "radial-gradient(circle at center, #D6CFC7, transparent 65%)", filter: "blur(100px)" }}
         />
         <motion.div
           animate={{ y: [0, 30, 0], x: [0, -15, 0], scale: [1, 1.05, 1] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 }}
           className="absolute top-[55%] right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.03]"
-          style={{
-            background:
-              "radial-gradient(circle at center, #8B7355, transparent 60%)",
-            filter: "blur(80px)",
-          }}
+          style={{ background: "radial-gradient(circle at center, #8B7355, transparent 60%)", filter: "blur(80px)" }}
         />
         <motion.div
           animate={{ y: [0, -20, 0], x: [0, 20, 0], scale: [1, 1.04, 1] }}
           transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 5 }}
           className="absolute top-[15%] left-[5%] w-[350px] h-[350px] rounded-full opacity-[0.025]"
-          style={{
-            background:
-              "radial-gradient(circle at center, #F5F2ED, transparent 60%)",
-            filter: "blur(70px)",
-          }}
+          style={{ background: "radial-gradient(circle at center, #F5F2ED, transparent 60%)", filter: "blur(70px)" }}
         />
-        {/* Abstract rotating shapes */}
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
           className="absolute top-[25%] right-[8%] w-[280px] h-[280px] opacity-[0.015]"
-          style={{
-            border: "1px solid rgba(214, 207, 199, 0.25)",
-            borderRadius: "45% 55% 40% 60% / 50% 42% 58% 48%",
-          }}
+          style={{ border: "1px solid rgba(214, 207, 199, 0.25)", borderRadius: "45% 55% 40% 60% / 50% 42% 58% 48%" }}
         />
         <motion.div
           animate={{ rotate: -360 }}
           transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
           className="absolute bottom-[30%] left-[12%] w-[200px] h-[200px] opacity-[0.012]"
-          style={{
-            border: "1px solid rgba(214, 207, 199, 0.15)",
-            borderRadius: "55% 45% 60% 40% / 45% 55% 45% 55%",
-          }}
+          style={{ border: "1px solid rgba(214, 207, 199, 0.15)", borderRadius: "55% 45% 60% 40% / 45% 55% 45% 55%" }}
         />
-        {/* Drifting particles */}
         {Array.from({ length: 20 }).map((_, i) => (
           <motion.div
             key={i}
@@ -727,17 +724,13 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
         ))}
       </div>
 
-      {/* Main content */}
       <motion.div
         ref={ref}
         style={{ y: heroY, opacity: heroOpacity }}
         className="relative z-10 max-w-[1400px] mx-auto px-6 text-center"
       >
         <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0}
+          variants={fadeUp} initial="hidden" animate="visible" custom={0}
           className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
           style={{ color: C.bronze }}
         >
@@ -751,17 +744,11 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
           {heroLines.map((line, lineIdx) => (
             <div key={lineIdx} className="overflow-hidden">
               {line.map((word, wordIdx) => {
-                const globalIdx =
-                  heroLines
-                    .slice(0, lineIdx)
-                    .reduce((acc, l) => acc + l.length, 0) + wordIdx;
+                const globalIdx = heroLines.slice(0, lineIdx).reduce((acc, l) => acc + l.length, 0) + wordIdx;
                 return (
                   <motion.span
                     key={wordIdx}
-                    variants={wordReveal}
-                    initial="hidden"
-                    animate="visible"
-                    custom={globalIdx}
+                    variants={wordReveal} initial="hidden" animate="visible" custom={globalIdx}
                     className="inline-block mr-[0.3em] last:mr-0"
                   >
                     {word}
@@ -773,10 +760,7 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
         </h1>
 
         <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={3}
+          variants={fadeUp} initial="hidden" animate="visible" custom={3}
           className={`${cormorant.className} mt-8 text-lg md:text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed italic font-light`}
           style={{ color: C.champagne }}
         >
@@ -784,29 +768,18 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
         </motion.p>
 
         <motion.div
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          custom={5}
+          variants={fadeIn} initial="hidden" animate="visible" custom={5}
           className="mt-14 flex items-center justify-center gap-4"
         >
           <span className="block w-16 h-px" style={{ background: C.bronze }} />
-          <span
-            className={`${cormorant.className} italic text-sm`}
-            style={{ color: C.champagne }}
-          >
-            Mindfully Curated
-          </span>
+          <span className={`${cormorant.className} italic text-sm`} style={{ color: C.champagne }}>Mindfully Curated</span>
           <span className="block w-16 h-px" style={{ background: C.bronze }} />
         </motion.div>
       </motion.div>
 
-      {/* Bottom fade */}
       <div
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{
-          background: `linear-gradient(to bottom, transparent, ${C.bg})`,
-        }}
+        style={{ background: `linear-gradient(to bottom, transparent, ${C.bg})` }}
       />
     </section>
   );
@@ -816,42 +789,72 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
    SECTION 2 – Product Grid with Filters
    ═══════════════════════════════════════════════ */
 function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ProductCategory | "all">("all");
   const [sortOption, setSortOption] = useState<SortOption>("featured");
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
-  // Compute filtered & sorted products
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data) => {
+        setAllProducts(data.products || []);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch products:", err);
+      });
+  }, []);
+
   const visibleProducts = useMemo(() => {
     let result =
       activeCategory === "all"
-        ? [...PRODUCTS]
-        : getProductsByCategory(activeCategory);
+        ? [...allProducts]
+        : allProducts.filter((p) => p.category === activeCategory && !p.isComingSoon);
 
     if (searchQuery.trim()) {
-      result = searchProducts(searchQuery.trim());
-      // If a category is also selected, intersect
+      const q = searchQuery.trim().toLowerCase();
+      result = allProducts.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.tagline.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q) ||
+          p.tags.some((t) => t.toLowerCase().includes(q))
+      );
       if (activeCategory !== "all") {
         result = result.filter((p) => p.category === activeCategory);
       }
     }
 
-    return sortProducts(result, sortOption);
-  }, [searchQuery, activeCategory, sortOption]);
+    const sorted = [...result];
+    switch (sortOption) {
+      case "featured":
+        sorted.sort((a, b) => (a.featured === b.featured ? 0 : a.featured ? -1 : 1));
+        break;
+      case "newest":
+        sorted.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        break;
+      case "price-low":
+        sorted.sort((a, b) => a.price - b.price);
+        break;
+      case "price-high":
+        sorted.sort((a, b) => b.price - a.price);
+        break;
+    }
+    return sorted;
+  }, [searchQuery, activeCategory, sortOption, allProducts]);
 
-  // Compute which categories have no products
   const categoriesWithoutProducts = useMemo(() => {
     return CATEGORIES.filter((cat) => {
-      if (searchQuery.trim()) return false; // Don't show coming-soon during search
-      return getProductsByCategory(cat.slug).length === 0;
+      if (searchQuery.trim()) return false;
+      return allProducts.filter((p) => p.category === cat.slug && !p.isComingSoon).length === 0;
     });
-  }, [searchQuery]);
+  }, [searchQuery, allProducts]);
 
-  // Count of available products (excl. coming soon)
   const productCount = activeCategory === "all"
-    ? PRODUCTS.length
-    : getProductsByCategory(activeCategory).length;
+    ? allProducts.length
+    : allProducts.filter((p) => p.category === activeCategory && !p.isComingSoon).length;
 
   return (
     <section
@@ -883,25 +886,14 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="text-center max-w-3xl mx-auto"
         >
-          <p
-            className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-4`}
-            style={{ color: C.bronze }}
-          >
+          <p className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-4`} style={{ color: C.bronze }}>
             Browse Our Collection
           </p>
-          <h2
-            className={`${playfair.className} text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.08]`}
-            style={{ color: C.ivory }}
-          >
+          <h2 className={`${playfair.className} text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.08]`} style={{ color: C.ivory }}>
             Objects of{" "}
-            <span className="italic font-normal" style={{ color: C.champagne }}>
-              intention
-            </span>
+            <span className="italic font-normal" style={{ color: C.champagne }}>intention</span>
           </h2>
-          <div
-            className="mx-auto mt-6 w-24 h-px"
-            style={{ background: C.bronze, opacity: 0.5 }}
-          />
+          <div className="mx-auto mt-6 w-24 h-px" style={{ background: C.bronze, opacity: 0.5 }} />
         </motion.div>
       </div>
 
@@ -917,7 +909,7 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
         C={C}
       />
 
-      {/* Product grid */}
+      {/* Product grid — full-width responsive grid */}
       <div className="max-w-[1400px] mx-auto px-6 pb-16 md:pb-20 lg:pb-24">
         {visibleProducts.length > 0 ? (
           <motion.div
@@ -937,39 +929,22 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
             ))}
           </motion.div>
         ) : (
-          /* Empty state */
           <div className="luxury-empty-state text-center py-20 md:py-24">
             <div
               className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
-              style={{
-                background: `radial-gradient(circle at 40% 35%, ${C.bronze}15, transparent 70%)`,
-              }}
+              style={{ background: `radial-gradient(circle at 40% 35%, ${C.bronze}15, transparent 70%)` }}
             >
-              <svg
-                width="28"
-                height="28"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={C.muted}
-                strokeWidth="1"
-                strokeLinecap="round"
-              >
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.muted} strokeWidth="1" strokeLinecap="round">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21L16.65 16.65" />
                 <path d="M8 11H14" />
                 <path d="M11 8V14" />
               </svg>
             </div>
-            <p
-              className={`${playfair.className} text-2xl md:text-3xl font-bold mb-3`}
-              style={{ color: C.ivory }}
-            >
+            <p className={`${playfair.className} text-2xl md:text-3xl font-bold mb-3`} style={{ color: C.ivory }}>
               No pieces found
             </p>
-            <p
-              className={`${inter.className} text-sm max-w-md mx-auto leading-relaxed`}
-              style={{ color: C.muted }}
-            >
+            <p className={`${inter.className} text-sm max-w-md mx-auto leading-relaxed`} style={{ color: C.muted }}>
               {searchQuery
                 ? `No results for "${searchQuery}". Try a different search term or browse all collections.`
                 : "This collection is being curated. New pieces will arrive soon."}
@@ -979,10 +954,7 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
                 type="button"
                 onClick={() => setSearchQuery("")}
                 className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-[10px] tracking-[0.2em] uppercase transition-all duration-300 hover:-translate-y-0.5"
-                style={{
-                  borderColor: "var(--color-border)",
-                  color: C.champagne,
-                }}
+                style={{ borderColor: "var(--color-border)", color: C.champagne }}
               >
                 Clear Search
               </button>
@@ -990,24 +962,15 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
           </div>
         )}
 
-        {/* Coming Soon sections — categories without products */}
+        {/* Coming Soon sections */}
         {categoriesWithoutProducts.length > 0 && (
           <div className="mt-16 md:mt-20">
             <div className="text-center mb-10">
-              <div
-                className="mx-auto mb-6 w-12 h-px"
-                style={{ background: C.bronze, opacity: 0.4 }}
-              />
-              <h3
-                className={`${playfair.className} text-xl md:text-2xl font-bold`}
-                style={{ color: C.ivory }}
-              >
+              <div className="mx-auto mb-6 w-12 h-px" style={{ background: C.bronze, opacity: 0.4 }} />
+              <h3 className={`${playfair.className} text-xl md:text-2xl font-bold`} style={{ color: C.ivory }}>
                 Coming Collections
               </h3>
-              <p
-                className={`${inter.className} mt-2 text-sm`}
-                style={{ color: C.muted }}
-              >
+              <p className={`${inter.className} mt-2 text-sm`} style={{ color: C.muted }}>
                 New categories being curated for you
               </p>
             </div>
@@ -1036,7 +999,6 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
       className="relative overflow-hidden py-16 md:py-20 lg:py-24 min-h-[70dvh] flex items-center justify-center"
       style={{ background: C.bgAlt }}
     >
-      {/* Background ambient glow */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -1059,10 +1021,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mb-10"
         >
-          <span
-            className={`${playfair.className} text-6xl md:text-8xl leading-none`}
-            style={{ color: C.bronze, opacity: 0.12 }}
-          >
+          <span className={`${playfair.className} text-6xl md:text-8xl leading-none`} style={{ color: C.bronze, opacity: 0.12 }}>
             &ldquo;
           </span>
         </motion.div>
@@ -1076,9 +1035,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
         >
           We do not collect objects.
           <br />
-          <span className="font-normal not-italic" style={{ color: C.champagne }}>
-            We curate meaning.
-          </span>
+          <span className="font-normal not-italic" style={{ color: C.champagne }}>We curate meaning.</span>
         </motion.p>
 
         <motion.div
@@ -1087,10 +1044,7 @@ function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
           transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className="mt-10"
         >
-          <span
-            className={`${playfair.className} text-6xl md:text-8xl leading-none`}
-            style={{ color: C.bronze, opacity: 0.12 }}
-          >
+          <span className={`${playfair.className} text-6xl md:text-8xl leading-none`} style={{ color: C.bronze, opacity: 0.12 }}>
             &rdquo;
           </span>
         </motion.div>
@@ -1134,10 +1088,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
       className="min-h-[80dvh] flex items-center justify-center relative overflow-hidden"
       style={{ background: C.bgAlt }}
     >
-      <motion.div
-        style={{ scale: bgScale }}
-        className="absolute inset-0 pointer-events-none"
-      >
+      <motion.div style={{ scale: bgScale }} className="absolute inset-0 pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
@@ -1150,25 +1101,18 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
         />
       </motion.div>
 
-      {/* Floating decorative orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ y: [0, -20, 0], opacity: [0.02, 0.05, 0.02] }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[15%] left-[8%] w-[300px] h-[300px] rounded-full"
-          style={{
-            background: `radial-gradient(circle at center, ${C.champagne}, transparent 60%)`,
-            filter: "blur(60px)",
-          }}
+          style={{ background: `radial-gradient(circle at center, ${C.champagne}, transparent 60%)`, filter: "blur(60px)" }}
         />
         <motion.div
           animate={{ y: [0, 15, 0], opacity: [0.015, 0.04, 0.015] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 4 }}
           className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] rounded-full"
-          style={{
-            background: `radial-gradient(circle at center, ${C.bronze}, transparent 60%)`,
-            filter: "blur(50px)",
-          }}
+          style={{ background: `radial-gradient(circle at center, ${C.bronze}, transparent 60%)`, filter: "blur(50px)" }}
         />
       </div>
 
@@ -1180,9 +1124,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
           style={{ color: C.bronze }}
-        >
-          Begin Your Journey
-        </motion.p>
+        >Begin Your Journey</motion.p>
 
         <motion.h2
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
@@ -1192,11 +1134,8 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           className={`${playfair.className} text-[clamp(2.8rem,9vw,6rem)] font-bold leading-[1.05] tracking-[-0.02em]`}
           style={{ color: C.ivory }}
         >
-          A World
-          <br />
-          <span className="italic font-normal" style={{ color: C.champagne }}>
-            Crafted For You
-          </span>
+          A World<br />
+          <span className="italic font-normal" style={{ color: C.champagne }}>Crafted For You</span>
         </motion.h2>
 
         <motion.p
@@ -1220,23 +1159,15 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
           <a
             href="/contact"
             className="group inline-flex items-center gap-3 px-10 py-4 rounded-full border transition-all duration-500 hover:-translate-y-1"
-            style={{
-              borderColor: C.champagne,
-              color: C.ivory,
-              background: "rgba(214, 207, 199, 0.04)",
-            }}
+            style={{ borderColor: C.champagne, color: C.ivory, background: "rgba(214, 207, 199, 0.04)" }}
           >
-            <span className={`${inter.className} text-sm tracking-[0.15em] uppercase`}>
-              Inquire Within
-            </span>
+            <span className={`${inter.className} text-sm tracking-[0.15em] uppercase`}>Inquire Within</span>
             <motion.span
               animate={{ x: [0, 4, 0] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               className="text-lg"
               style={{ color: C.champagne }}
-            >
-              &rarr;
-            </motion.span>
+            >&rarr;</motion.span>
           </a>
         </motion.div>
 
@@ -1282,16 +1213,9 @@ export default function CollectionsPage() {
           overflow: "hidden",
         }}
       >
-        {/* Section 1 – Cinematic Hero: "Curated Worlds" */}
         <CollectionsHero C={C} />
-
-        {/* Section 2 – Product Grid with Filters */}
         <ProductGrid C={C} />
-
-        {/* Section 3 – Curatorial Philosophy */}
         <CuratorialPhilosophy C={C} />
-
-        {/* Section 4 – Final CTA */}
         <FinalCTA C={C} />
       </main>
 
