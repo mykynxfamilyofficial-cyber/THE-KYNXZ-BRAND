@@ -1,26 +1,60 @@
+import dynamic from "next/dynamic";
 import Header from "./components/Header";
 import HeroClientFX from "./components/HeroClientFX";
-import PhilosophySection from "./components/PhilosophySection";
-import CollectionsSection from "./components/CollectionsSection";
-import FeaturedProductsSection from "./components/FeaturedProductsSection";
-import ExperienceSection from "./components/ExperienceSection";
-import WorldSection from "./components/WorldSection";
-import WhySection from "./components/WhySection";
-import CTASection from "./components/CTASection";
-import ContactSection from "./components/ContactSection";
-import NewsletterSection from "./components/NewsletterSection";
-import FooterSection from "./components/FooterSection";
+import HomeParticles from "./components/HomeParticles";
+import SectionLazy from "./components/SectionLazy";
+
+// Dynamic imports for heavy sections below the fold
+const PhilosophySection = dynamic(() => import("./components/PhilosophySection"), {
+  loading: () => <div className="h-40" />,
+});
+const CollectionsSection = dynamic(() => import("./components/CollectionsSection"), {
+  loading: () => <div className="h-40" />,
+});
+const FeaturedProductsSection = dynamic(() => import("./components/FeaturedProductsSection"), {
+  loading: () => <div className="h-48" />,
+});
+const ExperienceSection = dynamic(() => import("./components/ExperienceSection"), {
+  loading: () => <div className="h-40" />,
+});
+const WorldwideSection = dynamic(() => import("./components/WorldwideSection"), {
+  loading: () => <div className="h-40" />,
+});
+const WorldSection = dynamic(() => import("./components/WorldSection"), {
+  loading: () => <div className="h-40" />,
+});
+const WhySection = dynamic(() => import("./components/WhySection"), {
+  loading: () => <div className="h-40" />,
+});
+const CTASection = dynamic(() => import("./components/CTASection"), {
+  loading: () => <div className="h-32" />,
+});
+const ContactSection = dynamic(() => import("./components/ContactSection"), {
+  loading: () => <div className="h-48" />,
+});
+const NewsletterSection = dynamic(() => import("./components/NewsletterSection"), {
+  loading: () => <div className="h-32" />,
+});
+const FooterSection = dynamic(() => import("./components/FooterSection"), {
+  loading: () => <div className="h-24" />,
+});
 
 export default function Home() {
   return (
     <>
       <Header />
 
-      <main id="main-content" role="main" aria-label="Main content">
-        <div className="light-home-page relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-16 md:pt-20 pb-6 md:pb-8">
+      <main id="main-content" role="main" aria-label="Main content" className="relative">
+        <HomeParticles />
+
+        <div className="light-home-page relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-12 md:pt-16 pb-4 md:pb-5">
           <HeroClientFX />
 
-        {/* LIGHT THEME: Elegant vignette */}
+          <div aria-hidden className="hero-geo-ring absolute w-[320px] h-[320px] top-[12%] left-[5%] border-[var(--color-accent)]/8 dark:border-[var(--color-accent)]/10" style={{ animation: "heroGeoFloat1 30s ease-in-out infinite" }} />
+          <div aria-hidden className="hero-geo-ring absolute w-[240px] h-[240px] bottom-[18%] right-[6%] border-[var(--color-accent)]/6 dark:border-[var(--color-accent)]/8" style={{ animation: "heroGeoFloat2 38s ease-in-out infinite", animationDelay: "-8s" }} />
+          <div aria-hidden className="hero-geo-ring absolute w-[180px] h-[180px] top-[35%] right-[12%] border-[var(--color-accent)]/5 dark:border-[var(--color-accent)]/6" style={{ animation: "heroGeoFloat1 42s ease-in-out infinite", animationDelay: "-15s", borderRadius: "40% 60% 42% 58% / 48% 38% 62% 52%" }} />
+          <div aria-hidden className="hero-geo-ring absolute w-[140px] h-[140px] bottom-[30%] left-[8%] border-[var(--color-accent)]/4 dark:border-[var(--color-accent)]/5" style={{ animation: "heroGeoFloat2 35s ease-in-out infinite", animationDelay: "-5s", borderRadius: "55% 45% 60% 40% / 45% 55% 45% 55%" }} />
+
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 opacity-100 dark:opacity-0 transition-opacity duration-700"
@@ -32,7 +66,6 @@ export default function Home() {
         </div>
 
         <div className="home-hero-content relative text-center px-6 sm:px-12">
-          {/* LIGHT THEME: Subtle radial gradient base layer */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 -z-10 opacity-100 dark:opacity-0 transition-opacity duration-700"
@@ -42,7 +75,6 @@ export default function Home() {
             <div className="absolute right-1/4 bottom-0 h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_at_center,#F6F5F3/30,transparent)] blur-2xl" />
           </div>
 
-          {/* DARK THEME: Soft center glow (no card, no container) */}
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/3 rounded-full
@@ -50,7 +82,6 @@ export default function Home() {
             h-[400px] w-[1000px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.15),rgba(212,168,79,0.05),transparent)] blur-3xl"
           />
 
-          {/* LIGHT THEME: Soft luxury ambient glow behind the heading */}
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/3 rounded-full
@@ -58,7 +89,6 @@ export default function Home() {
             h-[380px] w-[980px] bg-[radial-gradient(circle_at_center,#F6F5F2/65,#EDE9E2/40,transparent)] blur-3xl"
           />
 
-          {/* LIGHT THEME: Soft warm ambient glow */}
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/4 rounded-full
@@ -66,15 +96,6 @@ export default function Home() {
             h-[520px] w-[1320px] bg-[radial-gradient(circle_at_center,rgba(139,115,85,0.07),rgba(139,115,85,0.02),transparent)] blur-3xl"
           />
 
-          {/* LIGHT THEME: Subtle grain texture overlay */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -z-20 opacity-45 dark:opacity-0 transition-opacity duration-700 mix-blend-multiply"
-          >
-            <div className="h-full w-full bg-[radial-gradient(rgba(0,0,0,0.08)_1px,transparent_1px)] bg-[size:4px_4px]" />
-          </div>
-
-          {/* LIGHT THEME: Typography with refined dark colors */}
           <p className="home-hero-eyebrow relative z-10 luxury-text text-sm tracking-[0.22em] opacity-80 text-[#3A3A3A] dark:opacity-100">
             KYNXZ EDITION
           </p>
@@ -93,10 +114,7 @@ export default function Home() {
             Excellence Without Compromise.
           </p>
 
-
-          {/* Premium CTA buttons */}
           <div className="home-hero-actions relative z-10 mt-10 flex flex-col sm:flex-row gap-4 sm:gap-5 items-center justify-center">
-            {/* Explore Brand button - LIGHT THEME explicit styling */}
             <a
               href="#"
               className="home-hero-primary-cta group inline-flex items-center justify-center rounded-full border px-7 py-3 text-sm sm:text-base tracking-[0.08em] backdrop-blur transition-all duration-300 hover:-translate-y-0.5
@@ -117,7 +135,6 @@ export default function Home() {
               />
             </a>
 
-
             <a
               href="#"
               className="home-hero-secondary-cta inline-flex items-center justify-center rounded-full
@@ -131,45 +148,80 @@ export default function Home() {
             </a>
 
           </div>
-          {/* Premium stats row */}
-          <div className="home-hero-stats relative z-10 mt-10 sm:mt-12 md:mt-14 lg:mt-16 flex items-center justify-center gap-0"
+          <div className="home-hero-stats relative z-10 mt-6 sm:mt-8 md:mt-10 flex flex-col sm:flex-row items-center justify-center gap-y-2 sm:gap-0"
           >
-            <div className="home-hero-stat-item flex flex-col items-center overflow-hidden px-1.5 sm:px-3 md:px-10 lg:px-14">
-              <span              className="home-hero-stat-label truncate text-[10px] md:text-xs tracking-[0.22em] uppercase font-semibold">
+            <div className="home-hero-stat-item flex flex-col items-center px-2 sm:px-3 md:px-10 lg:px-14">
+              <span              className="home-hero-stat-label text-[10px] sm:text-[10px] md:text-xs tracking-[0.22em] uppercase font-semibold leading-snug text-center">
                 Timeless Design
               </span>
             </div>
 
-            <div aria-hidden className="home-hero-stat-divider h-8 w-px" />
+            <div aria-hidden className="home-hero-stat-divider h-8 w-px hidden sm:block" />
 
-            <div className="home-hero-stat-item flex flex-col items-center overflow-hidden px-1.5 sm:px-3 md:px-10 lg:px-14">
-              <span              className="home-hero-stat-label truncate text-[10px] md:text-xs tracking-[0.22em] uppercase font-semibold">
+            <div className="home-hero-stat-item flex flex-col items-center px-2 sm:px-3 md:px-10 lg:px-14">
+              <span              className="home-hero-stat-label text-[10px] sm:text-[10px] md:text-xs tracking-[0.22em] uppercase font-semibold leading-snug text-center">
                 Premium Quality
               </span>
             </div>
 
-            <div aria-hidden className="home-hero-stat-divider h-8 w-px" />
+            <div aria-hidden className="home-hero-stat-divider h-8 w-px hidden sm:block" />
 
-            <div className="home-hero-stat-item flex flex-col items-center overflow-hidden px-1.5 sm:px-3 md:px-10 lg:px-14">
-              <span              className="home-hero-stat-label truncate text-[10px] md:text-xs tracking-[0.22em] uppercase font-semibold">
+            <div className="home-hero-stat-item flex flex-col items-center px-2 sm:px-3 md:px-10 lg:px-14">
+              <span              className="home-hero-stat-label text-[10px] sm:text-[10px] md:text-xs tracking-[0.22em] uppercase font-semibold leading-snug text-center">
                 Global Vision
               </span>
             </div>
           </div>
         </div>
+
       </div>
 
-        <PhilosophySection />
-        <CollectionsSection />
-        <FeaturedProductsSection />
-        <ExperienceSection />
-        <WorldSection />
-        <WhySection />
-        <CTASection />
-        <ContactSection />
-        <NewsletterSection />
-        <FooterSection />
+        {/* Below-fold sections lazy-loaded */}
+        <SectionLazy>
+          <PhilosophySection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <CollectionsSection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <FeaturedProductsSection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <ExperienceSection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <WorldwideSection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <WorldSection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <WhySection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <CTASection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <ContactSection />
+        </SectionLazy>
+
+        <SectionLazy>
+          <NewsletterSection />
+        </SectionLazy>
       </main>
+
+      <SectionLazy placeholder="100px">
+        <FooterSection />
+      </SectionLazy>
+
     </>
   );
 }

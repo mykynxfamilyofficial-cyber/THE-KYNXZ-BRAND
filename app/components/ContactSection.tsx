@@ -6,6 +6,73 @@ export default function ContactSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  /* ── Form state ──────────────────────────────── */
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState<
+    | { type: "idle" }
+    | { type: "loading" }
+    | { type: "success"; message: string }
+    | { type: "error"; message: string }
+  >({ type: "idle" });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { id, value } = e.target;
+    const key = id.replace("contact-", "");
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    console.log('Submitting form...');
+    console.log('Form data:', formData);
+
+    setStatus({ type: "loading" });
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      console.log('API response:', data);
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      setStatus({
+        type: "success",
+        message:
+          data.message ||
+          "Thank you for reaching out. We have received your message and will respond within 24 hours.",
+      });
+
+      setFormData({ name: "", email: "", subject: "", message: "" });
+
+      setTimeout(() => setStatus({ type: "idle" }), 6000);
+    } catch (err) {
+      const msg =
+        err instanceof Error
+          ? err.message
+          : "Failed to send message. Please try again later.";
+      console.error("[ContactSection] Submission error:", err);
+      setStatus({ type: "error", message: msg });
+
+      setTimeout(() => setStatus({ type: "idle" }), 6000);
+    }
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -112,8 +179,85 @@ export default function ContactSection() {
             />
 
             <div className="relative z-10 px-6 py-10 sm:px-10 sm:py-12 md:px-14 md:py-14 lg:px-16 lg:py-16">
+              {/* ── Toast / status banner ──────────────────── */}
+              {status.type === "success" && (
+                <div
+                  className="relative overflow-hidden rounded-2xl border px-5 py-4 mb-6 transition-all duration-500"
+                  style={{
+                    borderColor: "var(--color-accent)/30",
+                    background:
+                      "linear-gradient(135deg, rgba(212,168,79,0.1), rgba(212,168,79,0.04))",
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 text-lg" role="img" aria-label="checkmark">
+                      ✔️
+                    </span>
+                    <div>
+                      <p
+                        className="text-sm font-semibold"
+                        style={{ color: "var(--color-accent)" }}
+                      >
+                        Message Sent Successfully
+                      </p>
+                      <p
+                        className="text-xs mt-1 leading-relaxed"
+                        style={{ color: "var(--color-text-muted)" }}
+                      >
+                        {status.message}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setStatus({ type: "idle" })}
+                      className="ml-auto shrink-0 text-sm opacity-50 hover:opacity-100 transition-opacity"
+                      style={{ color: "var(--color-accent)" }}
+                      aria-label="Dismiss"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {status.type === "error" && (
+                <div
+                  className="relative overflow-hidden rounded-2xl border px-5 py-4 mb-6 transition-all duration-500"
+                  style={{
+                    borderColor: "rgba(239, 68, 68, 0.3)",
+                    background: "rgba(239, 68, 68, 0.08)",
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5" role="img" aria-label="error">
+                      ❌
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold" style={{ color: "#ef4444" }}>
+                        Message Failed
+                      </p>
+                      <p
+                        className="text-xs mt-1 leading-relaxed"
+                        style={{ color: "var(--color-text-muted)" }}
+                      >
+                        {status.message}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setStatus({ type: "idle" })}
+                      className="ml-auto shrink-0 text-sm opacity-50 hover:opacity-100 transition-opacity"
+                      style={{ color: "#ef4444" }}
+                      aria-label="Dismiss"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit}
                 className="space-y-6 md:space-y-7"
               >
                 {/* Full Name */}
@@ -135,11 +279,17 @@ export default function ContactSection() {
                   </label>
                   <input
                     id="contact-name"
+                    name="name"
                     type="text"
                     placeholder="Your full name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input w-full px-5 py-3.5 rounded-xl border text-sm transition-all duration-300
                     focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30
-                    placeholder:text-[var(--color-text-muted)]/40"
+                    placeholder:text-[var(--color-text-muted)]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: "var(--color-input-bg)",
                       borderColor: "var(--color-input-border)",
@@ -167,11 +317,17 @@ export default function ContactSection() {
                   </label>
                   <input
                     id="contact-email"
+                    name="email"
                     type="email"
                     placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input w-full px-5 py-3.5 rounded-xl border text-sm transition-all duration-300
                     focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30
-                    placeholder:text-[var(--color-text-muted)]/40"
+                    placeholder:text-[var(--color-text-muted)]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: "var(--color-input-bg)",
                       borderColor: "var(--color-input-border)",
@@ -199,11 +355,17 @@ export default function ContactSection() {
                   </label>
                   <input
                     id="contact-subject"
+                    name="subject"
                     type="text"
                     placeholder="How can we help you?"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input w-full px-5 py-3.5 rounded-xl border text-sm transition-all duration-300
                     focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30
-                    placeholder:text-[var(--color-text-muted)]/40"
+                    placeholder:text-[var(--color-text-muted)]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: "var(--color-input-bg)",
                       borderColor: "var(--color-input-border)",
@@ -231,11 +393,17 @@ export default function ContactSection() {
                   </label>
                   <textarea
                     id="contact-message"
+                    name="message"
                     rows={5}
                     placeholder="Share your thoughts with us..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input contact-textarea w-full px-5 py-3.5 rounded-xl border text-sm transition-all duration-300 resize-none
                     focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/30
-                    placeholder:text-[var(--color-text-muted)]/40"
+                    placeholder:text-[var(--color-text-muted)]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: "var(--color-input-bg)",
                       borderColor: "var(--color-input-border)",
@@ -256,9 +424,11 @@ export default function ContactSection() {
                 >
                   <button
                     type="submit"
+                    disabled={status.type === "loading"}
                     className="contact-submit group relative w-full inline-flex items-center justify-center rounded-full border px-10 py-4 text-sm tracking-[0.12em] uppercase font-semibold
                     overflow-hidden transition-all duration-500 hover:-translate-y-0.5
-                    focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40"
+                    focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                     style={{
                       borderColor: "var(--color-accent)",
                       color: "var(--color-accent)",
@@ -275,7 +445,33 @@ export default function ContactSection() {
                       }}
                     />
                     <span className="relative mr-3 flex items-center gap-2">
-                      <span className="relative">Send Message</span>
+                      {status.type === "loading" ? (
+                        <>
+                          <svg
+                            className="animate-spin h-4 w-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
+                          </svg>
+                          Sending...
+                        </>
+                      ) : (
+                        <span className="relative">Send Message</span>
+                      )}
                     </span>
                     {/* Gold dot with glow */}
                     <span

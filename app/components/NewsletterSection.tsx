@@ -4,59 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { playfair, cormorant, inter } from "../fonts";
 
-/* ───────────────────────────────────────────────
-   Theme-aware color tokens
-   ─────────────────────────────────────────────── */
-const THEME = {
-  dark: {
-    bg: "#0A0A0A",
-    bgAlt: "#111111",
-    warm: "#1B1610",
-    champagne: "#D6CFC7",
-    bronze: "#8B7355",
-    ivory: "#F5F2ED",
-    muted: "#B8B3AA",
-    surface: "rgba(255,255,255,0.04)",
-    surfaceHover: "rgba(255,255,255,0.08)",
-    circleBorder: "rgba(214, 207, 199, 0.08)",
-    circleGlow: "rgba(212, 168, 79, 0.06)",
-  },
-  light: {
-    bg: "#F6F3EE",
-    bgAlt: "#EDE8DF",
-    warm: "#E7DED2",
-    champagne: "#8B7355",
-    bronze: "#6B5B4A",
-    ivory: "#1A1815",
-    muted: "#6B6358",
-    surface: "rgba(255,255,255,0.7)",
-    surfaceHover: "rgba(255,255,255,0.85)",
-    circleBorder: "rgba(139, 115, 85, 0.1)",
-    circleGlow: "rgba(139, 115, 85, 0.04)",
-  },
-};
-
-function useThemeColors() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const current =
-      (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-    setTheme(current);
-
-    const mo = new MutationObserver(() => {
-      const t =
-        (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-      setTheme(t);
-    });
-    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-
-  return THEME[theme];
-}
-
+import { useTheme, THEME } from "../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Decorative SVG: Interlocking circles mark
    ─────────────────────────────────────────────── */
@@ -182,7 +130,7 @@ function DecorativeRing({ C }: { C: (typeof THEME)["dark"] }) {
    NEWSLETTER SECTION – Join The KYNXZ Circle
    ═══════════════════════════════════════════════ */
 export default function NewsletterSection() {
-  const C = useThemeColors();
+  const C = useTheme();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
   const [email, setEmail] = useState("");
@@ -201,7 +149,7 @@ export default function NewsletterSection() {
   return (
     <section
       ref={sectionRef}
-      className="kynxz-newsletter-section relative overflow-hidden py-16 md:py-20 lg:py-24"
+      className="kynxz-newsletter-section relative overflow-hidden py-10 md:py-14 lg:py-16"
       aria-labelledby="newsletter-heading"
     >
       {/* Background ambient glow */}

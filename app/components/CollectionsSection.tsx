@@ -159,7 +159,7 @@ export default function CollectionsSection() {
   return (
     <section
       ref={sectionRef}
-      className="collections-section relative overflow-hidden py-8 md:py-10 lg:py-12"
+      className="collections-section relative overflow-hidden py-5 md:py-6 lg:py-8"
       aria-labelledby="collections-heading"
     >
       {/* Gradient bridge from Philosophy section */}
@@ -177,7 +177,7 @@ export default function CollectionsSection() {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[15%] -translate-x-1/2 rounded-full
         opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[600px] w-[1400px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.06),rgba(212,168,79,0.015),transparent)] blur-3xl"
+        h-[600px] w-[1400px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.10),rgba(212,168,79,0.03),transparent)] blur-3xl"
         data-theme="dark"
       />
 
@@ -192,7 +192,7 @@ export default function CollectionsSection() {
 
       <div className="luxury-container relative z-10">
         {/* Section header */}
-        <div className="text-center mb-10 md:mb-12 lg:mb-14">
+        <div className="text-center mb-6 md:mb-7 lg:mb-9">
           <p
             className={`text-xs tracking-[0.28em] uppercase mb-3 transition-all duration-900 ${
               isVisible
@@ -238,20 +238,16 @@ export default function CollectionsSection() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 lg:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-4">
           {collections.map((item, i) => (
             <div
               key={item.title}
-              className={`collection-card group relative rounded-2xl border transition-all duration-700 ${
+              className={`collection-card group glass-premium rounded-2xl border transition-all duration-700 ${
                 visibleCards.has(i)
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
               }`}
               style={{
-                borderColor: "var(--color-border)",
-                background: "var(--color-surface)",
-                backdropFilter: "blur(18px)",
-                WebkitBackdropFilter: "blur(18px)",
                 transitionDelay: `${i * 120}ms`,
                 transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
               }}

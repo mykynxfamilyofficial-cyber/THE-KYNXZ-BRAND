@@ -52,15 +52,15 @@ export default function ParticlesBackground() {
         return;
       }
 
-      const base = Math.floor((innerWidth * innerHeight) / 45000);
-      const count = Math.max(20, Math.floor(base * 0.55));
+      const base = Math.floor((innerWidth * innerHeight) / 38000);
+      const count = Math.max(26, Math.floor(base * 0.65));
 
       const next: Particle[] = [];
       for (let i = 0; i < count; i++) {
-        const r = 0.45 + Math.random() * 1.05;
+        const r = 0.6 + Math.random() * 1.4;
         const speedMul = 0.55;
-        const alphaBase = 0.028;
-        const alphaSpan = 0.055;
+        const alphaBase = 0.04;
+        const alphaSpan = 0.07;
 
         next.push({
           x: Math.random() * innerWidth,

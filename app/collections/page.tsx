@@ -20,55 +20,7 @@ import {
   CATEGORIES,
 } from "./types";
 
-/* ───────────────────────────────────────────────
-   Theme-aware color tokens
-   ─────────────────────────────────────────────── */
-const THEME = {
-  dark: {
-    bg: "#0A0A0A",
-    bgAlt: "#111111",
-    warm: "#1B1610",
-    champagne: "#D6CFC7",
-    bronze: "#8B7355",
-    ivory: "#F5F2ED",
-    muted: "#B8B3AA",
-    surface: "rgba(255,255,255,0.04)",
-    surfaceHover: "rgba(255,255,255,0.08)",
-  },
-  light: {
-    bg: "#F6F3EE",
-    bgAlt: "#EDE8DF",
-    warm: "#E7DED2",
-    champagne: "#8B7355",
-    bronze: "#6B5B4A",
-    ivory: "#1A1815",
-    muted: "#6B6358",
-    surface: "rgba(255,255,255,0.7)",
-    surfaceHover: "rgba(255,255,255,0.85)",
-  },
-};
-
-function useThemeColors() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const current =
-      (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-    setTheme(current);
-
-    const mo = new MutationObserver(() => {
-      const t =
-        (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-      setTheme(t);
-    });
-    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-
-  return THEME[theme];
-}
-
+import { useTheme, THEME } from "../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Animation variants
    ─────────────────────────────────────────────── */
@@ -1193,7 +1145,7 @@ function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
    PAGE COMPOSITION
    ═══════════════════════════════════════════════ */
 export default function CollectionsPage() {
-  const C = useThemeColors();
+  const C = useTheme();
 
   useEffect(() => {
     document.title = "Collections | THE KYNXZ BRAND";
@@ -1221,6 +1173,7 @@ export default function CollectionsPage() {
 
       <NewsletterSection />
       <FooterSection />
+
     </>
   );
 }

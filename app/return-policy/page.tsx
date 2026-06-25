@@ -1,54 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
 
-/* ───────────────────────────────────────────────
-   Theme-aware color tokens
-   ─────────────────────────────────────────────── */
-const THEME = {
-  dark: {
-    bg: "#0A0A0A",
-    bgAlt: "#111114",
-    warm: "#1B1610",
-    champagne: "#D6CFC7",
-    bronze: "#8B7355",
-    ivory: "#F5F2ED",
-    muted: "#B8B3AA",
-  },
-  light: {
-    bg: "#F6F3EE",
-    bgAlt: "#EDE8DF",
-    warm: "#E7DED2",
-    champagne: "#8B7355",
-    bronze: "#6B5B4A",
-    ivory: "#1A1815",
-    muted: "#6B6358",
-  },
-};
-
-function useThemeColors() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const current = (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-    setTheme(current);
-
-    const mo = new MutationObserver(() => {
-      const t = (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-      setTheme(t);
-    });
-    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-
-  return THEME[theme];
-}
-
+import { useTheme, THEME } from "../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Animation variants
    ─────────────────────────────────────────────── */
@@ -249,10 +207,9 @@ const sections = [
           with a return, please reach out to our team:
         </p>
         <div
-          className="mt-6 p-6 md:p-8 rounded-[2px] space-y-3"
+          className="mt-6 p-6 md:p-8 rounded-[2px] space-y-3 glass-premium"
           style={{
-            background: "rgba(214, 207, 199, 0.04)",
-            border: "1px solid rgba(214, 207, 199, 0.08)",
+            borderColor: "rgba(214, 207, 199, 0.08)",
           }}
         >
           <p className="text-sm md:text-base font-semibold tracking-[0.08em]" style={{ color: "var(--color-accent)" }}>
@@ -351,7 +308,7 @@ function PolicySection({
    PAGE COMPOSITION
    ═══════════════════════════════════════════════ */
 export default function ReturnPolicyPage() {
-  const C = useThemeColors();
+  const C = useTheme();
 
   useEffect(() => {
     document.title = "Return & Refund Policy | THE KYNXZ BRAND";

@@ -281,7 +281,7 @@ export default function FeaturedProductsSection() {
   return (
     <section
       ref={sectionRef}
-      className="featured-products-section relative overflow-hidden py-8 md:py-10 lg:py-12"
+      className="featured-products-section relative overflow-hidden py-5 md:py-6 lg:py-8"
       aria-labelledby="featured-heading"
     >
       {/* Gradient bridge from previous section */}
@@ -312,7 +312,7 @@ export default function FeaturedProductsSection() {
 
       <div className="luxury-container relative z-10">
         {/* Section header */}
-        <div className="text-center mb-10 md:mb-12 lg:mb-14">
+        <div className="text-center mb-6 md:mb-7 lg:mb-9">
           <p
             className={`text-xs tracking-[0.28em] uppercase mb-3 transition-all duration-900 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"

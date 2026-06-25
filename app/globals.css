@@ -44,73 +44,46 @@ html {
   background: var(--color-background);
 }
 
-/* Premium grain / dust overlays (no layout changes) */
-html::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  opacity: 0.06;
-  background-image:
-    radial-gradient(rgba(0, 0, 0, 0.22) 1px, transparent 1px),
-    radial-gradient(rgba(0, 0, 0, 0.14) 1px, transparent 1px);
-  background-size: 3px 3px, 5px 5px;
-  background-position: 0 0, 1px 2px;
-  mix-blend-mode: multiply;
-}
-
-html[data-theme="dark"]::before {
-  opacity: 0.1;
-  background-image:
-    radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
-    radial-gradient(rgba(212, 168, 79, 0.14) 1px, transparent 1px),
-    radial-gradient(rgba(255, 236, 190, 0.08) 1px, transparent 1px);
-  background-size: 3px 3px, 5px 5px, 7px 7px;
-  background-position: 0 0, 1px 2px, 3px 1px;
-  mix-blend-mode: screen;
-}
-
-/* Champagne dust + warm ambient lighting: premium texture layers */
+/* Cinematic luxury ambient glow — dark theme */
 html[data-theme="dark"]::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
-  opacity: 0.12;
+  opacity: 0.20;
   background:
     /* Warm gold ambient glow — top right */
-    radial-gradient(1400px 900px at 75% -8%, rgba(212, 168, 79, 0.1), transparent 42%),
+    radial-gradient(1400px 900px at 75% -8%, rgba(212, 168, 79, 0.18), transparent 42%),
     /* Warm glow — bottom left */
-    radial-gradient(1200px 800px at 18% 92%, rgba(212, 168, 79, 0.07), transparent 40%),
+    radial-gradient(1200px 800px at 18% 92%, rgba(212, 168, 79, 0.14), transparent 40%),
     /* Champagne wash across hero area */
-    radial-gradient(1000px 700px at 45% 30%, rgba(242, 209, 140, 0.06), transparent 48%),
+    radial-gradient(1000px 700px at 45% 30%, rgba(242, 209, 140, 0.12), transparent 48%),
     /* Soft ivory float from top */
-    radial-gradient(900px 600px at 50% 10%, rgba(255, 236, 190, 0.045), transparent 50%),
+    radial-gradient(900px 600px at 50% 10%, rgba(255, 236, 190, 0.09), transparent 50%),
     /* Champagne dust textures */
-    radial-gradient(circle at 10% 20%, rgba(242, 209, 140, 0.14), transparent 38%),
-    radial-gradient(circle at 80% 30%, rgba(255, 236, 190, 0.12), transparent 40%),
-    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1), transparent 45%),
-    radial-gradient(circle at 65% 55%, rgba(212, 168, 79, 0.08), transparent 42%);
+    radial-gradient(circle at 10% 20%, rgba(242, 209, 140, 0.24), transparent 38%),
+    radial-gradient(circle at 80% 30%, rgba(255, 236, 190, 0.22), transparent 40%),
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.18), transparent 45%),
+    radial-gradient(circle at 65% 55%, rgba(212, 168, 79, 0.16), transparent 42%);
   filter: blur(2px);
   animation: luxuryDustDrift 9s ease-in-out infinite;
 }
 
-/* LIGHT-only: soft warm taupe ambient lighting */
+/* Cinematic luxury ambient glow — light theme */
 html[data-theme="light"]::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.10;
   background:
-    radial-gradient(900px 600px at 15% 8%, rgba(139, 115, 85, 0.08), transparent 50%),
-    radial-gradient(800px 520px at 75% 12%, rgba(214, 207, 199, 0.08), transparent 50%),
-    radial-gradient(700px 450px at 50% 40%, rgba(248, 245, 238, 0.12), transparent 50%),
-    radial-gradient(600px 400px at 25% 70%, rgba(168, 154, 138, 0.06), transparent 45%),
-    radial-gradient(500px 350px at 80% 60%, rgba(139, 115, 85, 0.04), transparent 45%);
+    radial-gradient(900px 600px at 15% 8%, rgba(139, 115, 85, 0.16), transparent 50%),
+    radial-gradient(800px 520px at 75% 12%, rgba(214, 207, 199, 0.16), transparent 50%),
+    radial-gradient(700px 450px at 50% 40%, rgba(248, 245, 238, 0.22), transparent 50%),
+    radial-gradient(600px 400px at 25% 70%, rgba(168, 154, 138, 0.12), transparent 45%),
+    radial-gradient(500px 350px at 80% 60%, rgba(139, 115, 85, 0.08), transparent 45%);
   filter: blur(2px);
   animation: lightAmbientDrift 12s ease-in-out infinite;
 }
@@ -118,15 +91,15 @@ html[data-theme="light"]::after {
 @keyframes lightAmbientDrift {
   0%, 100% {
     transform: translate3d(0, 0, 0);
-    opacity: 0.06;
+    opacity: 0.12;
   }
   33% {
     transform: translate3d(0.8%, -0.5%, 0);
-    opacity: 0.08;
+    opacity: 0.16;
   }
   66% {
     transform: translate3d(-0.5%, 0.8%, 0);
-    opacity: 0.05;
+    opacity: 0.10;
   }
 }
 
@@ -136,13 +109,13 @@ html[data-theme="light"] .luxury-vignette {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.50;
   background:
-    radial-gradient(ellipse at center, transparent 30%, rgba(245, 241, 232, 0.3)),
-    radial-gradient(ellipse at top, rgba(242, 237, 227, 0.4), transparent 25%),
-    radial-gradient(ellipse at bottom, rgba(245, 241, 232, 0.35), transparent 25%),
-    radial-gradient(ellipse at left, rgba(242, 237, 227, 0.25), transparent 20%),
-    radial-gradient(ellipse at right, rgba(242, 237, 227, 0.25), transparent 20%);
+    radial-gradient(ellipse at center, transparent 30%, rgba(245, 241, 232, 0.50)),
+    radial-gradient(ellipse at top, rgba(242, 237, 227, 0.65), transparent 25%),
+    radial-gradient(ellipse at bottom, rgba(245, 241, 232, 0.55), transparent 25%),
+    radial-gradient(ellipse at left, rgba(242, 237, 227, 0.40), transparent 20%),
+    radial-gradient(ellipse at right, rgba(242, 237, 227, 0.40), transparent 20%);
 }
 
 /* DARK-only: warm champagne vignette overlay for emotional depth */
@@ -151,13 +124,13 @@ html[data-theme="dark"] .dark-vignette {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.75;
   background:
-    radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.25)),
-    radial-gradient(ellipse at top, rgba(212, 168, 79, 0.03), transparent 30%),
-    radial-gradient(ellipse at bottom, rgba(0, 0, 0, 0.2), transparent 25%),
-    radial-gradient(ellipse at left, rgba(0, 0, 0, 0.08), transparent 20%),
-    radial-gradient(ellipse at right, rgba(0, 0, 0, 0.08), transparent 20%);
+    radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.35)),
+    radial-gradient(ellipse at top, rgba(212, 168, 79, 0.06), transparent 30%),
+    radial-gradient(ellipse at bottom, rgba(0, 0, 0, 0.30), transparent 25%),
+    radial-gradient(ellipse at left, rgba(0, 0, 0, 0.12), transparent 20%),
+    radial-gradient(ellipse at right, rgba(0, 0, 0, 0.12), transparent 20%);
 }
 
 
@@ -175,48 +148,37 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background:
-    radial-gradient(1200px 800px at 20% -10%, rgba(214, 182, 120, 0.08), transparent 55%),
-    radial-gradient(900px 600px at 85% 0%, rgba(255, 255, 255, 0.06), transparent 50%),
-    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
   color: var(--color-text-primary);
   font-family: Arial, Helvetica, sans-serif;
 
   /* Smooth theme transition (avoid flashing) */
   transition:
     background var(--theme-transition) ease,
-    color var(--theme-transition) ease,
-    border-color var(--theme-transition) ease,
-    box-shadow var(--theme-transition) ease;
+    color var(--theme-transition) ease;
 }
 
-/* Light theme only — premium cream body enrichment */
-html[data-theme="light"] body {
-  background:
-    radial-gradient(1300px 900px at 15% -5%, rgba(245, 241, 232, 0.55), transparent 50%),
-    radial-gradient(1100px 700px at 85% 15%, rgba(242, 237, 227, 0.45), transparent 45%),
-    radial-gradient(1000px 800px at 50% 60%, rgba(248, 246, 241, 0.3), transparent 50%),
-    radial-gradient(800px 600px at 30% 70%, rgba(232, 223, 208, 0.15), transparent 45%),
-    radial-gradient(1200px 800px at 20% -10%, rgba(214, 182, 120, 0.08), transparent 55%),
-    radial-gradient(900px 600px at 85% 0%, rgba(255, 255, 255, 0.06), transparent 50%),
-    linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
-}
-
-/* Dark theme only — warm charcoal depth with ambient lighting */
+/* Dark theme — clean cinematic luxury gradient */
 html[data-theme="dark"] body {
   background:
-    /* Primary warm ambient glow from top-right — more luminous */
-    radial-gradient(1500px 1000px at 80% -10%, rgba(212, 168, 79, 0.07), transparent 50%),
-    /* Secondary warm glow from bottom-left */
-    radial-gradient(1200px 900px at 15% 90%, rgba(212, 168, 79, 0.045), transparent 48%),
-    /* Rich champagne highlight across center */
-    radial-gradient(1000px 700px at 50% 40%, rgba(242, 209, 140, 0.035), transparent 45%),
-    /* Warm ivory tint from top-center */
-    radial-gradient(1300px 800px at 40% 15%, rgba(255, 236, 190, 0.025), transparent 42%),
-    /* Subtle warm glow from bottom-right */
-    radial-gradient(900px 600px at 70% 75%, rgba(212, 168, 79, 0.02), transparent 50%),
-    /* Deep charcoal gradient base with warm undertone */
-    linear-gradient(180deg, #0B0B0F 0%, #0E0E12 25%, #121215 50%, #111114 75%, #0D0D10 100%);
+    /* Ambient silver glow — top center */
+    radial-gradient(1200px 800px at 50% 0%, rgba(192, 192, 192, 0.08), transparent 55%),
+    /* Soft ambient — middle left */
+    radial-gradient(800px 500px at 20% 50%, rgba(255, 255, 255, 0.03), transparent 50%),
+    /* Warm ambient — bottom right */
+    radial-gradient(900px 600px at 80% 100%, rgba(120, 120, 120, 0.05), transparent 50%),
+    /* Clean three-stop gradient */
+    linear-gradient(180deg, #040404 0%, #0B0B0F 45%, #121418 100%);
+}
+
+/* Light theme — premium cream gradient with subtle warmth */
+html[data-theme="light"] body {
+  background:
+    /* Soft silver ambient — top center */
+    radial-gradient(1000px 700px at 50% 0%, rgba(200, 195, 185, 0.10), transparent 50%),
+    /* Warm ambient — middle right */
+    radial-gradient(800px 500px at 75% 50%, rgba(139, 115, 85, 0.04), transparent 50%),
+    /* Clean three-stop gradient */
+    linear-gradient(180deg, #F8F6F1 0%, #F5F1E8 45%, #F0ECE3 100%);
 }
 
 * {
@@ -533,30 +495,144 @@ html[data-theme="dark"] .philosophy-section {
 }
 
 /* =============================================
+   Premium 3D Glassmorphism — Shared Card System
+   =============================================
+
+   .glass-premium is the base class for all content cards/boxes across the
+   site (excluding contact form and product cards). It provides:
+
+    - Frosted glass surface with backdrop blur
+    - Multi-layered 3D box-shadows for depth
+    - Inner glass reflection gradient (::before)
+    - Gold accent glow in dark theme
+    - 3D lift + enhanced glow on hover
+    - 60fps smooth transitions
+   ============================================= */
+
+.glass-premium {
+  position: relative;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+
+  /* 3D layered shadows — base state */
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.03),
+    0 4px 12px rgba(0, 0, 0, 0.04),
+    0 12px 32px rgba(0, 0, 0, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.02);
+}
+
+/* Inner glass reflection overlay */
+.glass-premium::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 30%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.015) 100%
+  );
+  opacity: 1;
+  transition: opacity 500ms ease;
+  z-index: 0;
+}
+
+.glass-premium:hover::before {
+  opacity: 0.5;
+}
+
+/* ── Light theme refinements ── */
+html[data-theme="light"] .glass-premium {
+  border-color: rgba(139, 115, 85, 0.16);
+  box-shadow:
+    0 1px 2px rgba(139, 115, 85, 0.03),
+    0 4px 12px rgba(139, 115, 85, 0.04),
+    0 12px 32px rgba(139, 115, 85, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(139, 115, 85, 0.03);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+html[data-theme="light"] .glass-premium::before {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.04) 35%,
+    transparent 65%,
+    rgba(139, 115, 85, 0.02) 100%
+  );
+}
+
+/* ── Dark theme refinements ── */
+html[data-theme="dark"] .glass-premium {
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    0 12px 32px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.045);
+}
+
+html[data-theme="dark"] .glass-premium::before {
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.06) 0%,
+    rgba(255, 255, 255, 0.015) 35%,
+    transparent 60%,
+    rgba(0, 0, 0, 0.04) 100%
+  );
+}
+
+/* ── Hover: 3D lift + enhanced glow ── */
+.glass-premium:hover {
+  transform: translateY(-6px);
+  border-color: var(--color-accent) !important;
+}
+
+html[data-theme="dark"] .glass-premium:hover {
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 24px 64px rgba(0, 0, 0, 0.15),
+    0 0 48px var(--color-glow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="light"] .glass-premium:hover {
+  box-shadow:
+    0 8px 24px rgba(139, 115, 85, 0.08),
+    0 24px 64px rgba(139, 115, 85, 0.1),
+    0 0 40px rgba(139, 115, 85, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-premium:active {
+  transform: translateY(-2px) scale(0.99);
+}
+
+/* =============================================
    Collections Section – Our Collections
    ============================================= */
 
-/* Card hover lift — replaces transition that can't be done in Tailwind alone */
+/* Card hover lift — replaced by .glass-premium */
 .collection-card {
   transition-property: transform, box-shadow, border-color, background-color;
   transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.collection-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-accent) !important;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.12),
-    0 0 40px var(--color-glow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-html[data-theme="light"] .collection-card:hover {
-  box-shadow:
-    0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 30px rgba(139, 115, 85, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .collection-card:active {
@@ -606,22 +682,6 @@ html[data-theme="dark"] .collections-section {
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.experience-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-accent) !important;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.12),
-    0 0 40px var(--color-glow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-html[data-theme="light"] .experience-card:hover {
-  box-shadow:
-    0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 30px rgba(139, 115, 85, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
 .experience-card:active {
   transform: translateY(-1px) scale(0.99);
 }
@@ -667,22 +727,6 @@ html[data-theme="dark"] .experience-section {
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.world-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-accent) !important;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.12),
-    0 0 40px var(--color-glow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-html[data-theme="light"] .world-card:hover {
-  box-shadow:
-    0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 30px rgba(139, 115, 85, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
 .world-card:active {
   transform: translateY(-1px) scale(0.99);
 }
@@ -724,22 +768,6 @@ html[data-theme="dark"] .world-section {
   transition-property: transform, box-shadow, border-color, background-color;
   transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.why-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--color-accent) !important;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.12),
-    0 0 40px var(--color-glow),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
-}
-
-html[data-theme="light"] .why-card:hover {
-  box-shadow:
-    0 20px 60px rgba(139, 115, 85, 0.1),
-    0 0 30px rgba(139, 115, 85, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .why-card:active {
@@ -943,173 +971,6 @@ html[data-theme="light"] .site-header-menu-line {
   }
 }
 
-/* ────── Premium Scroll Indicator (global persistent) ────── */
-
-/* Clickable link wrapper */
-.scroll-indicator-link {
-  text-decoration: none;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  outline: none;
-}
-
-.scroll-indicator-link:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 6px;
-  border-radius: 4px;
-}
-
-.scroll-indicator-link:active {
-  transform: scale(0.97) !important;
-}
-
-/* Text label */
-.scroll-indicator-text {
-  font-size: 9px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  font-weight: 600;
-  color: var(--color-text-muted);
-  transition:
-    color var(--theme-transition) ease,
-    letter-spacing 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.scroll-indicator-link:hover .scroll-indicator-text {
-  letter-spacing: 0.38em;
-}
-
-@media (min-width: 640px) {
-  .scroll-indicator-text {
-    font-size: 10px;
-  }
-}
-
-/* Premium scroll capsule — champagne gold border, soft glow */
-.scroll-indicator-capsule {
-  width: 18px;
-  height: 30px;
-  border-radius: 999px;
-  border: 1.5px solid var(--color-accent);
-  position: relative;
-  overflow: hidden;
-  background: rgba(212, 168, 79, 0.04);
-  transition:
-    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    border-color 0.4s ease,
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-
-  /* Soft ambient glow */
-  box-shadow:
-    0 0 14px rgba(212, 168, 79, 0.15),
-    0 0 4px rgba(212, 168, 79, 0.06),
-    inset 0 0 6px rgba(212, 168, 79, 0.03);
-
-  /* Subtle slow floating */
-  animation: scrollCapsuleFloat 4.5s ease-in-out infinite;
-}
-
-@media (min-width: 768px) {
-  .scroll-indicator-capsule {
-    width: 20px;
-    height: 34px;
-  }
-}
-
-/* Hover: enhanced glow + subtle lift */
-.scroll-indicator-link:hover .scroll-indicator-capsule {
-  box-shadow:
-    0 0 32px rgba(212, 168, 79, 0.28),
-    0 0 12px rgba(212, 168, 79, 0.12),
-    inset 0 0 10px rgba(212, 168, 79, 0.04);
-  border-color: var(--color-accent);
-}
-
-.scroll-indicator-link:hover {
-  transform: scale(1.05);
-}
-
-/* Animated glowing dot inside the capsule */
-.scroll-indicator-dot {
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-  background: var(--color-accent);
-  will-change: transform, opacity;
-
-  /* Soft gold glow */
-  box-shadow:
-    0 0 6px rgba(212, 168, 79, 0.7),
-    0 0 14px rgba(212, 168, 79, 0.3);
-
-  /* Smooth bounce animation */
-  animation: scrollDotAnim 2.6s cubic-bezier(0.45, 0.05, 0.25, 1) infinite;
-}
-
-@media (min-width: 768px) {
-  .scroll-indicator-dot {
-    width: 3.5px;
-    height: 3.5px;
-    top: 7px;
-  }
-}
-
-/* ────── Animations ────── */
-
-/* Floating — extremely slow and subtle */
-@keyframes scrollCapsuleFloat {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-4px);
-  }
-}
-
-/* Dot moving inside the capsule */
-@keyframes scrollDotAnim {
-  0%, 100% {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(-50%) translateY(14px);
-    opacity: 0.25;
-  }
-}
-
-@media (min-width: 768px) {
-  @keyframes scrollDotAnim {
-    0%, 100% {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
-    50% {
-      transform: translateX(-50%) translateY(17px);
-      opacity: 0.25;
-    }
-  }
-}
-
-/* Light theme — taupe/champagne glow */
-html[data-theme="light"] .scroll-indicator-capsule {
-  background: rgba(139, 115, 85, 0.03);
-  box-shadow:
-    0 0 12px rgba(139, 115, 85, 0.08),
-    0 0 3px rgba(139, 115, 85, 0.04),
-    inset 0 0 4px rgba(139, 115, 85, 0.02);
-}
-
-html[data-theme="light"] .scroll-indicator-link:hover .scroll-indicator-capsule {
-  box-shadow:
-    0 0 24px rgba(139, 115, 85, 0.15),
-    0 0 8px rgba(139, 115, 85, 0.06),
-    inset 0 0 8px rgba(139, 115, 85, 0.03);
-}
-
 /* Mouse-follow ambient glow — theme-aware */
 .hero-mouse-glow {
   background: radial-gradient(600px 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 115, 85, 0.05), transparent 60%);
@@ -1213,14 +1074,8 @@ html[data-theme="dark"] .hero-particle-cluster-2 {
 
 /* Reduce motion for hero FX */
 @media (prefers-reduced-motion: reduce) {
-  .home-hero-stats,
-  .scroll-indicator-capsule,
-  .scroll-indicator-dot {
+  .home-hero-stats {
     animation: none !important;
-  }
-
-  .scroll-indicator-link {
-    transform: none !important;
   }
 
   .hero-particle-cluster-1,
@@ -1305,6 +1160,13 @@ html[data-theme="light"] .home-hero-secondary-cta:hover {
   }
 }
 
+/* Hero content mouse parallax — transform driven by CSS custom properties */
+.home-hero-content {
+  transform: translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
+  transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
 @keyframes lightHeroReveal {
   from {
     opacity: 0;
@@ -1314,6 +1176,93 @@ html[data-theme="light"] .home-hero-secondary-cta:hover {
     opacity: var(--light-reveal-opacity, 1);
     transform: translateY(0);
   }
+}
+
+/* Elegant text light sweep — passes over the hero heading every 8-10s */
+@keyframes heroTextSweep {
+  0%, 80%, 100% {
+    opacity: 0;
+    transform: translateX(-100%) skewX(-15deg);
+  }
+  85% {
+    opacity: 0.12;
+  }
+  92% {
+    opacity: 0;
+    transform: translateX(200%) skewX(-15deg);
+  }
+}
+
+.home-hero-heading {
+  position: relative;
+}
+
+.home-hero-heading::after {
+  content: "";
+  position: absolute;
+  inset: -20% -10%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 168, 79, 0.08) 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(212, 168, 79, 0.08) 70%,
+    transparent 100%
+  );
+  animation: heroTextSweep 10s ease-in-out infinite;
+  z-index: 1;
+  mix-blend-mode: overlay;
+}
+
+html[data-theme="light"] .home-hero-heading::after {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(139, 115, 85, 0.06) 30%,
+    rgba(0, 0, 0, 0.03) 50%,
+    rgba(139, 115, 85, 0.06) 70%,
+    transparent 100%
+  );
+}
+
+/* Slow floating geometric elements for hero */
+@keyframes heroGeoFloat1 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.025;
+  }
+  33% {
+    transform: translate(-12px, 18px) rotate(120deg);
+    opacity: 0.04;
+  }
+  66% {
+    transform: translate(8px, -14px) rotate(240deg);
+    opacity: 0.03;
+  }
+}
+
+@keyframes heroGeoFloat2 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+    opacity: 0.02;
+  }
+  33% {
+    transform: translate(15px, 10px) rotate(-120deg);
+    opacity: 0.035;
+  }
+  66% {
+    transform: translate(-10px, -18px) rotate(-240deg);
+    opacity: 0.025;
+  }
+}
+
+.hero-geo-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid;
+  pointer-events: none;
+  will-change: transform, opacity;
 }
 
 /* Dark Hero: same reveal animation as light */
@@ -1459,13 +1408,13 @@ html[data-theme="dark"] .cta-section {
     transform: translate3d(0, 0, 0) scale(1);
   }
   25% {
-    transform: translate3d(2%, -1.5%, 0) scale(1.02);
+    transform: translate3d(2%, -1.5%, 0) scale(1.03);
   }
   50% {
-    transform: translate3d(-1%, 2%, 0) scale(0.98);
+    transform: translate3d(-1%, 2%, 0) scale(0.97);
   }
   75% {
-    transform: translate3d(-2%, -0.5%, 0) scale(1.01);
+    transform: translate3d(-2%, -0.5%, 0) scale(1.02);
   }
 }
 
@@ -1474,69 +1423,69 @@ html[data-theme="dark"] .cta-section {
     transform: translate3d(0, 0, 0) scale(1);
   }
   33% {
-    transform: translate3d(-1.5%, 1%, 0) scale(1.01);
+    transform: translate3d(-1.5%, 1%, 0) scale(1.02);
   }
   66% {
-    transform: translate3d(1.5%, -1%, 0) scale(0.99);
+    transform: translate3d(1.5%, -1%, 0) scale(0.98);
   }
 }
 
 @keyframes darkShimmerPulse {
   0%, 100% {
-    opacity: 0.04;
+    opacity: 0.08;
   }
   50% {
-    opacity: 0.08;
+    opacity: 0.16;
   }
 }
 
 @keyframes darkShimmerPulse2 {
   0%, 100% {
-    opacity: 0.03;
+    opacity: 0.06;
   }
   33% {
-    opacity: 0.07;
+    opacity: 0.14;
   }
   66% {
-    opacity: 0.04;
+    opacity: 0.08;
   }
 }
 
 @keyframes darkOrbFloat1 {
   0%, 100% {
     transform: translate(0, 0) scale(1);
-    opacity: 0.04;
+    opacity: 0.08;
   }
   25% {
     transform: translate(30px, -20px) scale(1.1);
-    opacity: 0.07;
+    opacity: 0.14;
   }
   50% {
     transform: translate(15px, 25px) scale(0.95);
-    opacity: 0.05;
+    opacity: 0.10;
   }
   75% {
     transform: translate(-20px, 10px) scale(1.05);
-    opacity: 0.06;
+    opacity: 0.12;
   }
 }
 
 @keyframes darkOrbFloat2 {
   0%, 100% {
     transform: translate(0, 0) scale(1);
-    opacity: 0.03;
+    opacity: 0.06;
   }
   25% {
     transform: translate(-25px, 15px) scale(1.08);
-    opacity: 0.06;
+    opacity: 0.12;
   }
   50% {
     transform: translate(20px, -20px) scale(0.95);
-    opacity: 0.04;
+    opacity: 0.08;
   }
   75% {
     transform: translate(10px, 25px) scale(1.03);
-    opacity: 0.05;
+    opacity: 0.10;
   }
 }
 
@@ -1546,11 +1495,11 @@ html[data-theme="dark"] .cta-section {
     opacity: 0;
   }
   10% {
-    opacity: 0.06;
+    opacity: 0.12;
   }
   50% {
     transform: translateX(200%) scaleX(1.5);
-    opacity: 0.03;
+    opacity: 0.06;
   }
   90% {
     opacity: 0;
@@ -1890,7 +1839,194 @@ html[data-theme="dark"] .kynxz-footer {
     linear-gradient(180deg, var(--color-background) 0%, var(--color-background-alt) 100%);
 }
 
-/* Reduce motion */
+/* =============================================
+   KYNXZ Story Image — Premium Border & Shimmer FX
+   =============================================
+
+   Used in the About page "Our Story" section (TheStory component).
+   Provides:
+    - Animated silver/platinum gradient border that flows continuously
+    - Soft pulsing silver glow around edges
+    - Glass overlay with sweeping shimmer animation
+    - Theme-aware opacity refinements (slightly brighter in dark, softer in light)
+   ============================================= */
+
+/* ── Container — applies overflow clip and relative positioning ── */
+.kynxz-story-image {
+  position: relative;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+/* ── Layer 1: Animated silver/platinum gradient border ──
+   Uses -webkit-mask compositing to paint the gradient only on the 1px border area. */
+.kynxz-story-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(192, 192, 192, 0.15),
+    rgba(224, 224, 224, 0.30),
+    rgba(255, 255, 255, 0.50),
+    rgba(192, 192, 192, 0.15),
+    rgba(160, 160, 160, 0.10),
+    rgba(224, 224, 224, 0.30),
+    rgba(255, 255, 255, 0.45)
+  );
+  background-size: 300% 300%;
+  animation: kynxzBorderFlow 5s ease-in-out infinite;
+
+  /* Mask so gradient only appears on the padding (border) area */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes kynxzBorderFlow {
+  0%, 100% {
+    background-position: 0% 50%;
+    opacity: 0.5;
+  }
+  25% {
+    background-position: 100% 0%;
+    opacity: 1;
+  }
+  50% {
+    background-position: 50% 100%;
+    opacity: 0.6;
+  }
+  75% {
+    background-position: 0% 100%;
+    opacity: 0.85;
+  }
+}
+
+/* ── Layer 2: Soft pulsing silver glow around edges ── */
+.kynxz-story-image-glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 9;
+  box-shadow:
+    0 0 6px rgba(192, 192, 192, 0.06),
+    0 0 14px rgba(192, 192, 192, 0.03);
+  animation: kynxzGlowPulse 4s ease-in-out infinite;
+}
+
+@keyframes kynxzGlowPulse {
+  0%, 100% {
+    opacity: 0.4;
+    box-shadow:
+      0 0 6px rgba(192, 192, 192, 0.06),
+      0 0 14px rgba(192, 192, 192, 0.03);
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 10px rgba(192, 192, 192, 0.14),
+      0 0 24px rgba(192, 192, 192, 0.07),
+      0 0 50px rgba(212, 168, 79, 0.04);
+  }
+}
+
+/* Dark theme: slightly stronger glow with its own pulse keyframes */
+html[data-theme="dark"] .kynxz-story-image-glow {
+  animation: kynxzGlowPulseDark 4s ease-in-out infinite;
+}
+
+@keyframes kynxzGlowPulseDark {
+  0%, 100% {
+    opacity: 0.5;
+    box-shadow:
+      0 0 6px rgba(192, 192, 192, 0.08),
+      0 0 14px rgba(192, 192, 192, 0.04);
+  }
+  50% {
+    opacity: 1;
+    box-shadow:
+      0 0 12px rgba(192, 192, 192, 0.18),
+      0 0 30px rgba(192, 192, 192, 0.10),
+      0 0 60px rgba(212, 168, 79, 0.06);
+  }
+}
+
+/* ── Layer 3: Glass overlay with subtle shimmer sweep ── */
+.kynxz-story-image-shimmer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 12%,
+    rgba(192, 192, 192, 0.04) 22%,
+    rgba(255, 255, 255, 0.06) 32%,
+    transparent 45%,
+    rgba(255, 255, 255, 0.02) 60%,
+    rgba(192, 192, 192, 0.03) 70%,
+    rgba(255, 255, 255, 0.04) 82%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: kynxzShimmerSweep 6s ease-in-out infinite;
+}
+
+@keyframes kynxzShimmerSweep {
+  0% {
+    background-position: -100% 0;
+    opacity: 0.25;
+  }
+  25% {
+    opacity: 0.6;
+  }
+  50% {
+    background-position: 100% 0;
+    opacity: 0.25;
+  }
+  75% {
+    opacity: 0.45;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 0.25;
+  }
+}
+
+/* Reduce motion — keep a static silver border, disable animations */
+@media (prefers-reduced-motion: reduce) {
+  .kynxz-story-image {
+    border: 1px solid rgba(192, 192, 192, 0.2);
+  }
+
+  .kynxz-story-image::before {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+  .kynxz-story-image-glow {
+    animation: none !important;
+    opacity: 0.5 !important;
+    box-shadow:
+      0 0 4px rgba(192, 192, 192, 0.08),
+      0 0 10px rgba(192, 192, 192, 0.04);
+  }
+
+  .kynxz-story-image-shimmer {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .kynxz-footer * {
     animation-duration: 0.001ms !important;
@@ -2267,6 +2403,332 @@ html[data-theme="dark"] .detail-section-alt {
     animation: none !important;
     transform: none !important;
     opacity: 1 !important;
+  }
+}
+
+/* =============================================
+   Scroll to Explore — Premium Redesigned Indicator
+   ============================================= */
+
+/* Wrapper — fixed at bottom center of the viewport (sticky, always visible) */
+.scroll-to-explore-wrapper {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+@media (min-width: 640px) {
+  .scroll-to-explore-wrapper {
+    bottom: 24px;
+  }
+}
+
+@media (min-width: 768px) {
+  .scroll-to-explore-wrapper {
+    bottom: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .scroll-to-explore-wrapper {
+    bottom: 32px;
+  }
+}
+
+/* Button — flex column, centered, pointer-events re-enabled */
+.scroll-to-explore-btn {
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 12px 20px;
+  border-radius: 999px;
+  touch-action: manipulation;
+  -webkit-touch-callout: none;
+  user-select: none;
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.5s ease;
+
+  /* Subtle entrance */
+  animation: scrollExploreEntrance 1s 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.scroll-to-explore-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+}
+
+.scroll-to-explore-btn:active {
+  transform: scale(0.96) !important;
+}
+
+.scroll-to-explore-btn:hover {
+  transform: scale(1.06);
+}
+
+@keyframes scrollExploreEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Label */
+.scroll-to-explore-label {
+  font-size: 8px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  transition:
+    color 0.4s ease,
+    letter-spacing 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  white-space: nowrap;
+}
+
+@media (min-width: 640px) {
+  .scroll-to-explore-label {
+    font-size: 9px;
+  }
+}
+
+@media (min-width: 768px) {
+  .scroll-to-explore-label {
+    font-size: 10px;
+  }
+}
+
+.scroll-to-explore-btn:hover .scroll-to-explore-label {
+  letter-spacing: 0.42em;
+}
+
+/* SVG Mouse Icon */
+.scroll-to-explore-mouse {
+  width: 18px;
+  height: 28px;
+  color: var(--color-accent);
+  transition:
+    color 0.4s ease,
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Gentle floating animation: translateY(-4px to 4px), 3s */
+  animation: scrollMouseFloat 3s ease-in-out infinite;
+
+  /* Soft glow */
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-accent) 18%, transparent));
+}
+
+@media (min-width: 640px) {
+  .scroll-to-explore-mouse {
+    width: 20px;
+    height: 30px;
+  }
+}
+
+@media (min-width: 768px) {
+  .scroll-to-explore-mouse {
+    width: 22px;
+    height: 34px;
+  }
+}
+
+.scroll-to-explore-btn:hover .scroll-to-explore-mouse {
+  filter: drop-shadow(0 0 10px color-mix(in srgb, var(--color-accent) 30%, transparent));
+}
+
+.scroll-to-explore-btn:active .scroll-to-explore-mouse {
+  transform: scale(0.96);
+}
+
+/* Scroll wheel dot — animated bouncing */
+.scroll-to-explore-wheel {
+  animation: scrollWheelBounce 2.2s cubic-bezier(0.45, 0.05, 0.25, 1) infinite;
+  transform-origin: center;
+}
+
+@keyframes scrollMouseFloat {
+  0%, 100% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+@keyframes scrollWheelBounce {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(10px);
+    opacity: 0.3;
+  }
+}
+
+@media (min-width: 768px) {
+  @keyframes scrollWheelBounce {
+    0%, 100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    50% {
+      transform: translateY(12px);
+      opacity: 0.25;
+    }
+  }
+}
+
+/* ── Theme-specific refinements ── */
+
+/* Dark mode: warmer gold glow */
+html[data-theme="dark"] .scroll-to-explore-mouse {
+  color: var(--color-accent);
+  filter: drop-shadow(0 0 8px rgba(212, 168, 79, 0.25));
+}
+
+html[data-theme="dark"] .scroll-to-explore-btn:hover .scroll-to-explore-mouse {
+  filter: drop-shadow(0 0 14px rgba(212, 168, 79, 0.4));
+}
+
+html[data-theme="dark"] .scroll-to-explore-label {
+  color: rgba(212, 168, 79, 0.7);
+}
+
+/* Light mode: taupe/bronze stroke with subtle shadow */
+html[data-theme="light"] .scroll-to-explore-mouse {
+  color: var(--color-accent);
+  filter: drop-shadow(0 0 4px rgba(139, 115, 85, 0.12));
+}
+
+html[data-theme="light"] .scroll-to-explore-btn:hover .scroll-to-explore-mouse {
+  filter: drop-shadow(0 0 8px rgba(139, 115, 85, 0.2));
+}
+
+html[data-theme="light"] .scroll-to-explore-label {
+  color: rgba(139, 115, 85, 0.65);
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-to-explore-btn {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .scroll-to-explore-mouse,
+  .scroll-to-explore-wheel {
+    animation: none !important;
+  }
+
+  .scroll-to-explore-btn:hover {
+    transform: none;
+  }
+}
+
+/* =============================================
+   Mobile Performance — Reduce Animation Complexity
+   ============================================= */
+
+/* On mobile devices, disable heavy backdrop-filter and blur effects */
+@media (max-width: 768px) {
+  /* Reduce blur intensity on mobile for 60fps */
+  .glass-card,
+  .collection-card,
+  .experience-card,
+  .world-card,
+  .why-card,
+  .contact-form-card {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+
+  /* Disable particle clusters on mobile to save CPU */
+  .hero-particle-cluster-1,
+  .hero-particle-cluster-2,
+  .dark-particle-cluster-1,
+  .dark-particle-cluster-2,
+  .dark-ambient-orb-1,
+  .dark-ambient-orb-2,
+  .dark-light-sweep {
+    animation: none !important;
+    opacity: 0 !important;
+  }
+
+
+  /* Simplify loading particles on mobile */
+  .loading-particle {
+    opacity: 0.01 !important;
+    animation-duration: 30s !important;
+  }
+
+  /* Reduce animation complexity */
+  .animate-philosophy-pulse,
+  .animate-philosophy-float {
+    animation-duration: 10s !important;
+  }
+
+  .animate-cta-float {
+    animation: none !important;
+  }
+
+  /* Reduce scroll indicator animation on mobile */
+  .scroll-to-explore-mouse {
+    animation: none !important;
+  }
+
+  /* Simplify hover effects on mobile */
+  .luxury-product-card:hover {
+    transform: none !important;
+  }
+
+  .collection-card:hover,
+  .experience-card:hover,
+  .world-card:hover,
+  .why-card:hover {
+    transform: none !important;
+  }
+
+  /* Reduce newsletter ring animation */
+  .kynxz-newsletter-ring {
+    animation: none !important;
+  }
+
+  .kynxz-circle-mark {
+    animation: none !important;
+  }
+
+  /* Disable heavy CSS gradient animations */
+  html[data-theme="dark"]::after,
+  html[data-theme="light"]::after {
+    animation: none !important;
+  }
+}
+
+/* For low-end devices, also reduce at smaller breakpoints */
+@media (max-width: 480px) {
+  .site-header {
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+  }
+
+  .mobile-menu-overlay {
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
   }
 }
 

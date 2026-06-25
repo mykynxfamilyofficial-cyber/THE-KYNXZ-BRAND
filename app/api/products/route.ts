@@ -9,7 +9,8 @@ import { mapSanityProducts, type SanityProduct } from './mapProduct'
  * Returns all published products from Sanity, mapped to the app's Product interface.
  * Supports optional query parameter ?featured=true to return only featured products.
  *
- * Revalidation: ISR via next: { revalidate: 60 } on the fetch.
+ * Uses Sanity CDN caching (useCdn: true) + ISR revalidation via next: { revalidate }.
+ * SWR (stale-while-revalidate) via HTTP Cache-Control headers.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
@@ -22,14 +23,22 @@ export async function GET(request: Request) {
       {},
       {
         next: {
-          revalidate: 0, // Always fetch fresh data from Sanity
+          revalidate: 60, // ISR: revalidate every 60 seconds
         },
       }
     )
 
     const products = mapSanityProducts(sanityProducts)
 
-    return NextResponse.json({ products }, { status: 200 })
+    return NextResponse.json(
+      { products },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'public, max-age=30, stale-while-revalidate=300',
+        },
+      }
+    )
   } catch (error) {
     console.error('Failed to fetch products from Sanity:', error)
     return NextResponse.json(

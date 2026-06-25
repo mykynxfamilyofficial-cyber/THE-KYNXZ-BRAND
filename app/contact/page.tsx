@@ -11,51 +11,7 @@ import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
 
-/* ───────────────────────────────────────────────
-   Theme-aware color tokens
-   ─────────────────────────────────────────────── */
-const THEME = {
-  dark: {
-    bg: "#0A0A0A",
-    bgAlt: "#111111",
-    warm: "#1B1610",
-    champagne: "#D6CFC7",
-    bronze: "#8B7355",
-    ivory: "#F5F2ED",
-    muted: "#B8B3AA",
-  },
-  light: {
-    bg: "#F6F3EE",
-    bgAlt: "#EDE8DF",
-    warm: "#E7DED2",
-    champagne: "#8B7355",
-    bronze: "#6B5B4A",
-    ivory: "#1A1815",
-    muted: "#6B6358",
-  },
-};
-
-function useThemeColors() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const current =
-      (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-    setTheme(current);
-
-    const mo = new MutationObserver(() => {
-      const t =
-        (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-      setTheme(t);
-    });
-    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-
-  return THEME[theme];
-}
-
+import { useTheme, THEME } from "../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Shared animation variants
    ─────────────────────────────────────────────── */
@@ -312,7 +268,7 @@ function ContactInfo({ C }: { C: (typeof THEME)["dark"] }) {
     },
     {
       label: "Email",
-      value: "mykynxfamilyofficial@gmail.com",
+      value: "support@thekynxzbrand.store",
       detail: "We respond within 24 hours",
     },
     {
@@ -996,6 +952,69 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
+  /* ── Form state ──────────────────────────────── */
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState<
+    | { type: "idle" }
+    | { type: "loading" }
+    | { type: "success"; message: string }
+    | { type: "error"; message: string }
+  >({ type: "idle" });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { id, value } = e.target;
+    const key = id.replace("form-", "");
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setStatus({ type: "loading" });
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+
+      setStatus({
+        type: "success",
+        message:
+          data.message ||
+          "Thank you for reaching out. We have received your message and will respond within 24 hours.",
+      });
+
+      // Reset form
+      setFormData({ name: "", email: "", subject: "", message: "" });
+
+      // Auto-dismiss success after 6 seconds
+      setTimeout(() => setStatus({ type: "idle" }), 6000);
+    } catch (err) {
+      const msg =
+        err instanceof Error ? err.message : "Failed to send message. Please try again later.";
+      setStatus({ type: "error", message: msg });
+
+      // Auto-dismiss error after 6 seconds
+      setTimeout(() => setStatus({ type: "idle" }), 6000);
+    }
+  };
+
   return (
     <Section className="py-16 md:py-20 lg:py-24 relative overflow-hidden">
       {/* ─── Ambient glow canvas ─── */}
@@ -1138,8 +1157,93 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
             />
 
             <div className="relative z-10 px-6 py-10 sm:px-10 sm:py-12 md:px-14 md:py-14 lg:px-16 lg:py-16">
+              {/* ── Toast / status banner ──────────────────── */}
+              {status.type === "success" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                  exit={{ opacity: 0, y: -20, height: 0 }}
+                  className="relative overflow-hidden rounded-2xl border px-5 py-4 mb-6"
+                  style={{
+                    borderColor: `${C.champagne}30`,
+                    background: `linear-gradient(135deg, ${C.champagne}12, ${C.champagne}06)`,
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5 text-lg" role="img" aria-label="checkmark">
+                      ✔️
+                    </span>
+                    <div>
+                      <p
+                        className={`${inter.className} text-sm font-semibold`}
+                        style={{ color: C.champagne }}
+                      >
+                        Message Sent Successfully
+                      </p>
+                      <p
+                        className={`${inter.className} text-xs mt-1 leading-relaxed`}
+                        style={{ color: C.muted }}
+                      >
+                        {status.message}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setStatus({ type: "idle" })}
+                      className="ml-auto shrink-0 text-sm opacity-50 hover:opacity-100 transition-opacity"
+                      style={{ color: C.champagne }}
+                      aria-label="Dismiss"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {status.type === "error" && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20, height: 0 }}
+                  animate={{ opacity: 1, y: 0, height: "auto" }}
+                  exit={{ opacity: 0, y: -20, height: 0 }}
+                  className="relative overflow-hidden rounded-2xl border px-5 py-4 mb-6"
+                  style={{
+                    borderColor: "rgba(239, 68, 68, 0.3)",
+                    background: "rgba(239, 68, 68, 0.08)",
+                  }}
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="mt-0.5" role="img" aria-label="error">
+                      ❌
+                    </span>
+                    <div>
+                      <p
+                        className={`${inter.className} text-sm font-semibold`}
+                        style={{ color: "#ef4444" }}
+                      >
+                        Message Failed
+                      </p>
+                      <p
+                        className={`${inter.className} text-xs mt-1 leading-relaxed`}
+                        style={{ color: C.muted }}
+                      >
+                        {status.message}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setStatus({ type: "idle" })}
+                      className="ml-auto shrink-0 text-sm opacity-50 hover:opacity-100 transition-opacity"
+                      style={{ color: "#ef4444" }}
+                      aria-label="Dismiss"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
               <form
-                onSubmit={(e) => e.preventDefault()}
+                onSubmit={handleSubmit}
                 className="space-y-6 md:space-y-7"
               >
                 {/* Full Name */}
@@ -1157,10 +1261,16 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                   </label>
                   <input
                     id="form-name"
+                    name="name"
                     type="text"
                     placeholder="Your full name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input w-full px-5 py-3.5 rounded-xl border text-sm
-                    focus:outline-none focus:ring-2 placeholder:text-[#B8B3AA]/40"
+                    focus:outline-none focus:ring-2 placeholder:text-[#B8B3AA]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: `${C.bg}80`,
                       borderColor: `${C.champagne}20`,
@@ -1184,10 +1294,16 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                   </label>
                   <input
                     id="form-email"
+                    name="email"
                     type="email"
                     placeholder="your@email.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input w-full px-5 py-3.5 rounded-xl border text-sm
-                    focus:outline-none focus:ring-2 placeholder:text-[#B8B3AA]/40"
+                    focus:outline-none focus:ring-2 placeholder:text-[#B8B3AA]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: `${C.bg}80`,
                       borderColor: `${C.champagne}20`,
@@ -1211,13 +1327,18 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                   </label>
                   <select
                     id="form-subject"
-                    defaultValue=""
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input w-full px-5 py-3.5 rounded-xl border text-sm
-                    focus:outline-none focus:ring-2 appearance-none"
+                    focus:outline-none focus:ring-2 appearance-none
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: `${C.bg}80`,
                       borderColor: `${C.champagne}20`,
-                      color: C.muted,
+                      color: formData.subject ? C.ivory : C.muted,
                     }}
                   >
                     <option value="" disabled>
@@ -1253,10 +1374,16 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                   </label>
                   <textarea
                     id="form-message"
+                    name="message"
                     rows={5}
                     placeholder="Share your thoughts with us..."
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    disabled={status.type === "loading"}
                     className="contact-input contact-textarea w-full px-5 py-3.5 rounded-xl border text-sm resize-none
-                    focus:outline-none focus:ring-2 placeholder:text-[#B8B3AA]/40"
+                    focus:outline-none focus:ring-2 placeholder:text-[#B8B3AA]/40
+                    disabled:opacity-50 disabled:cursor-not-allowed"
                     style={{
                       backgroundColor: `${C.bg}80`,
                       borderColor: `${C.champagne}20`,
@@ -1274,10 +1401,12 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                 >
                   <button
                     type="submit"
+                    disabled={status.type === "loading"}
                     className="contact-submit group relative w-full inline-flex items-center justify-center rounded-full border px-10 py-4
                     text-sm tracking-[0.12em] uppercase font-semibold
                     overflow-hidden transition-all duration-500 hover:-translate-y-0.5
-                    focus:outline-none focus:ring-2"
+                    focus:outline-none focus:ring-2
+                    disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                     style={{
                       borderColor: C.champagne,
                       color: C.champagne,
@@ -1293,7 +1422,33 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
                       }}
                     />
                     <span className="relative mr-3 flex items-center gap-2">
-                      Send Message
+                      {status.type === "loading" ? (
+                        <>
+                          <svg
+                            className="animate-spin h-4 w-4"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            aria-hidden
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                            />
+                          </svg>
+                          Sending...
+                        </>
+                      ) : (
+                        "Send Message"
+                      )}
                     </span>
                     <span
                       aria-hidden
@@ -1335,7 +1490,7 @@ function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
    PAGE COMPOSITION
    ═══════════════════════════════════════════════ */
 export default function ContactPage() {
-  const C = useThemeColors();
+  const C = useTheme();
 
   // Set page title
   useEffect(() => {

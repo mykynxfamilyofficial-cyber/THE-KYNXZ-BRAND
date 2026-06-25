@@ -115,7 +115,7 @@ export default function WhySection() {
   return (
     <section
       ref={sectionRef}
-      className="why-section relative overflow-hidden py-8 md:py-10 lg:py-12"
+      className="why-section relative overflow-hidden py-5 md:py-6 lg:py-8"
       aria-labelledby="why-heading"
     >
       {/* Gradient bridge from World section */}
@@ -132,7 +132,7 @@ export default function WhySection() {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[12%] -translate-x-1/2 rounded-full
         opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.045),rgba(212,168,79,0.008),transparent)] blur-3xl"
+        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.09),rgba(212,168,79,0.016),transparent)] blur-3xl"
         data-theme="dark"
       />
 
@@ -147,7 +147,7 @@ export default function WhySection() {
 
       <div className="luxury-container relative z-10">
         {/* Section header */}
-        <div className="text-center mb-10 md:mb-12 lg:mb-14">
+        <div className="text-center mb-6 md:mb-7 lg:mb-9">
           <p
             className={`text-xs tracking-[0.28em] uppercase mb-3 transition-all duration-900 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
@@ -203,20 +203,16 @@ export default function WhySection() {
         </div>
 
         {/* Cards grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           {reasons.map((item, i) => (
             <div
               key={item.title}
-              className={`why-card group relative rounded-2xl border transition-all duration-700 ${
+              className={`why-card group glass-premium rounded-2xl border transition-all duration-700 ${
                 visibleCards.has(i)
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
               }`}
               style={{
-                borderColor: "var(--color-border)",
-                background: "var(--color-surface)",
-                backdropFilter: "blur(18px)",
-                WebkitBackdropFilter: "blur(18px)",
                 transitionDelay: `${i * 100}ms`,
                 transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
               }}

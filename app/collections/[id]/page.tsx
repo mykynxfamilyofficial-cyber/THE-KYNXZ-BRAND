@@ -13,55 +13,7 @@ import Header from "../../components/Header";
 import FooterSection from "../../components/FooterSection";
 import { Product } from "../types";
 
-/* ───────────────────────────────────────────────
-   Theme-aware color tokens
-   ─────────────────────────────────────────────── */
-const THEME = {
-  dark: {
-    bg: "#0A0A0A",
-    bgAlt: "#111111",
-    warm: "#1B1610",
-    champagne: "#D6CFC7",
-    bronze: "#8B7355",
-    ivory: "#F5F2ED",
-    muted: "#B8B3AA",
-    surface: "rgba(255,255,255,0.04)",
-    surfaceHover: "rgba(255,255,255,0.08)",
-  },
-  light: {
-    bg: "#F6F3EE",
-    bgAlt: "#EDE8DF",
-    warm: "#E7DED2",
-    champagne: "#8B7355",
-    bronze: "#6B5B4A",
-    ivory: "#1A1815",
-    muted: "#6B6358",
-    surface: "rgba(255,255,255,0.7)",
-    surfaceHover: "rgba(255,255,255,0.85)",
-  },
-};
-
-function useThemeColors() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const current =
-      (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-    setTheme(current);
-
-    const mo = new MutationObserver(() => {
-      const t =
-        (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-      setTheme(t);
-    });
-    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-
-  return THEME[theme];
-}
-
+import { useTheme, THEME } from "../../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Animation variants
    ─────────────────────────────────────────────── */
@@ -356,7 +308,7 @@ function ImageGallery({
     <div className="space-y-4">
       <div
         ref={imageRef}
-        className="detail-image-container relative aspect-[4/3] md:aspect-square rounded-[2px] overflow-hidden group select-none"
+        className="detail-image-container relative w-full min-h-[320px] sm:min-h-[420px] md:min-h-[520px] lg:min-h-[650px] flex items-center justify-center overflow-hidden group select-none rounded-[2px]"
         style={{ border: "1px solid var(--color-border)" }}
         onMouseEnter={() => { setShowZoom(true); setIsHovering(true); }}
         onMouseLeave={() => { setShowZoom(false); setIsHovering(false); }}
@@ -388,7 +340,7 @@ function ImageGallery({
               className="absolute inset-0"
               style={{
                 background: allImages[activeIndex],
-                backgroundSize: "cover",
+                backgroundSize: "contain",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
               }}
@@ -511,7 +463,7 @@ function ImageGallery({
                 className="absolute inset-0"
                 style={{
                   background: bg,
-                  backgroundSize: "cover",
+                  backgroundSize: bg.startsWith("url(") ? "contain" : "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
                 }}
@@ -832,7 +784,7 @@ function RelatedProducts({
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params?.id as string;
-  const C = useThemeColors();
+  const C = useTheme();
   const [quantity, setQuantity] = useState(1);
   const [showMobileCart, setShowMobileCart] = useState(false);
 
@@ -1017,7 +969,7 @@ export default function ProductDetailPage() {
         style={{ fontFamily: "var(--font-inter), Arial, sans-serif", background: C.bg, overflow: "hidden" }}
       >
         {/* ─── Breadcrumb ─── */}
-        <div className="max-w-[1400px] mx-auto px-6 pt-20 md:pt-24 pb-4">
+          <div className="max-w-[1400px] mx-auto px-6 pt-20 md:pt-24 pb-4">
           <nav className="flex items-center gap-2 text-[10px] tracking-[0.15em] uppercase">
             <Link href="/collections" className="transition-colors duration-300 hover:opacity-80" style={{ color: C.muted }}>Collections</Link>
             <span style={{ color: C.muted, opacity: 0.4 }}>/</span>
@@ -1109,6 +1061,7 @@ export default function ProductDetailPage() {
                   </motion.div>
                 ))}
               </div>
+
 
               {/* ── Accent divider ── */}
               <div className="h-px w-full" style={{ background: `linear-gradient(to right, ${C.champagne}20, transparent)` }} />

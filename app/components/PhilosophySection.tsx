@@ -61,7 +61,7 @@ export default function PhilosophySection() {
     <section
       id="philosophy"
       ref={sectionRef}
-      className="philosophy-section relative overflow-hidden py-8 md:py-10 lg:py-12"
+      className="philosophy-section relative overflow-hidden py-5 md:py-6 lg:py-8"
       aria-labelledby="philosophy-heading"
     >
       {/* Gradient bridge — blends hero background into this section */}
@@ -79,7 +79,7 @@ export default function PhilosophySection() {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/4 rounded-full
         opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.08),rgba(212,168,79,0.02),transparent)] blur-3xl"
+        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.12),rgba(212,168,79,0.04),transparent)] blur-3xl"
         data-theme="dark"
       />
 
@@ -103,32 +103,33 @@ export default function PhilosophySection() {
               className="relative w-full max-w-md lg:max-w-lg aspect-square"
               style={{ transform: `translateY(${parallaxY}px)` }}
             >
-              {/* Outer ring */}
-              <div className="absolute inset-4 rounded-full border border-[var(--color-accent)]/15" />
+              {/* Outer ring */}<div
+              className="absolute inset-4 rounded-full border border-[var(--color-accent)]/10"
+            />
 
               {/* Mid ring */}
-              <div className="absolute inset-8 rounded-full border border-[var(--color-accent)]/10" />
+              <div className="absolute inset-8 rounded-full border border-[var(--color-accent)]/6" />
 
               {/* Central glow orb */}
-              <div className="absolute inset-[18%] rounded-full bg-gradient-to-br from-[var(--color-accent)]/20 via-[var(--color-accent)]/8 to-transparent blur-2xl animate-philosophy-pulse" />
+              <div className="absolute inset-[18%] rounded-full bg-gradient-to-br from-[var(--color-accent)]/12 via-[var(--color-accent)]/4 to-transparent blur-2xl animate-philosophy-pulse" />
 
               {/* Core circle */}
               <div
                 className="absolute inset-[28%] rounded-full"
                 style={{
                   background:
-                    "radial-gradient(circle at 35% 30%, rgba(212,168,79,0.25), rgba(212,168,79,0.08) 50%, transparent 70%)",
+                    "radial-gradient(circle at 35% 30%, rgba(212,168,79,0.14), rgba(212,168,79,0.04) 50%, transparent 70%)",
                 }}
               />
 
               {/* Inner accent dot */}
-              <div className="absolute top-[42%] left-[42%] h-[16%] w-[16%] rounded-full bg-[var(--color-accent)]/20 blur-md animate-philosophy-float" />
+              <div className="absolute top-[42%] left-[42%] h-[16%] w-[16%] rounded-full bg-[var(--color-accent)]/12 blur-md animate-philosophy-float" />
 
               {/* Decorative small dots on perimeter */}
               {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
                 <div
                   key={deg}
-                  className="absolute h-[6px] w-[6px] rounded-full bg-[var(--color-accent)]/40"
+                  className="absolute h-[5px] w-[5px] rounded-full bg-[var(--color-accent)]/25"
                   style={{
                     top: `calc(50% + ${Math.sin((deg * Math.PI) / 180) * 44}%)`,
                     left: `calc(50% + ${Math.cos((deg * Math.PI) / 180) * 44}%)`,
@@ -161,8 +162,9 @@ export default function PhilosophySection() {
                     cx="50" cy="50" r="30"
                     fill="none"
                     stroke="var(--color-accent)"
-                    strokeWidth="0.3"
-                    strokeDasharray="1 6"
+                    strokeWidth="0.25"
+                    strokeDasharray="1 8"
+                    opacity="0.55"
                     className="animate-philosophy-rotate"
                   />
                 </svg>

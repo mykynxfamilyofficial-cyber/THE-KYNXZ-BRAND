@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 
 /* ───────────────────────────────────────────────
-   Navigation data
+   Static navigation data — hoisted outside component
    ─────────────────────────────────────────────── */
 const quickLinks = [
   { href: "/", label: "Home" },
@@ -28,62 +28,25 @@ const collections = [
   { href: "/collections", label: "Accessories" },
 ];
 
-/* ───────────────────────────────────────────────
-   Social links with SVG icons
-   ─────────────────────────────────────────────── */
+// Static SVG icons as string constants to avoid JSX re-creation
+const SOCIAL_ICONS = {
+  instagram: <svg key="ig" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>,
+  facebook: <svg key="fb" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>,
+  twitter: <svg key="tw" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46L20 4" /></svg>,
+  linkedin: <svg key="li" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>,
+  youtube: <svg key="yt" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" /><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" /></svg>,
+};
+
 const socialLinks = [
-  {
-    href: "#",
-    label: "Instagram",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-      </svg>
-    ),
-  },
-  {
-    href: "#",
-    label: "Facebook",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-      </svg>
-    ),
-  },
-  {
-    href: "#",
-    label: "X (Twitter)",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-        <path d="M4 20l6.768 -6.768m2.46 -2.46L20 4" />
-      </svg>
-    ),
-  },
-  {
-    href: "#",
-    label: "LinkedIn",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-        <rect x="2" y="9" width="4" height="12" />
-        <circle cx="4" cy="4" r="2" />
-      </svg>
-    ),
-  },
-  {
-    href: "#",
-    label: "YouTube",
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-        <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" />
-        <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" />
-      </svg>
-    ),
-  },
+  { href: "#", label: "Instagram", icon: SOCIAL_ICONS.instagram },
+  { href: "#", label: "Facebook", icon: SOCIAL_ICONS.facebook },
+  { href: "#", label: "X (Twitter)", icon: SOCIAL_ICONS.twitter },
+  { href: "#", label: "LinkedIn", icon: SOCIAL_ICONS.linkedin },
+  { href: "#", label: "YouTube", icon: SOCIAL_ICONS.youtube },
 ];
+
+// Hoist stable values outside component to avoid re-computation
+const CURRENT_YEAR = new Date().getFullYear();
 
 /* ═══════════════════════════════════════════════
    FooterSection
@@ -92,16 +55,28 @@ export default function FooterSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
+  // Single optimized IntersectionObserver — disconnect after first trigger for perf
   useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setIsVisible(true);
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
       },
       { threshold: 0.05, rootMargin: "0px 0px -40px 0px" }
     );
-    const el = sectionRef.current;
-    if (el) observer.observe(el);
+
+    observer.observe(el);
     return () => observer.disconnect();
+  }, []);
+
+  // Memoized scroll handler
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   return (
@@ -419,7 +394,7 @@ export default function FooterSection() {
             className="text-[11px] tracking-[0.1em] text-center md:text-left"
             style={{ color: "var(--color-text-muted)" }}
           >
-            &copy; {new Date().getFullYear()} THE KYNXZ BRAND LLC. All rights
+            &copy; {CURRENT_YEAR} THE KYNXZ BRAND LLC. All rights
             reserved.
           </p>
 
@@ -427,11 +402,7 @@ export default function FooterSection() {
             type="button"
             className="footer-link text-[11px] uppercase tracking-[0.15em] transition-all duration-300 hover:text-[var(--color-accent)]"
             style={{ color: "var(--color-text-muted)" }}
-            onClick={() => {
-              if (typeof window !== "undefined") {
-                window.scrollTo({ top: 0, behavior: "smooth" });
-              }
-            }}
+            onClick={scrollToTop}
           >
             Back to Top
           </button>

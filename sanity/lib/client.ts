@@ -6,5 +6,11 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: true, // Set to false if statically generating pages, using ISR or tag-based revalidation
+  useCdn: true, // Use CDN for faster reads with stale-while-revalidate
+  perspective: 'published', // Only fetch published documents for performance
+  // Optimize for server-side rendering
+  stega: {
+    enabled: false, // Disable visual editing stega for production performance
+    studioUrl: '/studio',
+  },
 })

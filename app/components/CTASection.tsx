@@ -21,7 +21,7 @@ export default function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="cta-section relative overflow-hidden py-8 md:py-10 lg:py-12"
+      className="cta-section relative overflow-hidden py-5 md:py-6 lg:py-8"
       aria-labelledby="cta-heading"
     >
       {/* Gradient bridge from Why section */}
@@ -38,7 +38,7 @@ export default function CTASection() {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3 rounded-full
         opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[600px] w-[1400px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.06),rgba(212,168,79,0.01),transparent)] blur-3xl animate-cta-float"
+        h-[600px] w-[1400px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.12),rgba(212,168,79,0.025),transparent)] blur-3xl animate-cta-float"
         data-theme="dark"
       />
 
@@ -53,14 +53,10 @@ export default function CTASection() {
 
       <div className="luxury-container relative z-10">
         <div
-          className={`relative rounded-3xl border overflow-hidden transition-all duration-900 ${
+          className={`glass-premium relative rounded-3xl border overflow-hidden transition-all duration-900 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
           style={{
-            borderColor: "var(--color-border)",
-            background: "var(--color-surface)",
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
             transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >

@@ -1,2 +1,3 @@
-// This file has been removed. Product mapping is handled in app/api/products/mapProduct.ts
+// Product mapping has been moved to app/api/products/mapProduct.ts
+// This file exists only as a reference that the module was relocated.
 export {}

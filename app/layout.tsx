@@ -1,9 +1,37 @@
 import type { Metadata } from "next";
+import { Playfair_Display, Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-import DarkBackgroundFX from "./components/DarkBackgroundFX";
-import GlobalScrollIndicator from "./components/GlobalScrollIndicator";
+// Critical fonts loaded immediately with swap strategy
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  variable: "--font-cormorant",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
+
+// Direct import for client component (no ssr:false — safe in Server Components)
 import LoadingScreen from "./components/LoadingScreen";
-import PageTransition from "./components/PageTransition";
+
+// Client-only effects (DarkBackgroundFX, PageTransition) moved to ClientEffects
+import ClientEffects from "./components/ClientEffects";
+
+// Global floating ScrollToExplore (fixed to viewport, rendered once)
+import ScrollToExplore from "./components/ScrollToExplore";
 
 export const metadata: Metadata = {
   title: "THE KYNXZ BRAND | Timeless Luxury. Refined Living.",
@@ -63,12 +91,8 @@ export const metadata: Metadata = {
     },
   },
   icons: {
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-    ],
-    apple: [
-      { url: "/apple-touch-icon.svg", type: "image/svg+xml" },
-    ],
+    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-touch-icon.svg", type: "image/svg+xml" }],
   },
   manifest: "/site.webmanifest",
 };
@@ -79,12 +103,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${playfair.variable} ${cormorant.variable} ${inter.variable}`}
+    >
       <body>
         <LoadingScreen />
-        <DarkBackgroundFX />
-        <GlobalScrollIndicator />
-        <PageTransition>{children}</PageTransition>
+        <ClientEffects>{children}</ClientEffects>
+        <ScrollToExplore />
       </body>
     </html>
   );

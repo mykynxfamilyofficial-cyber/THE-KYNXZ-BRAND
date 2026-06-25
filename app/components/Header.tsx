@@ -81,9 +81,7 @@ export default function Header() {
     return;
   }, [menuOpen, isBrowser]);
 
-  const themeLabel = useMemo(() => {
-    return theme === "dark" ? "Dark" : "Light";
-  }, [theme]);
+  const themeLabel = theme === "dark" ? "Dark" : "Light";
 
   return (
     <header

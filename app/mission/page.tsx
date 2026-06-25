@@ -10,52 +10,9 @@ import {
 import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
+import CyberpunkParticles from "../components/CyberpunkParticles";
 
-/* ───────────────────────────────────────────────
-   Theme-aware color tokens
-   ─────────────────────────────────────────────── */
-const THEME = {
-  dark: {
-    bg: "#0A0A0A",
-    bgAlt: "#111111",
-    warm: "#1B1610",
-    champagne: "#D6CFC7",
-    bronze: "#8B7355",
-    ivory: "#F5F2ED",
-    muted: "#B8B3AA",
-  },
-  light: {
-    bg: "#F6F3EE",
-    bgAlt: "#EDE8DF",
-    warm: "#E7DED2",
-    champagne: "#8B7355",
-    bronze: "#6B5B4A",
-    ivory: "#1A1815",
-    muted: "#6B6358",
-  },
-};
-
-function useThemeColors() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const current =
-      (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-    setTheme(current);
-
-    const mo = new MutationObserver(() => {
-      const t =
-        (root.getAttribute("data-theme") as "dark" | "light") || "dark";
-      setTheme(t);
-    });
-    mo.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => mo.disconnect();
-  }, []);
-
-  return THEME[theme];
-}
-
+import { useTheme, THEME } from "../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Shared animation variants
    ─────────────────────────────────────────────── */
@@ -283,78 +240,6 @@ function MissionHero({ C }: { C: (typeof THEME)["dark"] }) {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   Artistic Image Block (reusable)
-   ═══════════════════════════════════════════════ */
-function ArtImage({
-  gradient,
-  label,
-  index,
-}: {
-  gradient: string;
-  label: string;
-  index: number;
-}) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={isInView ? { opacity: 1, scale: 1 } : {}}
-      transition={{
-        duration: 1.4,
-        delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-      }}
-      className="relative w-full h-full min-h-[320px] md:min-h-[460px] lg:min-h-[540px] rounded-[2px] overflow-hidden"
-    >
-      {/* Main artistic gradient */}
-      <div className="absolute inset-0" style={{ background: gradient }} />
-
-      {/* Watercolor texture overlay */}
-      <div
-        className="absolute inset-0 mix-blend-soft-light opacity-30"
-        style={{
-          background: `
-            radial-gradient(ellipse 60% 30% at 20% 30%, rgba(214, 207, 199, 0.12), transparent 60%),
-            radial-gradient(ellipse 50% 25% at 70% 60%, rgba(139, 115, 85, 0.08), transparent 50%),
-            radial-gradient(ellipse 40% 20% at 50% 80%, rgba(245, 242, 237, 0.06), transparent 45%)
-          `,
-          filter: "blur(8px)",
-        }}
-      />
-
-      {/* Paper grain */}
-      <div
-        className="absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 30% 40%, rgba(255,255,255,0.15) 1px, transparent 1px)",
-          backgroundSize: "4px 4px",
-        }}
-      />
-
-      {/* Label */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span
-          className={`${playfair.className} text-[clamp(1.2rem,4vw,2.4rem)] tracking-[0.15em] uppercase opacity-20`}
-          style={{ color: "#D6CFC7" }}
-        >
-          {label}
-        </span>
-      </div>
-
-      {/* Decorative corner lines */}
-      <div className="absolute top-6 left-6 w-12 h-px bg-white/8" />
-      <div className="absolute top-6 left-6 w-px h-12 bg-white/8" />
-      <div className="absolute bottom-6 right-6 w-12 h-px bg-white/8" />
-      <div className="absolute bottom-6 right-6 w-px h-12 bg-white/8" />
-    </motion.div>
-  );
-}
-
 /* ───────────────────────────────────────────────
    Reusable section wrapper
    ─────────────────────────────────────────────── */
@@ -383,21 +268,21 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
     <Section className="py-12 md:py-16 lg:py-20">
       <div ref={ref} className="max-w-[1400px] mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left — Artistic visual */}
+          {/* Left — Our Mission image */}
           <motion.div
             initial={{ opacity: 0, x: -60 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
-            <ArtImage
-              gradient={`
-                linear-gradient(135deg, ${C.warm} 0%, ${C.bgAlt} 40%, ${C.bg} 100%),
-                radial-gradient(ellipse at 40% 30%, rgba(214, 207, 199, 0.08), transparent 50%),
-                radial-gradient(ellipse at 60% 70%, rgba(139, 115, 85, 0.06), transparent 45%)
-              `}
-              label="Our Purpose"
-              index={0}
-            />
+            <div className="relative w-full aspect-[5/4] md:aspect-[4/3] lg:aspect-[5/4] max-h-[520px] overflow-hidden rounded-[2px] border border-white/[0.06]">
+              <img
+                src="/our-mission.png"
+                alt="Our Mission — THE KYNXZ BRAND"
+                className="w-full h-full object-cover"
+                style={{ objectPosition: "center center" }}
+                loading="lazy"
+              />
+            </div>
           </motion.div>
 
           {/* Right — Mission statement */}
@@ -576,10 +461,9 @@ function ValueCard({
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 1, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
       whileHover={{ y: -8, scale: 1.02 }}
-      className="group relative p-8 md:p-10 rounded-[2px] cursor-default overflow-hidden"
+      className="group glass-premium p-8 md:p-10 rounded-[2px] cursor-default overflow-hidden"
       style={{
-        background: `linear-gradient(160deg, rgba(214,207,199,0.04), transparent 60%)`,
-        border: "1px solid rgba(214, 207, 199, 0.06)",
+        borderColor: "rgba(214, 207, 199, 0.06)",
       }}
     >
       {/* Hover glow */}
@@ -806,10 +690,9 @@ function TimelineEvent({
           className="relative z-10 w-full md:w-[calc(50%-40px)] pl-14 md:pl-0"
         >
           <div
-            className="group p-6 md:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-1"
+            className="group glass-premium p-6 md:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-1"
             style={{
-              background: `linear-gradient(160deg, rgba(214,207,199,0.03), transparent 60%)`,
-              border: "1px solid rgba(214, 207, 199, 0.06)",
+              borderColor: "rgba(214, 207, 199, 0.06)",
             }}
           >
             {/* Year */}
@@ -890,6 +773,9 @@ function TimelineEvent({
 function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
   return (
     <Section className="py-14 md:py-18 lg:py-22 relative" style={{ background: C.bgAlt }}>
+      {/* Cyberpunk futuristic particle system — behind all content */}
+      <CyberpunkParticles />
+
       {/* Animated background rays */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <motion.div
@@ -995,10 +881,10 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
    ═══════════════════════════════════════════════ */
 function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <Section className="py-16 md:py-20 lg:py-24 relative min-h-[70dvh] flex items-center justify-center">
+    <Section className="py-6 md:py-8 lg:py-10 relative min-h-[25dvh] flex items-center justify-center">
       {/* Background ambient glow */}
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
@@ -1015,45 +901,15 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         }}
       />
 
-      {/* Floating particles */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {Array.from({ length: 15 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-[2px] h-[2px] rounded-full"
-            style={{
-              background: C.champagne,
-              top: `${10 + Math.random() * 80}%`,
-              left: `${5 + Math.random() * 90}%`,
-              opacity: 0.02 + Math.random() * 0.04,
-            }}
-            animate={{
-              y: [0, -30 - Math.random() * 50, 0],
-              opacity: [
-                0.02 + Math.random() * 0.03,
-                0.05 + Math.random() * 0.05,
-                0.02 + Math.random() * 0.03,
-              ],
-            }}
-            transition={{
-              duration: 16 + Math.random() * 18,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 10,
-            }}
-          />
-        ))}
-      </div>
-
       <div ref={ref} className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mb-10"
+          className="mb-6"
         >
           <span
-            className={`${playfair.className} text-7xl md:text-9xl leading-none`}
+            className={`${playfair.className} text-6xl md:text-8xl leading-none`}
             style={{ color: C.bronze, opacity: 0.2 }}
           >
             &ldquo;
@@ -1063,10 +919,10 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.blockquote
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          transition={{ duration: 1.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
         >
           <p
-            className={`${playfair.className} text-[clamp(1.8rem,5vw,4rem)] font-light italic leading-[1.3] max-w-5xl mx-auto`}
+            className={`${playfair.className} text-[clamp(1.8rem,5vw,4rem)] font-light italic leading-[1.25] max-w-4xl mx-auto`}
             style={{ color: C.ivory }}
           >
             We do not seek trends. We seek meaning that endures.
@@ -1076,11 +932,11 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mt-10"
+          transition={{ duration: 1.2, delay: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          className="mt-6"
         >
           <span
-            className={`${playfair.className} text-7xl md:text-9xl leading-none`}
+            className={`${playfair.className} text-6xl md:text-8xl leading-none`}
             style={{ color: C.bronze, opacity: 0.2 }}
           >
             &rdquo;
@@ -1090,8 +946,8 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         <motion.div
           initial={{ scaleX: 0 }}
           animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mx-auto mt-14 w-24 h-px"
+          transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          className="mx-auto mt-8 w-20 h-px"
           style={{ background: C.bronze }}
         />
       </div>
@@ -1113,7 +969,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
   return (
     <Section
       ref={sectionRef}
-      className="relative min-h-[140dvh] flex items-center py-24 md:py-28 lg:py-32 overflow-hidden"
+      className="relative min-h-[100dvh] flex items-center py-14 md:py-16 lg:py-20 overflow-hidden"
       style={{ background: C.bgAlt }}
     >
       {/* ─── Large-scale ambient glow canvas ─── */}
@@ -1409,7 +1265,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             viewport={{ once: true }}
             transition={{ duration: 1.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="relative mt-24 md:mt-28 pt-14 md:pt-16 w-full max-w-[1000px] mx-auto"
+            className="relative mt-14 md:mt-16 pt-8 md:pt-10 w-full max-w-[1000px] mx-auto"
           >
             {/* Top decorative line */}
             <div
@@ -1427,9 +1283,9 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             </div>
 
             <blockquote
-              className={`${playfair.className} text-[clamp(2rem,6vw,5rem)] font-light italic leading-[1.15] tracking-[-0.01em] text-center`}
-              style={{ color: C.ivory }}
-            >
+              className={`${playfair.className}text-[clamp(1.4rem,4.2vw,3.5rem)] font-light italic leading-[1.2] tracking-[-0.01em] text-center`}
+            style={{ color: C.ivory }}
+          >
               We are not building a customer base.<br />
               We are building a family, a legacy,<br />
               and a future together.
@@ -1451,7 +1307,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mt-14 w-16 h-px mx-auto"
+            className="mt-8 w-16 h-px mx-auto"
             style={{ background: C.bronze, opacity: 0.5 }}
           />
         </div>
@@ -1459,7 +1315,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
 
       {/* Bottom fade to footer */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none"
+        className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
         style={{ background: `linear-gradient(to bottom, transparent, ${C.bg})` }}
       />
     </Section>
@@ -1470,7 +1326,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
    PAGE COMPOSITION
    ═══════════════════════════════════════════════ */
 export default function MissionPage() {
-  const C = useThemeColors();
+  const C = useTheme();
 
   // Set page title
   useEffect(() => {

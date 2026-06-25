@@ -6,9 +6,8 @@ import { mapSanityProduct, type SanityProduct } from '../mapProduct'
 /**
  * GET /api/products/[slug]
  *
- * Returns a single product from Sanity by its slug, mapped to the app's Product interface.
- *
- * Revalidation: ISR via next: { revalidate: 60 } on the fetch.
+ * Returns a single product from Sanity by its slug.
+ * Uses ISR with 5-minute revalidation and stale-while-revalidate.
  */
 export async function GET(
   request: Request,
@@ -29,7 +28,7 @@ export async function GET(
       { slug },
       {
         next: {
-          revalidate: 0, // Always fetch fresh data from Sanity
+          revalidate: 300, // ISR: revalidate every 5 minutes
         },
       }
     )
@@ -43,7 +42,15 @@ export async function GET(
 
     const product = mapSanityProduct(sanityProduct)
 
-    return NextResponse.json({ product }, { status: 200 })
+    return NextResponse.json(
+      { product },
+      {
+        status: 200,
+        headers: {
+          'Cache-Control': 'public, max-age=60, stale-while-revalidate=600',
+        },
+      }
+    )
   } catch (error) {
     console.error(`Failed to fetch product "${slug}" from Sanity:`, error)
     return NextResponse.json(
