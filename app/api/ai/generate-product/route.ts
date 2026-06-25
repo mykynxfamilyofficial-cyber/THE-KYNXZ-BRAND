@@ -1,3 +1,5 @@
-// AI product generation API has been removed.
-// The parent directory can be safely deleted.
+/**
+ * REMOVED: AI Product Generator is no longer used.
+ * This file was only a stub — safe to delete.
+ */
 export {}

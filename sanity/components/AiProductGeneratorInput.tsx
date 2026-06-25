@@ -1,3 +1,5 @@
-// REMOVED: AI Product Generator component is no longer used.
-// This file can be safely deleted.
+/**
+ * REMOVED: This component is no longer used.
+ * This file was only a stub — safe to delete.
+ */
 export {}

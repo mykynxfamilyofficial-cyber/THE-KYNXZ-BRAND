@@ -1,6 +1,6 @@
 "use client";
 
-import { useVisibility } from "../hooks/useVisibility";
+import { useVisibility } from "../hooks/useTheme";
 
 /**
  * SectionLazy — Defers rendering of non-critical sections until they're

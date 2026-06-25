@@ -32,9 +32,6 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log('Submitting form...');
-    console.log('Form data:', formData);
-
     setStatus({ type: "loading" });
 
     try {
@@ -45,7 +42,6 @@ export default function ContactSection() {
       });
 
       const data = await res.json();
-      console.log('API response:', data);
 
       if (!res.ok) {
         throw new Error(data.error || "Something went wrong");
