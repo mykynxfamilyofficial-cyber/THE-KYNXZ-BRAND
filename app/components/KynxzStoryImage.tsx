@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import type { ThemeColors } from "../hooks/useTheme";
 
 /* ─────────────────────────────────────────────────────────
    KynxzStoryImage — Seamlessly blended image for TheStory section
@@ -10,16 +11,6 @@ import { motion, useInView } from "framer-motion";
    naturally with a smooth edge fade (radial mask) and soft
    rounded corners, blending into the page background.
    ───────────────────────────────────────────────────────── */
-
-interface ThemeColors {
-  champagne: string;
-  bronze: string;
-  bg: string;
-  bgAlt: string;
-  warm: string;
-  ivory: string;
-  muted: string;
-}
 
 interface KynxzStoryImageProps {
   C: ThemeColors;

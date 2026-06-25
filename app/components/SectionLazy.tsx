@@ -1,5 +1,6 @@
 "use client";
 
+import type { ElementType, ReactNode, Ref } from "react";
 import { useVisibility } from "../hooks/useTheme";
 
 /**
@@ -21,16 +22,16 @@ export default function SectionLazy({
   className = "",
   as: Tag = "div",
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   placeholder?: string;
   rootMargin?: string;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
+  as?: ElementType;
 }) {
   const [ref, isVisible] = useVisibility(0, rootMargin);
 
   return (
-    <Tag ref={ref as React.Ref<never>} className={className}>
+    <Tag ref={ref as Ref<never>} className={className}>
       {isVisible ? (
         children
       ) : (

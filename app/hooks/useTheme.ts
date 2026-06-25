@@ -5,7 +5,29 @@ import { useState, useEffect, useCallback, useRef } from "react";
 /* ───────────────────────────────────────────────
    Theme-aware color tokens — single source of truth
    ─────────────────────────────────────────────── */
-export const THEME = {
+
+/**
+ * ThemeColors interface — defines the shape of color tokens for both themes.
+ * Using a shared interface (instead of `as const` inference) ensures that
+ * THEME[theme] passes strict TypeScript without readonly incompatibilities.
+ */
+export interface ThemeColors {
+  bg: string;
+  bgAlt: string;
+  warm: string;
+  champagne: string;
+  bronze: string;
+  ivory: string;
+  muted: string;
+  surface: string;
+  surfaceHover: string;
+  circleBorder: string;
+  circleGlow: string;
+}
+
+type Theme = "dark" | "light";
+
+export const THEME: Record<Theme, ThemeColors> = {
   dark: {
     bg: "#0A0A0A",
     bgAlt: "#111114",
@@ -32,10 +54,7 @@ export const THEME = {
     circleBorder: "rgba(139, 115, 85, 0.1)",
     circleGlow: "rgba(139, 115, 85, 0.04)",
   },
-} as const;
-
-export type ThemeColors = (typeof THEME)["dark"];
-type Theme = "dark" | "light";
+};
 
 /**
  * Optimized useTheme hook that:
