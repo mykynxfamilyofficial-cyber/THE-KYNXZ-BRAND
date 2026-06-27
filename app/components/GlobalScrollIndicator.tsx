@@ -1,1 +1,2 @@
-// File intentionally deleted - superseded by ScrollToExplore
+// File deleted - superseded by ScrollToExplore
+export {}

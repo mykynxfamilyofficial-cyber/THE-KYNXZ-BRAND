@@ -1,1 +1,2 @@
-// File intentionally deleted - useVisibility is exported from useTheme.ts
+// File deleted - useVisibility is exported from useTheme.ts
+export {}

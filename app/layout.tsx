@@ -1,36 +1,9 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
-// Critical fonts loaded immediately with swap strategy
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
-});
+import { playfair, cormorant, inter } from "./fonts";
 
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  variable: "--font-cormorant",
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-  style: ["normal", "italic"],
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-// Direct import for client component (no ssr:false — safe in Server Components)
 import LoadingScreen from "./components/LoadingScreen";
-
-// Client-only effects (DarkBackgroundFX, PageTransition) moved to ClientEffects
 import ClientEffects from "./components/ClientEffects";
-
-// Global floating ScrollToExplore (fixed to viewport, rendered once)
 import ScrollToExplore from "./components/ScrollToExplore";
 
 export const metadata: Metadata = {

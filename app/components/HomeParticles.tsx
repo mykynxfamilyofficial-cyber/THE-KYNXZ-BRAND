@@ -80,9 +80,6 @@ export default function HomeParticles() {
 
     const isMobile = () => window.innerWidth < 768;
 
-    // Only run on homepage and when hero is visible
-    let isActiveSection = true;
-
     /* ── Setup orbs ── */
     const setup = () => {
       const parent = canvas.parentElement;

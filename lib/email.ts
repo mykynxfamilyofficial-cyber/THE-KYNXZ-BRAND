@@ -147,7 +147,6 @@ export async function sendContactEmail(data: ContactFormData) {
     if (error) {
       console.error('[EMAIL] Resend send error:', error)
     } else {
-      console.log('[EMAIL] Contact notification sent successfully to support@thekynxzbrand.store')
     }
   } catch (err) {
     console.error('[EMAIL] Failed to send notification email:', err)

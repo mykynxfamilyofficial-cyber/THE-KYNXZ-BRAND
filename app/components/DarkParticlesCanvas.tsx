@@ -86,8 +86,8 @@ export default function DarkParticlesCanvas() {
     const mqReduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     const prefersReduced = mqReduced.matches;
 
-    // Detect mobile/tablet to reduce particle count
     const isMobile = () => window.innerWidth < 768;
+    const isLowEnd = () => window.innerWidth < 480;
 
     let active = false;
     let animId = 0;
@@ -384,8 +384,10 @@ export default function DarkParticlesCanvas() {
         ctx.fillRect(0, 0, w, h);
       }
 
-      // ── 4. shooting stars (dark mode, desktop only) ──
-      drawStars(performance.now());
+      // ── 4. shooting stars (dark mode, desktop only, disabled on low-end) ──
+      if (!isLowEnd()) {
+        drawStars(performance.now());
+      };
 
       animId = requestAnimationFrame(draw);
     };

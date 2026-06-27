@@ -1,5 +1,2 @@
-/**
- * REMOVED: This component is no longer used.
- * This file was only a stub — safe to delete.
- */
+// File deleted - no longer used
 export {}

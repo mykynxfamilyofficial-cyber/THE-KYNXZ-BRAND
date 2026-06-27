@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, memo } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 import type { ThemeColors } from "../hooks/useTheme";
 
@@ -16,7 +17,7 @@ interface KynxzStoryImageProps {
   C: ThemeColors;
 }
 
-export default function KynxzStoryImage({ C }: KynxzStoryImageProps) {
+function KynxzStoryImage({ C }: KynxzStoryImageProps) {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
@@ -30,17 +31,21 @@ export default function KynxzStoryImage({ C }: KynxzStoryImageProps) {
     >
       {/* Image with smooth edge fade — seamlessly integrated into the background */}
       <div className="relative w-full aspect-[4/3]">
-        <img
+        <Image
           src="/kynxz-office.png"
           alt="THE KYNXZ BRAND — Our Studio"
-          className="w-full h-full object-contain rounded-[2px]"
+          fill
+          className="object-contain rounded-[2px]"
           style={{
             maskImage: "radial-gradient(ellipse at center, black 72%, transparent 100%)",
             WebkitMaskImage: "radial-gradient(ellipse at center, black 72%, transparent 100%)",
           }}
-          loading="eager"
+          priority
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
     </motion.div>
   );
 }
+
+export default memo(KynxzStoryImage);

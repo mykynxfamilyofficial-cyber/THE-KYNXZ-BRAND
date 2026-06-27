@@ -1,5 +1,8 @@
 "use client";
 
+import { memo } from "react";
+import Image from "next/image";
+
 /* ─────────────────────────────────────────────────────────
    PhilosophyImage — Clean, static premium image
    ─────────────────────────────────────────────────────────
@@ -12,15 +15,19 @@ interface PhilosophyImageProps {
   alt: string;
 }
 
-export default function PhilosophyImage({ src, alt }: PhilosophyImageProps) {
+function PhilosophyImage({ src, alt }: PhilosophyImageProps) {
   return (
     <div className="relative w-full aspect-[4/3]">
-      <img
+      <Image
         src={src}
         alt={alt}
-        className="w-full h-full object-contain rounded-2xl"
+        fill
+        className="object-contain rounded-2xl"
         loading="lazy"
+        sizes="(max-width: 768px) 100vw, 50vw"
       />
     </div>
   );
 }
+
+export default memo(PhilosophyImage);

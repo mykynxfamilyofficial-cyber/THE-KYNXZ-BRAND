@@ -1,1 +1,2 @@
-// File intentionally deleted
+// File deleted
+export {}

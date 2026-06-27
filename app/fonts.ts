@@ -1,3 +1,7 @@
+/**
+ * Shared font instances for THE KYNXZ BRAND.
+ * Single declaration point — imported by layout.tsx and individual components.
+ */
 import { Playfair_Display, Cormorant_Garamond, Inter } from "next/font/google";
 
 export const playfair = Playfair_Display({

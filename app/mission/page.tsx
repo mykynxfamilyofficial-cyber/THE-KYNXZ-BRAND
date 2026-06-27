@@ -7,6 +7,7 @@ import {
   useTransform,
   useInView,
 } from "framer-motion";
+import Image from "next/image";
 import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
@@ -275,12 +276,14 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
             transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
           >
             <div className="relative w-full aspect-[5/4] md:aspect-[4/3] lg:aspect-[5/4] max-h-[520px] overflow-hidden rounded-[2px] border border-white/[0.06]">
-              <img
+              <Image
                 src="/our-mission.png"
                 alt="Our Mission — THE KYNXZ BRAND"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
                 style={{ objectPosition: "center center" }}
                 loading="lazy"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           </motion.div>

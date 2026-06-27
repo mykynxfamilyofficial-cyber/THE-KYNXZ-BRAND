@@ -7,6 +7,7 @@ import {
   useTransform,
   useInView,
 } from "framer-motion";
+import Image from "next/image";
 import { playfair, cormorant, inter } from "../fonts";
 import { useTheme, THEME } from "../hooks/useTheme";
 import Header from "../components/Header";
@@ -391,7 +392,7 @@ function DreamWall({ C }: { C: (typeof THEME)["dark"] }) {
             <div className="absolute inset-0" style={{
               background: `linear-gradient(135deg, #1B1610 0%, #111111 40%, #0A0A0A 100%), radial-gradient(ellipse at 30% 20%, rgba(214, 207, 199, 0.08), transparent 50%)`,
             }} />
-            <img src="/kynxz-office.png" alt="The KYNXZ World" className="w-full h-full object-cover opacity-80" loading="lazy" />
+            <Image src="/kynxz-office.png" alt="The KYNXZ World" fill className="object-cover opacity-80" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
           </motion.div>
         </div>
       </div>
@@ -581,7 +582,7 @@ function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
               <div className="absolute inset-0" style={{
                 background: `linear-gradient(160deg, #0A0A0A 0%, #111111 40%, #1B1610 100%), radial-gradient(ellipse at 40% 30%, rgba(214, 207, 199, 0.08), transparent 50%)`,
               }} />
-              <img src="/kynxz-office.png" alt="The Visionary" className="w-full h-full object-cover opacity-70" loading="lazy" />
+              <Image src="/kynxz-office.png" alt="The Visionary" fill className="object-cover opacity-70" loading="lazy" sizes="(max-width: 768px) 100vw, 50vw" />
               <div className="absolute inset-0" style={{ background: `linear-gradient(to top, ${C.bg}, transparent 40%)` }} />
             </div>
           </motion.div>

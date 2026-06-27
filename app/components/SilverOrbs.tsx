@@ -1,1 +1,2 @@
-// File intentionally deleted - superseded by HomeParticles
+// File deleted - superseded by HomeParticles
+export {}

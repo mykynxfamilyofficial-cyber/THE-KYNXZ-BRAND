@@ -73,9 +73,7 @@ export async function POST(request: Request) {
     }
 
     // ── Forward notification email (non-blocking) ─────────────
-    console.log('[CONTACT API] Forwarding notification email...')
     await sendContactEmail({ name, email, subject, message })
-    console.log('[CONTACT API] Email forwarding complete')
 
     // ── Success response ──────────────────────────────────────
     return NextResponse.json(
