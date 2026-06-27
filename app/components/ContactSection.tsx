@@ -116,7 +116,8 @@ export default function ContactSection() {
 
       <div className="luxury-container relative z-10">
         <div className="max-w-3xl mx-auto">
-          {/* Section header */}          <div className={`text-center mb-5 md:mb-6 transition-all duration-900 ${
+          {/* Section header */}
+          <div className={`text-center mb-5 md:mb-6 transition-all duration-900 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
             style={{

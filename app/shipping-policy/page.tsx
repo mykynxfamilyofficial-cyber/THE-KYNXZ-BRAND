@@ -383,7 +383,7 @@ export default function ShippingPolicyPage() {
               >
                 Last Updated: {lastUpdated}
               </span>
-            </motion.div>
+            </div>
           </div>
 
           {/* Bottom fade */}

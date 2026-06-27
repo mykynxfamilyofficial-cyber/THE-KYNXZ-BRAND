@@ -1,2 +1,1 @@
-// File deleted - useVisibility is exported from useTheme.ts
-export {}
+// File deleted - useVisibility is now exported from useTheme.ts

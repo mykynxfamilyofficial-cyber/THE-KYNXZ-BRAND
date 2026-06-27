@@ -395,7 +395,7 @@ export default function PrivacyPolicyPage() {
               >
                 Last Updated: {lastUpdated}
               </span>
-            </motion.div>
+            </div>
           </div>
 
           {/* Bottom fade */}
