@@ -5,17 +5,17 @@ import { useCallback, useRef, useEffect } from "react";
 /**
  * ScrollToExplore — premium continuous scroll controller
  *
- * - Fixed at bottom-center of the viewport (z-index: 100)
- * - Single tap/click: scrolls down by 50% of viewport height (smooth)
+ * - Fixed at bottom-center of the viewport (z-index: 9999)
+ * - Single tap/click: scrolls down by ~350px (smooth)
  * - Hold press (mouse/touch): continuous scroll via requestAnimationFrame
  *   at a cinematic ~120px / 50ms rate (2x faster), releasing stops immediately
- * - Gentle floating animation on the mouse icon
  * - Auto-stops at page bottom
  * - Cleans up all listeners on unmount
  *
  * Design:
- * - Dark mode: silver/gold glow with light text
- * - Light mode: elegant dark styling
+ * - Centered, minimal, elegant — text + small mouse icon
+ * - Dark mode: warm gold accent with subtle glow
+ * - Light mode: refined taupe accent
  *
  * Interaction logic (pointer events):
  * - Pointer down → start a 200ms hold timer
@@ -139,7 +139,7 @@ export default function ScrollToExplore() {
     // If held briefly (< threshold), didn't move much → this is a tap
     if (heldMs < HOLD_THRESHOLD_MS && !pointerMovedRef.current) {
       window.scrollBy({
-        top: window.innerHeight * 0.5,
+        top: 350,
         behavior: "smooth",
       });
     }

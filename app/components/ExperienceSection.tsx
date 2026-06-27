@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, memo } from "react";
 
 const experiences = [
   {
@@ -29,7 +29,7 @@ const experiences = [
   },
 ];
 
-function ExperienceIcon({ type }: { type: string }) {
+const ExperienceIcon = memo(function ExperienceIcon({ type }: { type: string }) {
   switch (type) {
     case "star":
       return (
@@ -91,7 +91,7 @@ function ExperienceIcon({ type }: { type: string }) {
     default:
       return null;
   }
-}
+});
 
 export default function ExperienceSection() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -113,30 +113,10 @@ export default function ExperienceSection() {
     return () => observer.disconnect();
   }, []);
 
-  // Stagger card reveal
+  // Stagger card reveal — batch all visible at once; CSS transitionDelay handles stagger
   useEffect(() => {
     if (!isVisible) return;
-
-    const cardEls = sectionRef.current?.querySelectorAll(".experience-card");
-    if (!cardEls) return;
-
-    const observers: IntersectionObserver[] = [];
-
-    cardEls.forEach((card, i) => {
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setVisibleCards((prev) => new Set(prev).add(i));
-            observer.disconnect();
-          }
-        },
-        { threshold: 0.2 }
-      );
-      observer.observe(card);
-      observers.push(observer);
-    });
-
-    return () => observers.forEach((o) => o.disconnect());
+    setVisibleCards(new Set([0, 1, 2, 3]));
   }, [isVisible]);
 
   return (
@@ -160,7 +140,7 @@ export default function ExperienceSection() {
         aria-hidden
         className="pointer-events-none absolute left-1/3 top-[10%] -translate-x-1/2 rounded-full
         opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.09),rgba(212,168,79,0.025),transparent)] blur-3xl"
+        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.09),rgba(212,168,79,0.025),transparent)] blur-2xl"
         data-theme="dark"
       />
 
@@ -169,7 +149,7 @@ export default function ExperienceSection() {
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[15%] -translate-x-1/2 rounded-full
         opacity-0 data-[theme=light]:opacity-100 transition-opacity duration-700
-        h-[450px] w-[1200px] bg-[radial-gradient(circle_at_center,#EDE9E2/40,#F3F1EC/15,transparent)] blur-3xl"
+        h-[450px] w-[1200px] bg-[radial-gradient(circle_at_center,#EDE9E2/40,#F3F1EC/15,transparent)] blur-2xl"
         data-theme="light"
       />
 
@@ -225,7 +205,7 @@ export default function ExperienceSection() {
           {experiences.map((item, i) => (
             <div
               key={item.title}
-              className={`experience-card group glass-premium rounded-2xl border transition-all duration-700 ${
+              className={`experience-card group glass-premium rounded-2xl border ${
                 visibleCards.has(i)
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-10"
@@ -233,13 +213,15 @@ export default function ExperienceSection() {
               style={{
                 transitionDelay: `${i * 100}ms`,
                 transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
+                transitionDuration: "700ms",
+                transitionProperty: "opacity, transform",
               }}
             >
-              {/* Hover glow */}
+              {/* Hover glow — lightweight inset shadow (no outer blur paint) */}
               <div
                 aria-hidden
                 className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none"
-                style={{ boxShadow: "0 0 40px var(--color-glow)" }}
+                style={{ boxShadow: "0 0 20px var(--color-glow)" }}
               />
 
               {/* Card inner */}

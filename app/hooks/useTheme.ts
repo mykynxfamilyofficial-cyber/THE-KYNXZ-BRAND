@@ -42,9 +42,9 @@ export const THEME: Record<Theme, ThemeColors> = {
     circleGlow: "rgba(212, 168, 79, 0.06)",
   },
   light: {
-    bg: "#F6F3EE",
-    bgAlt: "#EDE8DF",
-    warm: "#E7DED2",
+    bg: "#F8F6F2",
+    bgAlt: "#F6F3EE",
+    warm: "#F0EBE2",
     champagne: "#8B7355",
     bronze: "#6B5B4A",
     ivory: "#1A1815",
@@ -63,18 +63,18 @@ export const THEME: Record<Theme, ThemeColors> = {
  * 3. Returns cached color tokens
  */
 export function useTheme(): ThemeColors {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [theme, setTheme] = useState<Theme>("light");
   const observerRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
     const root = document.documentElement;
-    const current = (root.getAttribute("data-theme") as Theme) || "dark";
+    const current = (root.getAttribute("data-theme") as Theme) || "light";
     setTheme(current);
 
     // Use a single observer for theme changes
     if (!observerRef.current) {
       observerRef.current = new MutationObserver(() => {
-        const t = (root.getAttribute("data-theme") as Theme) || "dark";
+        const t = (root.getAttribute("data-theme") as Theme) || "light";
         setTheme(t);
       });
       observerRef.current.observe(root, {

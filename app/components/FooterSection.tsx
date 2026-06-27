@@ -111,7 +111,7 @@ export default function FooterSection() {
         data-theme="light"
       />
 
-      <div className="luxury-container relative z-10 pt-6 pb-3 md:pt-8 md:pb-4 lg:pt-10 lg:pb-5">
+      <div className="luxury-container relative z-10 pt-4 pb-2 md:pt-5 md:pb-3 lg:pt-6 lg:pb-4">
         {/* ════════════════════════════════════════
             Main footer grid — 5 columns
             ════════════════════════════════════════ */}
@@ -305,8 +305,7 @@ export default function FooterSection() {
         {/* ════════════════════════════════════════
             Our Home In America
             ════════════════════════════════════════ */}
-        <div
-          className={`mt-10 md:mt-12 transition-all duration-900 ${
+        <div            className={`mt-6 md:mt-8 transition-all duration-900 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
           style={{
@@ -347,7 +346,7 @@ export default function FooterSection() {
             ════════════════════════════════════════ */}
         <div
           aria-hidden
-          className={`w-full h-px mt-10 mb-6 md:mt-12 md:mb-6 transition-all duration-900 ${
+          className={`w-full h-px mt-6 mb-4 md:mt-8 md:mb-4 transition-all duration-900 ${
             isVisible ? "opacity-100" : "opacity-0"
           }`}
           style={{

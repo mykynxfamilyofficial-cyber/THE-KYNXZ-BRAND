@@ -2,32 +2,8 @@
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import { playfair, inter } from "../fonts";
 import type { Product } from "../collections/types";
-
-/* ───────────────────────────────────────────────
-   Animation variants
-   ─────────────────────────────────────────────── */
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.2,
-    },
-  },
-};
-
-const cardReveal = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  },
-};
 
 /* ───────────────────────────────────────────────
    Product Card (matching collections page style)
@@ -74,31 +50,18 @@ function FeaturedImageCarousel({ product }: { product: Product }) {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0"
-          style={bgStyle}
-        />
-      </AnimatePresence>
+      <div
+        key={activeIndex}
+        className="absolute inset-0 transition-opacity duration-700"
+        style={bgStyle}
+      />
     </div>
   );
 }
 
-function FeaturedProductCard({ product, index }: { product: Product; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-
+function FeaturedProductCard({ product }: { product: Product }) {
   return (
-    <motion.div
-      ref={cardRef}
-      variants={cardReveal}
-      custom={index}
-      className="h-full"
-    >
+    <div className="h-full">
       <Link
         href={`/collections/${product.id}`}
         className="featured-card group relative block rounded-[2px] overflow-hidden h-full flex flex-col"
@@ -107,11 +70,9 @@ function FeaturedProductCard({ product, index }: { product: Product; index: numb
           background: "var(--color-surface)",
         }}
       >
-        {/* Clean image area - no watermarks, no overlays */}
         <div className="relative overflow-hidden aspect-[4/3] shrink-0">
           <FeaturedImageCarousel product={product} />
 
-          {/* Badges */}
           <div className="absolute top-3 left-3 flex gap-2 z-10">
             {product.featured && (
               <span
@@ -139,7 +100,6 @@ function FeaturedProductCard({ product, index }: { product: Product; index: numb
             )}
           </div>
 
-          {/* View Details indicator */}
           <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-400 z-10">
             <span
               className="inline-flex items-center gap-1.5 text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
@@ -156,14 +116,12 @@ function FeaturedProductCard({ product, index }: { product: Product; index: numb
             </span>
           </div>
 
-          {/* Hover border accent */}
           <div
             className="absolute inset-0 border border-transparent group-hover:border-opacity-40 transition-all duration-700 pointer-events-none rounded-[2px] z-10"
             style={{ borderColor: product.accent, opacity: 0 }}
           />
         </div>
 
-        {/* Info section */}
         <div className="p-5 md:p-6 space-y-3 flex-1 flex flex-col">
           <h3
             className={`${playfair.className} text-lg md:text-xl font-bold leading-[1.2] tracking-[0.02em] line-clamp-2`}
@@ -206,7 +164,6 @@ function FeaturedProductCard({ product, index }: { product: Product; index: numb
             </span>
           </div>
 
-          {/* Accent line */}
           <div
             className="h-px w-8 transition-all duration-500 group-hover:w-full"
             style={{
@@ -223,7 +180,7 @@ function FeaturedProductCard({ product, index }: { product: Product; index: numb
           </p>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
@@ -281,7 +238,7 @@ export default function FeaturedProductsSection() {
   return (
     <section
       ref={sectionRef}
-      className="featured-products-section relative overflow-hidden py-5 md:py-6 lg:py-8"
+      className="featured-products-section relative overflow-hidden py-3 md:py-4 lg:py-6"
       aria-labelledby="featured-heading"
     >
       {/* Gradient bridge from previous section */}
@@ -393,25 +350,17 @@ export default function FeaturedProductsSection() {
 
         {/* Product grid */}
         {!loading && products.length > 0 && (
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate={isVisible ? "visible" : "hidden"}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6"
-          >
-            {products.slice(0, 4).map((product, i) => (
-              <FeaturedProductCard key={product.id} product={product} index={i} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
+            {products.slice(0, 4).map((product) => (
+              <FeaturedProductCard key={product.id} product={product} />
             ))}
-          </motion.div>
+          </div>
         )}
 
         {/* Browse all CTA */}
         {!loading && products.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mt-10 md:mt-12 text-center"
+          <div
+            className="mt-6 md:mt-8 text-center"
           >
             <Link
               href="/collections"
@@ -435,7 +384,7 @@ export default function FeaturedProductsSection() {
                 <path d="M4 2L8 6L4 10" />
               </svg>
             </Link>
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

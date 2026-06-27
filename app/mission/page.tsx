@@ -1,245 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState, forwardRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useInView,
-} from "framer-motion";
+import { useEffect, useRef, forwardRef } from "react";
 import Image from "next/image";
 import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
-import CyberpunkParticles from "../components/CyberpunkParticles";
+
 
 import { useTheme, THEME } from "../hooks/useTheme";
-/* ───────────────────────────────────────────────
-   Shared animation variants
-   ─────────────────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 48 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-};
-
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-};
-
-const wordReveal = {
-  hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: 1,
-      delay: i * 0.12,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  }),
-};
 
 const heroLines = [
   ["We", "Are", "Building"],
   ["More", "Than"],
   ["A", "Brand."],
 ];
-
-/* ═══════════════════════════════════════════════
-   SECTION 1 – Cinematic Hero
-   ═══════════════════════════════════════════════ */
-function MissionHero({ C }: { C: (typeof THEME)["dark"] }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
-  return (
-    <section className="min-h-[100dvh] flex items-center justify-center relative overflow-hidden">
-      {/* Animated floating abstract shapes */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Large central luminous orb */}
-        <motion.div
-          animate={{ y: [0, -25, 0], scale: [1, 1.03, 1] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.05]"
-          style={{
-            background:
-              "radial-gradient(circle at center, #D6CFC7, transparent 65%)",
-            filter: "blur(100px)",
-          }}
-        />
-        {/* Warm bronze drift orb */}
-        <motion.div
-          animate={{ y: [0, 30, 0], x: [0, -15, 0], scale: [1, 1.05, 1] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-          className="absolute top-[60%] right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.03]"
-          style={{
-            background:
-              "radial-gradient(circle at center, #8B7355, transparent 60%)",
-            filter: "blur(80px)",
-          }}
-        />
-        {/* Soft ivory drift orb */}
-        <motion.div
-          animate={{ y: [0, -20, 0], x: [0, 20, 0], scale: [1, 1.04, 1] }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 5 }}
-          className="absolute top-[15%] left-[5%] w-[350px] h-[350px] rounded-full opacity-[0.025]"
-          style={{
-            background:
-              "radial-gradient(circle at center, #F5F2ED, transparent 60%)",
-            filter: "blur(70px)",
-          }}
-        />
-        {/* Abstract rotating shapes */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[25%] right-[8%] w-[280px] h-[280px] opacity-[0.015]"
-          style={{
-            border: "1px solid rgba(214, 207, 199, 0.25)",
-            borderRadius: "45% 55% 40% 60% / 50% 42% 58% 48%",
-          }}
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-[30%] left-[12%] w-[200px] h-[200px] opacity-[0.012]"
-          style={{
-            border: "1px solid rgba(214, 207, 199, 0.15)",
-            borderRadius: "55% 45% 60% 40% / 45% 55% 45% 55%",
-          }}
-        />
-        {/* Drifting particle dots */}
-        {Array.from({ length: 25 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-[2px] h-[2px] rounded-full"
-            style={{
-              background: C.champagne,
-              top: `${10 + Math.random() * 80}%`,
-              left: `${5 + Math.random() * 90}%`,
-              opacity: 0.04 + Math.random() * 0.06,
-            }}
-            animate={{
-              y: [0, -50 - Math.random() * 70, 0],
-              x: [0, 25 - Math.random() * 50, 0],
-              opacity: [
-                0.03 + Math.random() * 0.04,
-                0.06 + Math.random() * 0.08,
-                0.03 + Math.random() * 0.04,
-              ],
-            }}
-            transition={{
-              duration: 14 + Math.random() * 20,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 12,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Main content */}
-      <motion.div
-        ref={ref}
-        style={{ y: heroY, opacity: heroOpacity }}
-        className="relative z-10 max-w-[1400px] mx-auto px-6 text-center"
-      >
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={0}
-          className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
-          style={{ color: C.bronze }}
-        >
-          Our Mission
-        </motion.p>
-
-        <h1
-          className={`${playfair.className} text-[clamp(2.4rem,9vw,6rem)] font-bold leading-[1.15] tracking-[0.02em]`}
-          style={{ color: C.ivory }}
-        >
-          {heroLines.map((line, lineIdx) => (
-            <div key={lineIdx} className="overflow-hidden">
-              {line.map((word, wordIdx) => {
-                const globalIdx =
-                  heroLines
-                    .slice(0, lineIdx)
-                    .reduce((acc, l) => acc + l.length, 0) + wordIdx;
-                return (
-                  <motion.span
-                    key={wordIdx}
-                    variants={wordReveal}
-                    initial="hidden"
-                    animate="visible"
-                    custom={globalIdx}
-                    className="inline-block mr-[0.3em] last:mr-0"
-                  >
-                    {word}
-                  </motion.span>
-                );
-              })}
-            </div>
-          ))}
-        </h1>
-
-        <motion.p
-          variants={fadeUp}
-          initial="hidden"
-          animate="visible"
-          custom={6}
-          className={`${inter.className} mt-10 text-base md:text-lg max-w-2xl mx-auto leading-relaxed tracking-[0.05em]`}
-          style={{ color: C.muted }}
-        >
-          We are crafting a future where purpose, beauty and trust coexist.
-        </motion.p>
-
-        <motion.div
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          custom={8}
-          className="mt-16 flex items-center justify-center gap-4"
-        >
-          <span
-            className="block w-16 h-px"
-            style={{ background: C.bronze }}
-          />
-          <span
-            className={`${cormorant.className} italic text-sm`}
-            style={{ color: C.champagne }}
-          >
-            Purpose Driven
-          </span>
-          <span
-            className="block w-16 h-px"
-            style={{ background: C.bronze }}
-          />
-        </motion.div>
-      </motion.div>
-
-      {/* Bottom fade */}
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: `linear-gradient(to bottom, transparent, ${C.bg})` }}
-      />
-    </section>
-  );
-}
 
 /* ───────────────────────────────────────────────
    Reusable section wrapper
@@ -259,51 +33,153 @@ const Section = forwardRef<
 Section.displayName = "Section";
 
 /* ═══════════════════════════════════════════════
+   SECTION 1 – Cinematic Hero
+   ═══════════════════════════════════════════════ */
+function MissionHero({ C }: { C: (typeof THEME)["dark"] }) {
+  const ref = useRef(null);
+
+  return (
+    <section ref={ref} className="min-h-[50dvh] pt-20 md:pt-24 lg:min-h-[80dvh] lg:pt-0 flex items-center justify-center relative overflow-hidden">
+      {/* Static decorative background orbs */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.05]"
+          style={{
+            background:
+              "radial-gradient(circle at center, #D6CFC7, transparent 65%)",
+            filter: "blur(100px)",
+          }}
+        />
+        <div
+          className="absolute top-[60%] right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.03]"
+          style={{
+            background:
+              "radial-gradient(circle at center, #8B7355, transparent 60%)",
+            filter: "blur(80px)",
+          }}
+        />
+        <div
+          className="absolute top-[15%] left-[5%] w-[350px] h-[350px] rounded-full opacity-[0.025]"
+          style={{
+            background:
+              "radial-gradient(circle at center, #F5F2ED, transparent 60%)",
+            filter: "blur(70px)",
+          }}
+        />
+        <div
+          className="absolute top-[25%] right-[8%] w-[280px] h-[280px] opacity-[0.015]"
+          style={{
+            border: "1px solid rgba(214, 207, 199, 0.25)",
+            borderRadius: "45% 55% 40% 60% / 50% 42% 58% 48%",
+          }}
+        />
+        <div
+          className="absolute bottom-[30%] left-[12%] w-[200px] h-[200px] opacity-[0.012]"
+          style={{
+            border: "1px solid rgba(214, 207, 199, 0.15)",
+            borderRadius: "55% 45% 60% 40% / 45% 55% 45% 55%",
+          }}
+        />
+      </div>
+
+      {/* Main content */}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 text-center">
+        <p
+          className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
+          style={{ color: C.bronze }}
+        >
+          Our Mission
+        </p>
+
+        <h1
+          className={`${playfair.className} text-[clamp(2.4rem,9vw,6rem)] font-bold leading-[1.15] tracking-[0.02em]`}
+          style={{ color: C.ivory }}
+        >
+          {heroLines.map((line, lineIdx) => (
+            <div key={lineIdx} className="">
+              {line.map((word, wordIdx) => (
+                <span
+                  key={wordIdx}
+                  className="inline-block mr-[0.3em] last:mr-0"
+                >
+                  {word}
+                </span>
+              ))}
+            </div>
+          ))}
+        </h1>
+
+        <p
+          className={`${inter.className} mt-10 text-base md:text-lg max-w-2xl mx-auto leading-relaxed tracking-[0.05em]`}
+          style={{ color: C.muted }}
+        >
+          We are crafting a future where purpose, beauty and trust coexist.
+        </p>
+
+        <div className="mt-10 flex items-center justify-center gap-4">
+          <span
+            className="block w-16 h-px"
+            style={{ background: C.bronze }}
+          />
+          <span
+            className={`${cormorant.className} italic text-sm`}
+            style={{ color: C.champagne }}
+          >
+            Purpose Driven
+          </span>
+          <span
+            className="block w-16 h-px"
+            style={{ background: C.bronze }}
+          />
+        </div>
+      </div>
+
+      {/* Bottom fade */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
+        style={{ background: `linear-gradient(to bottom, transparent, ${C.bg})` }}
+      />
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════
    SECTION 2 – Our Mission
    ═══════════════════════════════════════════════ */
 function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-
   return (
-    <Section className="py-12 md:py-16 lg:py-20">
-      <div ref={ref} className="max-w-[1400px] mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+    <Section className="py-2 md:py-3 lg:py-4">
+      <div className="max-w-[1400px] mx-auto px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* Left — Our Mission image */}
-          <motion.div
-            initial={{ opacity: 0, x: -60 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          >
-            <div className="relative w-full aspect-[5/4] md:aspect-[4/3] lg:aspect-[5/4] max-h-[520px] overflow-hidden rounded-[2px] border border-white/[0.06]">
+          <div className="relative overflow-visible">
+            <div
+              aria-hidden
+              className="luxury-image-glow-bg -top-6 -left-6 -right-6 -bottom-6"
+            />
+            <div className="relative w-full aspect-[5/4] md:aspect-[4/3] lg:aspect-[5/4] max-h-[520px] luxury-image-frame">
               <Image
                 src="/our-mission.png"
                 alt="Our Mission — THE KYNXZ BRAND"
                 fill
-                className="object-cover"
+                className="object-cover luxury-image-edge-fade"
                 style={{ objectPosition: "center center" }}
                 loading="lazy"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
-          </motion.div>
+          </div>
 
           {/* Right — Mission statement */}
           <div className="space-y-8">
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+            <p
               className={`${inter.className} text-xs tracking-[0.25em] uppercase`}
               style={{ color: C.bronze }}
             >
               Our Mission
-            </motion.p>
+            </p>
 
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+            <h2
               className={`${playfair.className} text-[clamp(2rem,5vw,3.5rem)] font-bold leading-[1.1]`}
               style={{ color: C.ivory }}
             >
@@ -312,14 +188,9 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
                 THE KYNXZ BRAND
               </span>{" "}
               exists.
-            </motion.h2>
+            </h2>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-              className="space-y-6"
-            >
+            <div className="space-y-6">
               <p
                 className={`${inter.className} text-base md:text-lg leading-[1.9]`}
                 style={{ color: C.muted }}
@@ -346,14 +217,9 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
                 We are building a legacy rooted in trust, refined by
                 craftsmanship, and inspired by the timeless pursuit of meaning.
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, scaleX: 0 }}
-              animate={isInView ? { opacity: 1, scaleX: 1 } : {}}
-              transition={{ duration: 1.2, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-              className="pt-4"
-            >
+            <div className="pt-4">
               <div className="flex items-center gap-4">
                 <span
                   className="block w-12 h-px"
@@ -366,20 +232,10 @@ function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
                   Purpose over profit
                 </span>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Decorative floating line */}
-      <motion.div
-        className="absolute left-[5%] top-[30%] w-px h-[35%] opacity-[0.04]"
-        style={{
-          background: `linear-gradient(to bottom, transparent, ${C.champagne}, transparent)`,
-        }}
-        animate={{ scaleY: [0.8, 1.2, 0.8], opacity: [0.02, 0.06, 0.02] }}
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
-      />
     </Section>
   );
 }
@@ -447,26 +303,17 @@ const coreValues = [
 
 function ValueCard({
   value,
-  index,
   C,
 }: {
   value: (typeof coreValues)[0];
-  index: number;
   C: (typeof THEME)["dark"];
 }) {
-  const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: true, margin: "-80px" });
-
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 60 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 1, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      className="group glass-premium p-8 md:p-10 rounded-[2px] cursor-default overflow-hidden"
+    <div
+      className="group glass-premium p-8 md:p-10 rounded-[2px] cursor-default overflow-hidden relative"
       style={{
         borderColor: "rgba(214, 207, 199, 0.06)",
+        border: "1px solid rgba(214, 207, 199, 0.06)",
       }}
     >
       {/* Hover glow */}
@@ -476,8 +323,6 @@ function ValueCard({
           background: `radial-gradient(ellipse at center, rgba(214, 207, 199, 0.08), transparent 70%)`,
         }}
       />
-
-      {/* Artistic gradient artwork — subtle background visual */}
       <div
         className="absolute -bottom-20 -right-20 w-48 h-48 rounded-full opacity-0 group-hover:opacity-30 transition-all duration-1000 pointer-events-none"
         style={{
@@ -497,7 +342,6 @@ function ValueCard({
         </span>
       </div>
 
-      {/* Decorative miniature art element */}
       <div className="relative z-10 mb-6 w-12 h-12">
         <div
           className="absolute inset-0 rounded-full opacity-30"
@@ -529,19 +373,17 @@ function ValueCard({
         {value.description}
       </p>
 
-      {/* Accent line on hover */}
       <div
         className="relative z-10 mt-6 h-px w-8 transition-all duration-500 group-hover:w-16"
         style={{ background: `linear-gradient(to right, ${C.bronze}, transparent)` }}
       />
-    </motion.div>
+    </div>
   );
 }
 
 function CoreValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
   return (
-    <Section className="py-12 md:py-16 lg:py-20 relative">
-      {/* Ambient glow behind section */}
+    <Section className="py-2 md:py-3 lg:py-4 relative">
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -551,14 +393,7 @@ function CoreValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
-        >
+        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-8">
           <p
             className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-4`}
             style={{ color: C.bronze }}
@@ -578,9 +413,8 @@ function CoreValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
             className="mx-auto mt-6 w-24 h-px"
             style={{ background: C.bronze, opacity: 0.5 }}
           />
-        </motion.div>
+        </div>
 
-        {/* 5 value cards in a responsive grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {coreValues.map((v, i) => (
             <div
@@ -591,7 +425,7 @@ function CoreValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
                   : ""
               }
             >
-              <ValueCard value={v} index={i} C={C} />
+              <ValueCard value={v} C={C} />
             </div>
           ))}
         </div>
@@ -655,50 +489,35 @@ function TimelineEvent({
   index: number;
   C: (typeof THEME)["dark"];
 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-120px" });
-
   const isLeft = index % 2 === 0;
 
   return (
-    <div ref={ref} className="relative pb-16 md:pb-24 last:pb-0">
+    <div className="relative pb-16 md:pb-24 last:pb-0">
       {/* Timeline connector line (vertical) */}
       <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2">
-        <motion.div
-          initial={{ scaleY: 0 }}
-          animate={isInView ? { scaleY: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="w-full h-full origin-top"
+        <div
+          className="w-full h-full"
           style={{ background: `linear-gradient(to bottom, ${C.bronze}, ${C.champagne}40, transparent)` }}
         />
       </div>
 
       {/* Mobile timeline line */}
       <div className="md:hidden absolute left-[18px] top-0 bottom-0 w-px">
-        <motion.div
-          initial={{ scaleY: 0 }}
-          animate={isInView ? { scaleY: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="w-full h-full origin-top"
+        <div
+          className="w-full h-full"
           style={{ background: `linear-gradient(to bottom, ${C.bronze}, ${C.champagne}40, transparent)` }}
         />
       </div>
 
       <div className={`flex flex-col md:flex-row items-start gap-8 md:gap-12 ${isLeft ? "" : "md:flex-row-reverse"}`}>
         {/* Content */}
-        <motion.div
-          initial={{ opacity: 0, x: isLeft ? -40 : 40 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="relative z-10 w-full md:w-[calc(50%-40px)] pl-14 md:pl-0"
-        >
+        <div className="relative z-10 w-full md:w-[calc(50%-40px)] pl-14 md:pl-0">
           <div
             className="group glass-premium p-6 md:p-8 rounded-[2px] transition-all duration-500 hover:-translate-y-1"
             style={{
-              borderColor: "rgba(214, 207, 199, 0.06)",
+              border: "1px solid rgba(214, 207, 199, 0.06)",
             }}
           >
-            {/* Year */}
             <span
               className={`${cormorant.className} italic text-4xl md:text-5xl font-light block mb-4`}
               style={{ color: C.bronze }}
@@ -720,23 +539,19 @@ function TimelineEvent({
               {event.description}
             </p>
 
-            {/* Hover accent */}
             <div
               className="mt-5 h-px w-8 transition-all duration-500 group-hover:w-16"
               style={{ background: C.bronze }}
             />
           </div>
-        </motion.div>
+        </div>
 
         {/* Spacer for the other side on desktop */}
         <div className="hidden md:block w-[calc(50%-40px)]" />
 
         {/* Timeline dot */}
         <div className="hidden md:block absolute left-1/2 top-0 -translate-x-1/2 z-20">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={isInView ? { scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          <div
             className="w-5 h-5 rounded-full border-2 flex items-center justify-center"
             style={{
               borderColor: C.bronze,
@@ -747,15 +562,12 @@ function TimelineEvent({
               className="w-2 h-2 rounded-full"
               style={{ background: C.bronze }}
             />
-          </motion.div>
+          </div>
         </div>
 
         {/* Mobile dot */}
         <div className="md:hidden absolute left-[10px] top-1 z-20">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={isInView ? { scale: 1 } : {}}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          <div
             className="w-4 h-4 rounded-full border-2 flex items-center justify-center"
             style={{
               borderColor: C.bronze,
@@ -766,7 +578,7 @@ function TimelineEvent({
               className="w-[6px] h-[6px] rounded-full"
               style={{ background: C.bronze }}
             />
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>
@@ -775,61 +587,31 @@ function TimelineEvent({
 
 function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
   return (
-    <Section className="py-14 md:py-18 lg:py-22 relative" style={{ background: C.bgAlt }}>
-      {/* Cyberpunk futuristic particle system — behind all content */}
-      <CyberpunkParticles />
-
-      {/* Animated background rays */}
+    <Section className="py-3 md:py-4 lg:py-5 relative" style={{ background: C.bgAlt }}>
+      {/* Animated background rays — simplified CSS */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+        <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[2px] h-full"
           style={{
             background: `linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.04), transparent)`,
-            transformOrigin: "top center",
           }}
         />
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 2.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+        <div
           className="absolute top-0 left-[25%] w-[1px] h-full"
           style={{
             background: `linear-gradient(to bottom, transparent, rgba(139, 115, 85, 0.03), transparent)`,
           }}
         />
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 2.5, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+        <div
           className="absolute top-0 right-[25%] w-[1px] h-full"
           style={{
             background: `linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.03), transparent)`,
           }}
         />
-        {/* Slow horizontal sweep */}
-        <motion.div
-          animate={{ x: ["-100%", "200%"], opacity: [0, 0.04, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[45%] left-0 w-[60%] h-px"
-          style={{
-            background: `linear-gradient(to right, transparent, ${C.champagne}, transparent)`,
-            filter: "blur(3px)",
-          }}
-        />
       </div>
 
       {/* Large ambient glow */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+      <div
         className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
         style={{
           background:
@@ -839,14 +621,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
       />
 
       <div className="relative z-10 max-w-[1200px] mx-auto px-6">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="text-center max-w-3xl mx-auto mb-16 md:mb-20"
-        >
+        <div className="text-center max-w-3xl mx-auto mb-8 md:mb-10">
           <p
             className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-4`}
             style={{ color: C.bronze }}
@@ -866,9 +641,8 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
             className="mx-auto mt-6 w-24 h-px"
             style={{ background: C.bronze, opacity: 0.5 }}
           />
-        </motion.div>
+        </div>
 
-        {/* Timeline */}
         <div className="relative max-w-4xl mx-auto">
           {timelineEvents.map((event, i) => (
             <TimelineEvent key={event.year} event={event} index={i} C={C} />
@@ -883,17 +657,9 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
    SECTION 5 – Inspirational Quote
    ═══════════════════════════════════════════════ */
 function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-
   return (
-    <Section className="py-6 md:py-8 lg:py-10 relative min-h-[25dvh] flex items-center justify-center">
-      {/* Background ambient glow */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+    <Section className="py-2 md:py-3 lg:py-4 relative min-h-[25dvh] flex items-center justify-center">
+      <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
@@ -904,52 +670,35 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         }}
       />
 
-      <div ref={ref} className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mb-6"
-        >
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
+        <div className="mb-6">
           <span
             className={`${playfair.className} text-6xl md:text-8xl leading-none`}
             style={{ color: C.bronze, opacity: 0.2 }}
           >
             &ldquo;
           </span>
-        </motion.div>
+        </div>
 
-        <motion.blockquote
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.4, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-        >
+        <blockquote>
           <p
             className={`${playfair.className} text-[clamp(1.8rem,5vw,4rem)] font-light italic leading-[1.25] max-w-4xl mx-auto`}
             style={{ color: C.ivory }}
           >
             We do not seek trends. We seek meaning that endures.
           </p>
-        </motion.blockquote>
+        </blockquote>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, delay: 0.35, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mt-6"
-        >
+        <div className="mt-6">
           <span
             className={`${playfair.className} text-6xl md:text-8xl leading-none`}
             style={{ color: C.bronze, opacity: 0.2 }}
           >
             &rdquo;
           </span>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+        <div
           className="mx-auto mt-8 w-20 h-px"
           style={{ background: C.bronze }}
         />
@@ -962,25 +711,12 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
    SECTION 6 – Our Shared Journey (Cinematic Closing)
    ═══════════════════════════════════════════════ */
 function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
-  const sectionRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-  const bgScale = useTransform(scrollYProgress, [0, 1], [0.92, 1.08]);
-
   return (
-    <Section
-      ref={sectionRef}
-      className="relative min-h-[100dvh] flex items-center py-14 md:py-16 lg:py-20 overflow-hidden"
+    <Section className="relative min-h-[80dvh] flex items-center py-3 md:py-4 lg:py-5 overflow-hidden"
       style={{ background: C.bgAlt }}
     >
-      {/* ─── Large-scale ambient glow canvas ─── */}
-      <motion.div
-        style={{ scale: bgScale }}
-        className="absolute inset-0 pointer-events-none"
-      >
-        {/* Deep warm base */}
+      {/* Static ambient glow canvas */}
+      <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0" style={{
           background: `
             radial-gradient(ellipse 70% 55% at 50% 40%, rgba(214, 207, 199, 0.04), transparent 58%),
@@ -988,24 +724,10 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             radial-gradient(ellipse 50% 35% at 50% 85%, rgba(139, 115, 85, 0.025), transparent 50%)
           `,
         }} />
+      </div>
 
-        {/* Central luminous core */}
-        <motion.div
-          animate={{ opacity: [0.025, 0.055, 0.025], scale: [1, 1.04, 1] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3 w-[900px] h-[600px] rounded-full"
-          style={{
-            background: `radial-gradient(ellipse at center, ${C.champagne}, transparent 65%)`,
-            filter: "blur(120px)",
-          }}
-        />
-      </motion.div>
-
-      {/* ─── Floating atmospheric orbs ─── */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{ y: [0, -30, 0], x: [0, 15, 0], scale: [1, 1.06, 1] }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        <div
           className="absolute top-[8%] right-[6%] w-[450px] h-[450px] rounded-full"
           style={{
             background: `radial-gradient(circle at center, ${C.champagne}, transparent 60%)`,
@@ -1013,9 +735,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             opacity: 0.04,
           }}
         />
-        <motion.div
-          animate={{ y: [0, 25, 0], x: [0, -20, 0], scale: [1, 1.05, 1] }}
-          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+        <div
           className="absolute bottom-[12%] left-[4%] w-[380px] h-[380px] rounded-full"
           style={{
             background: `radial-gradient(circle at center, ${C.bronze}, transparent 60%)`,
@@ -1023,9 +743,7 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             opacity: 0.03,
           }}
         />
-        <motion.div
-          animate={{ y: [0, -18, 0], x: [0, 10, 0], scale: [1, 1.03, 1] }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        <div
           className="absolute top-[55%] left-[20%] w-[300px] h-[300px] rounded-full"
           style={{
             background: `radial-gradient(circle at center, ${C.ivory}, transparent 60%)`,
@@ -1033,92 +751,26 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             opacity: 0.02,
           }}
         />
-
-        {/* Abstract rotating geometry */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[15%] left-[10%] w-[220px] h-[220px] opacity-[0.012]"
-          style={{
-            border: `1px solid ${C.champagne}25`,
-            borderRadius: "42% 58% 38% 62% / 52% 40% 60% 48%",
-          }}
-        />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 100, repeat: Infinity, ease: "linear", delay: 2 }}
-          className="absolute bottom-[18%] right-[12%] w-[180px] h-[180px] opacity-[0.01]"
-          style={{
-            border: `1px solid ${C.bronze}20`,
-            borderRadius: "58% 42% 62% 38% / 48% 58% 42% 52%",
-          }}
-        />
-
-        {/* ─── Floating particle dots ─── */}
-        {Array.from({ length: 30 }).map((_, i) => (
-          <motion.div
-            key={`particle-${i}`}
-            className="absolute w-[2px] h-[2px] rounded-full"
-            style={{
-              background: C.champagne,
-              top: `${5 + Math.random() * 90}%`,
-              left: `${3 + Math.random() * 94}%`,
-              opacity: 0.015 + Math.random() * 0.045,
-            }}
-            animate={{
-              y: [0, -(30 + Math.random() * 60), 0],
-              x: [0, (Math.random() * 30 - 15), 0],
-              opacity: [
-                0.015 + Math.random() * 0.025,
-                0.04 + Math.random() * 0.06,
-                0.015 + Math.random() * 0.025,
-              ],
-            }}
-            transition={{
-              duration: 18 + Math.random() * 22,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 14,
-            }}
-          />
-        ))}
       </div>
 
-      {/* ─── Content ─── */}
+      {/* Content */}
       <div className="relative z-10 w-full max-w-[1100px] mx-auto px-6">
         <div className="flex flex-col items-center text-center">
-          {/* ── Eyebrow ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mb-6"
-          >
+          <div className="mb-6">
             <span
               className={`${inter.className} text-[10px] md:text-xs tracking-[0.3em] uppercase`}
               style={{ color: C.bronze }}
             >
               A Vision Beyond Business
             </span>
-          </motion.div>
+          </div>
 
-          {/* ── Opening decorative line ── */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          <div
             className="w-16 h-px mb-10"
             style={{ background: C.bronze, opacity: 0.5 }}
           />
 
-          {/* ── Main Title ── */}
-          <motion.h2
-            initial={{ opacity: 0, y: 50, filter: "blur(6px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.4, delay: 0.25, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          <h2
             className={`${playfair.className} text-[clamp(2.8rem,9vw,6.5rem)] font-bold leading-[1.05] tracking-[-0.02em]`}
             style={{ color: C.ivory }}
           >
@@ -1127,19 +779,10 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             <span className="italic font-normal" style={{ color: C.champagne }}>
               Journey
             </span>
-          </motion.h2>
+          </h2>
 
-          {/* ── Subtitle divider ── */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mt-8 w-20 h-px mb-12"
-            style={{ background: C.champagne, opacity: 0.3 }}
-          />
+          <div className="mt-8 w-20 h-px mb-12" style={{ background: C.champagne, opacity: 0.3 }} />
 
-          {/* ── Main Message Body ── */}
           <div className="max-w-4xl mx-auto space-y-6 md:space-y-8">
             {[
               "THE KYNXZ BRAND was never created to simply sell products.",
@@ -1150,32 +793,17 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
               "Because true luxury is not defined by possessions.",
               "It is defined by the people with whom we share the journey.",
             ].map((paragraph, i) => (
-              <motion.p
+              <p
                 key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 1.1,
-                  delay: 0.6 + i * 0.12,
-                  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-                }}
                 className={`${cormorant.className} text-[clamp(1.1rem,2.2vw,1.6rem)] leading-[1.75] tracking-[0.03em]`}
                 style={{ color: C.muted }}
               >
                 {paragraph}
-              </motion.p>
+              </p>
             ))}
           </div>
 
-          {/* ── Elegant Divider ── */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, delay: 1.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="relative mt-16 mb-16 w-full max-w-[400px] h-px"
-          >
+          <div className="relative mt-16 mb-16 w-full max-w-[400px] h-px">
             <div
               className="absolute inset-0"
               style={{
@@ -1187,23 +815,17 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
               className="absolute left-1/2 -translate-x-1/2 -top-[3px] w-[6px] h-[6px] rounded-full"
               style={{ background: C.bronze, opacity: 0.4 }}
             />
-          </motion.div>
+          </div>
 
-          {/* ── Founder Vision ── */}
           <div className="max-w-3xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            >
+            <div>
               <p
                 className={`${inter.className} text-[10px] md:text-xs tracking-[0.25em] uppercase mb-8`}
                 style={{ color: C.bronze }}
               >
                 Founder Vision
               </p>
-            </motion.div>
+            </div>
 
             {[
               "My vision for THE KYNXZ BRAND extends far beyond commerce.",
@@ -1212,31 +834,16 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
               "THE KYNXZ BRAND is not just my dream.",
               "It belongs to every individual who believes in our vision and chooses to walk this journey alongside us.",
             ].map((paragraph, i) => (
-              <motion.p
+              <p
                 key={`founder-${i}`}
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 1,
-                  delay: 0.5 + i * 0.1,
-                  ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-                }}
                 className={`${inter.className} text-sm md:text-base leading-[1.9] tracking-[0.02em]`}
                 style={{ color: C.muted }}
               >
                 {paragraph}
-              </motion.p>
+              </p>
             ))}
 
-            {/* Signature */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.2, delay: 1.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-              className="mt-10"
-            >
+            <div className="mt-10">
               <div
                 className="w-12 h-px mb-6 mx-auto"
                 style={{ background: C.bronze, opacity: 0.4 }}
@@ -1259,24 +866,14 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
               >
                 THE KYNXZ BRAND
               </p>
-            </motion.div>
+            </div>
           </div>
 
-          {/* ── Large Cinematic Quote ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 60, scale: 0.97, filter: "blur(4px)" }}
-            whileInView={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="relative mt-14 md:mt-16 pt-8 md:pt-10 w-full max-w-[1000px] mx-auto"
-          >
-            {/* Top decorative line */}
+          <div className="relative mt-14 md:mt-16 pt-8 md:pt-10 w-full max-w-[1000px] mx-auto">
             <div
               className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-px"
               style={{ background: C.champagne, opacity: 0.2 }}
             />
-
-            {/* Large decorative opening quote mark */}
             <div
               className="absolute -top-4 left-1/2 -translate-x-1/2 text-6xl md:text-8xl leading-none pointer-events-none"
               style={{ color: C.champagne, opacity: 0.08 }}
@@ -1286,15 +883,14 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             </div>
 
             <blockquote
-              className={`${playfair.className}text-[clamp(1.4rem,4.2vw,3.5rem)] font-light italic leading-[1.2] tracking-[-0.01em] text-center`}
-            style={{ color: C.ivory }}
-          >
+              className={`${playfair.className} text-[clamp(1.4rem,4.2vw,3.5rem)] font-light italic leading-[1.2] tracking-[-0.01em] text-center`}
+              style={{ color: C.ivory }}
+            >
               We are not building a customer base.<br />
               We are building a family, a legacy,<br />
               and a future together.
             </blockquote>
 
-            {/* Closing decorative quote mark */}
             <div
               className="absolute -bottom-8 right-[10%] text-6xl md:text-8xl leading-none pointer-events-none"
               style={{ color: C.champagne, opacity: 0.06 }}
@@ -1302,21 +898,12 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
             >
               &rdquo;
             </div>
-          </motion.div>
+          </div>
 
-          {/* ── Final accent line ── */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mt-8 w-16 h-px mx-auto"
-            style={{ background: C.bronze, opacity: 0.5 }}
-          />
+          <div className="mt-8 w-16 h-px mx-auto" style={{ background: C.bronze, opacity: 0.5 }} />
         </div>
       </div>
 
-      {/* Bottom fade to footer */}
       <div
         className="absolute bottom-0 left-0 right-0 h-24 pointer-events-none"
         style={{ background: `linear-gradient(to bottom, transparent, ${C.bg})` }}
@@ -1359,11 +946,20 @@ export default function MissionPage() {
         {/* Section 3 – Core Values */}
         <CoreValuesSection C={C} />
 
+        {/* Background transition: bg → bgAlt */}
+        <div aria-hidden className="h-5 lg:h-6 w-full pointer-events-none" style={{ background: `linear-gradient(to bottom, ${C.bg}, ${C.bgAlt})` }} />
+
         {/* Section 4 – Vision Timeline */}
         <VisionTimeline C={C} />
 
+        {/* Background transition: bgAlt → bg */}
+        <div aria-hidden className="h-5 lg:h-6 w-full pointer-events-none" style={{ background: `linear-gradient(to bottom, ${C.bgAlt}, ${C.bg})` }} />
+
         {/* Section 5 – Inspirational Quote */}
         <QuoteSection C={C} />
+
+        {/* Background transition: bg → bgAlt */}
+        <div aria-hidden className="h-5 lg:h-6 w-full pointer-events-none" style={{ background: `linear-gradient(to bottom, ${C.bg}, ${C.bgAlt})` }} />
 
         {/* Section 6 – Our Shared Journey */}
         <SharedJourneySection C={C} />

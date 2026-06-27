@@ -1,33 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect } from "react";
 import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
 
 import { useTheme, THEME } from "../hooks/useTheme";
-/* ───────────────────────────────────────────────
-   Animation variants
-   ─────────────────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-};
-
-const scaleIn = {
-  hidden: { opacity: 0, scaleX: 0 },
-  visible: {
-    opacity: 1,
-    scaleX: 1,
-    transition: { duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  },
-};
-
 /* ───────────────────────────────────────────────
    Return policy content data
    ─────────────────────────────────────────────── */
@@ -243,17 +221,9 @@ function PolicySection({
   index: number;
   C: (typeof THEME)["dark"];
 }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-60px" });
-
   return (
-    <motion.section
-      ref={ref}
+    <section
       id={section.id}
-      variants={fadeUp}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      custom={Math.min(index, 4)}
       className="scroll-mt-28"
     >
       {/* Section number */}
@@ -287,10 +257,7 @@ function PolicySection({
 
       {/* Divider */}
       {index < sections.length - 1 && (
-        <motion.div
-          variants={scaleIn}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
+        <div
           aria-hidden
           className="my-12 md:my-16 h-px w-full max-w-3xl"
           style={{
@@ -300,7 +267,7 @@ function PolicySection({
           }}
         />
       )}
-    </motion.section>
+    </section>
   );
 }
 
@@ -342,21 +309,17 @@ export default function ReturnPolicyPage() {
             }}
           />
 
-          {/* Floating abstract shapes */}
+          {/* Floating abstract shapes — static */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <motion.div
-              animate={{ y: [0, -20, 0], opacity: [0.03, 0.06, 0.03] }}
-              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-[15%] right-[10%] w-[300px] h-[300px] rounded-full"
+            <div
+              className="absolute top-[15%] right-[10%] w-[300px] h-[300px] rounded-full opacity-[0.03]"
               style={{
                 background: "radial-gradient(circle at center, #D6CFC7, transparent 65%)",
                 filter: "blur(70px)",
               }}
             />
-            <motion.div
-              animate={{ y: [0, 15, 0], opacity: [0.02, 0.05, 0.02] }}
-              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3 }}
-              className="absolute bottom-[20%] left-[8%] w-[250px] h-[250px] rounded-full"
+            <div
+              className="absolute bottom-[20%] left-[8%] w-[250px] h-[250px] rounded-full opacity-[0.02]"
               style={{
                 background: "radial-gradient(circle at center, #8B7355, transparent 60%)",
                 filter: "blur(60px)",
@@ -365,55 +328,35 @@ export default function ReturnPolicyPage() {
           </div>
 
           <div className="relative z-10 max-w-[900px] mx-auto px-6 text-center">
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={0}
+            <p
               className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-6`}
               style={{ color: C.bronze }}
             >
               Policies
-            </motion.p>
+            </p>
 
-            <motion.h1
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={1}
+            <h1
               className={`${playfair.className} text-[clamp(2.5rem,7vw,5rem)] font-bold leading-[1.08] tracking-[-0.02em]`}
               style={{ color: C.ivory }}
             >
               Return &amp; Refund Policy
-            </motion.h1>
+            </h1>
 
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={2}
+            <div
               className="mx-auto mt-6 w-16 h-px"
               style={{ background: C.bronze }}
             />
 
-            <motion.p
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={3}
+            <p
               className={`${cormorant.className} italic text-lg md:text-xl mt-8 max-w-2xl mx-auto leading-[1.6]`}
               style={{ color: C.muted }}
             >
               &ldquo;Our commitment to excellence extends beyond
               delivery.&rdquo;
-            </motion.p>
+            </p>
 
             {/* Last Updated */}
-            <motion.div
-              variants={fadeUp}
-              initial="hidden"
-              animate="visible"
-              custom={4}
+            <div
               className="mt-10 inline-flex items-center gap-2 px-4 py-2 rounded-full"
               style={{
                 background: "rgba(214, 207, 199, 0.04)",
@@ -430,7 +373,7 @@ export default function ReturnPolicyPage() {
               >
                 Last Updated: {lastUpdated}
               </span>
-            </motion.div>
+            </div>
           </div>
 
           {/* Bottom fade */}

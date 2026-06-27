@@ -3,64 +3,17 @@
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
-import {
-  motion,
-  AnimatePresence,
-  useInView,
-} from "framer-motion";
 import { playfair, cormorant, inter } from "../../fonts";
 import Header from "../../components/Header";
 import FooterSection from "../../components/FooterSection";
 import { Product } from "../types";
 
 import { useTheme, THEME } from "../../hooks/useTheme";
-/* ───────────────────────────────────────────────
-   Animation variants
-   ─────────────────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.9, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-};
-
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.95 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  },
-};
-
-/* ───────────────────────────────────────────────
-   Carousel slide direction variants
-   ─────────────────────────────────────────────── */
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 320 : -320,
-    opacity: 0,
-    scale: 0.98,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction > 0 ? -320 : 320,
-    opacity: 0,
-    scale: 0.98,
-  }),
-};
 
 /* ───────────────────────────────────────────────
    Luxury Accordion Panel
-   - Collapsible section with smooth Framer Motion animation
-   - Rotating chevron icon
-   - Subtle gold accent border on hover/open
+   - Collapsible section with CSS transition
+   - Rotating chevron icon via CSS
    ─────────────────────────────────────────────── */
 function AccordionPanel({
   title,
@@ -94,8 +47,8 @@ function AccordionPanel({
           {title}
         </span>
 
-        {/* Chevron icon — rotates on open */}
-        <motion.svg
+        {/* Chevron icon — CSS rotation */}
+        <svg
           width="14"
           height="14"
           viewBox="0 0 14 14"
@@ -104,15 +57,14 @@ function AccordionPanel({
           strokeWidth="1.2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="shrink-0 opacity-60 group-hover:opacity-100 transition-opacity"
+          className="shrink-0 opacity-60 group-hover:opacity-100 transition-all duration-300"
+          style={{ transform: `rotate(${isOpen ? 180 : 0}deg)` }}
         >
           <path d="M3 5L7 9L11 5" />
-        </motion.svg>
+        </svg>
       </button>
 
-      {/* Content area with height animation */}
+      {/* Content area with CSS grid animation */}
       <div
         style={{
           display: "grid",
@@ -131,14 +83,9 @@ function AccordionPanel({
               }}
             />
 
-            {/* Animated fade-in content */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isOpen ? 1 : 0 }}
-              transition={{ duration: 0.25, delay: isOpen ? 0.1 : 0 }}
-            >
+            <div style={{ opacity: isOpen ? 1 : 0, transition: "opacity 0.25s ease" }}>
               {children}
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -213,7 +160,6 @@ function ImageGallery({
   const totalImages = allImages.length;
 
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [showZoom, setShowZoom] = useState(false);
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [isHovering, setIsHovering] = useState(false);
@@ -224,19 +170,16 @@ function ImageGallery({
   const goTo = useCallback(
     (index: number) => {
       const next = ((index % totalImages) + totalImages) % totalImages;
-      setDirection(next > activeIndex ? 1 : next < activeIndex ? -1 : 0);
       setActiveIndex(next);
     },
-    [totalImages, activeIndex]
+    [totalImages]
   );
 
   const goToNext = useCallback(() => {
-    setDirection(1);
     setActiveIndex((prev) => (prev + 1) % totalImages);
   }, [totalImages]);
 
   const goToPrev = useCallback(() => {
-    setDirection(-1);
     setActiveIndex((prev) => (prev - 1 + totalImages) % totalImages);
   }, [totalImages]);
 
@@ -244,7 +187,6 @@ function ImageGallery({
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     if (totalImages <= 1) return;
     autoPlayRef.current = setInterval(() => {
-      setDirection(1);
       setActiveIndex((prev) => (prev + 1) % totalImages);
     }, 4000);
   }, [totalImages]);
@@ -328,24 +270,16 @@ function ImageGallery({
             transition: "transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
-          <AnimatePresence mode="wait" custom={direction}>
-            <motion.div
-              key={activeIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="absolute inset-0"
-              style={{
-                background: allImages[activeIndex],
-                backgroundSize: "contain",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-              }}
-            />
-          </AnimatePresence>
+          <div
+            key={activeIndex}
+            className="absolute inset-0 transition-opacity duration-500"
+            style={{
+              background: allImages[activeIndex],
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
         </div>
 
         {totalImages > 1 && (
@@ -415,7 +349,7 @@ function ImageGallery({
           )}
           {product.isNew && (
             <span
-              className="luxury-new-badge text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
+              className="text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
               style={{
                 borderColor: product.accent,
                 color: product.accent,
@@ -513,26 +447,15 @@ function ReviewsSection({
   product: Product;
   C: (typeof THEME)["dark"];
 }) {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-60px" });
-
   const reviewList = product.reviews?.list || [];
   const avgRating = product.reviews?.rating || 0;
 
   if (reviewList.length === 0) return null;
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative overflow-hidden py-12 md:py-16 detail-section-alt"
-    >
+    <section className="relative overflow-hidden py-12 md:py-16 detail-section-alt">
       <div className="max-w-[1200px] mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mb-10"
-        >
+        <div className="mb-10">
           <div className="flex items-center gap-4 mb-2">
             <h2
               className={`${playfair.className} text-2xl md:text-3xl font-bold`}
@@ -548,15 +471,12 @@ function ReviewsSection({
             </div>
           </div>
           <div className="mt-3 w-16 h-px" style={{ background: C.bronze, opacity: 0.4 }} />
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-          {reviewList.map((review, i) => (
-            <motion.div
+          {reviewList.map((review) => (
+            <div
               key={review.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="detail-review-card p-6 md:p-7 rounded-[2px]"
               style={{ border: "1px solid var(--color-border)", background: C.surface }}
             >
@@ -575,7 +495,7 @@ function ReviewsSection({
               <h4 className={`${inter.className} text-sm font-semibold mt-3 mb-2`} style={{ color: C.ivory }}>{review.title}</h4>
               <p className={`${inter.className} text-xs leading-[1.8]`} style={{ color: C.muted }}>&ldquo;{review.content}&rdquo;</p>
               <div className="mt-4 h-px w-8" style={{ background: C.bronze, opacity: 0.2 }} />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -596,7 +516,6 @@ function RelatedProducts({
   C: (typeof THEME)["dark"];
 }) {
   const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-60px" });
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -635,16 +554,11 @@ function RelatedProducts({
     scrollRef.current.scrollBy({ left: amount, behavior: 'smooth' });
   };
 
-  // Empty state
   if (related.length === 0) {
     return (
       <section ref={sectionRef} className="relative overflow-hidden py-12 md:py-16" style={{ background: C.bgAlt }}>
         <div className="max-w-[1200px] mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          >
+          <div>
             <div className="w-12 h-12 mx-auto mb-6 rounded-full flex items-center justify-center" style={{ background: `radial-gradient(circle at 40% 35%, ${C.bronze}15, transparent 70%)` }}>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke={C.muted} strokeWidth="1" strokeLinecap="round">
                 <circle cx="10" cy="10" r="8" />
@@ -655,7 +569,7 @@ function RelatedProducts({
             <p className={`${cormorant.className} text-lg italic`} style={{ color: C.muted }}>
               More curated pieces arriving soon.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
     );
@@ -664,21 +578,15 @@ function RelatedProducts({
   return (
     <section ref={sectionRef} className="relative overflow-hidden py-12 md:py-16" style={{ background: C.bgAlt }}>
       <div className="max-w-[1200px] mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mb-8 md:mb-10 text-center"
-        >
+        <div className="mb-8 md:mb-10 text-center">
           <p className={`${inter.className} text-[10px] tracking-[0.25em] uppercase mb-3`} style={{ color: C.bronze }}>Complete The Story</p>
           <h2 className={`${playfair.className} text-2xl md:text-3xl font-bold`} style={{ color: C.ivory }}>
             You May Also{" "}
             <span className="italic font-normal" style={{ color: C.champagne }}>Appreciate</span>
           </h2>
           <div className="mx-auto mt-4 w-16 h-px" style={{ background: C.bronze, opacity: 0.4 }} />
-        </motion.div>
+        </div>
 
-        {/* Scroll buttons — desktop only */}
         <div className="hidden md:flex justify-end gap-2 mb-4">
           <button
             type="button"
@@ -706,18 +614,14 @@ function RelatedProducts({
           </button>
         </div>
 
-        {/* Scrollable horizontal container */}
         <div
           ref={scrollRef}
           className="flex gap-4 md:gap-5 overflow-x-auto snap-x snap-mandatory scrollbar-none pb-2 -mx-6 px-6"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
-          {related.map((item, i) => (
-            <motion.div
+          {related.map((item) => (
+            <div
               key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.7, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
               className="snap-start shrink-0 w-[calc(50%-8px)] md:w-[calc(25%-15px)] min-w-[200px]"
             >
               <Link
@@ -735,14 +639,12 @@ function RelatedProducts({
                       backgroundRepeat: 'no-repeat',
                     }}
                   />
-                  {/* Soft glow overlay on hover */}
                   <div
                     className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                     style={{
                       background: `radial-gradient(circle at center, ${item.accent}10, transparent 70%)`,
                     }}
                   />
-                  {/* Category badge */}
                   <div className="absolute top-2 left-2 z-10">
                     <span
                       className="inline-block text-[7px] tracking-[0.18em] uppercase px-2 py-1 rounded-full border backdrop-blur-sm"
@@ -764,13 +666,12 @@ function RelatedProducts({
                     {item.originalPrice && <span className="text-[10px] line-through" style={{ color: C.muted }}>${item.originalPrice}</span>}
                   </div>
                 </div>
-                {/* Bottom accent line */}
                 <div
                   className="h-px w-0 group-hover:w-full transition-all duration-500 mx-auto"
                   style={{ background: `linear-gradient(to right, transparent, ${item.accent}, transparent)` }}
                 />
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -848,8 +749,6 @@ export default function ProductDetailPage() {
     const title = `${product.name} | THE KYNXZ BRAND`;
     const desc = product.description || product.tagline || `${product.name} — luxury piece from THE KYNXZ BRAND`;
 
-    // Determine the best available image URL for SEO
-    // Priority: mainImage → first gallery image → placeholder data URI (neutral 1x1 transparent pixel)
     const PLACEHOLDER_IMAGE = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%221%22 height=%221%22/%3E';
     const imageUrl =
       product.mainImage ||
@@ -858,13 +757,11 @@ export default function ProductDetailPage() {
 
     document.title = title;
 
-    // Helper: set meta tag attribute
     const setMeta = (sel: string, attr: string, val: string) => {
       const el = document.querySelector(sel);
       if (el) el.setAttribute(attr, val);
     };
 
-    // Update SEO meta tags
     setMeta('meta[name="description"]', 'content', desc);
     setMeta('meta[property="og:title"]', 'content', title);
     setMeta('meta[property="og:description"]', 'content', desc);
@@ -874,11 +771,9 @@ export default function ProductDetailPage() {
     setMeta('meta[name="twitter:description"]', 'content', desc);
     setMeta('meta[name="twitter:image"]', 'content', imageUrl || '');
 
-    // Update canonical
     const canonical = document.querySelector('link[rel="canonical"]');
     if (canonical) canonical.setAttribute('href', url);
 
-    // Inject JSON-LD structured data (Product schema.org)
     const existing = document.getElementById('product-jsonld');
     if (existing) existing.remove();
 
@@ -983,12 +878,12 @@ export default function ProductDetailPage() {
         <section className="max-w-[1400px] mx-auto px-6 pb-8 md:pb-12">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 lg:gap-16">
             {/* Left – Image Gallery */}
-            <motion.div variants={scaleIn} initial="hidden" animate="visible">
+            <div>
               <ImageGallery product={product} C={C} />
-            </motion.div>
+            </div>
 
             {/* Right – Product Info */}
-            <motion.div variants={fadeUp} initial="hidden" animate="visible" className="space-y-6">
+            <div className="space-y-6">
               {/* ── Category & Tags ── */}
               <div className="flex items-center gap-3 flex-wrap">
                 <span
@@ -1002,7 +897,7 @@ export default function ProductDetailPage() {
                 ))}
               </div>
 
-              {/* ── Product Name (Reduced size) ── */}
+              {/* ── Product Name ── */}
               <div>
                 <h1
                   className={`${playfair.className} text-[clamp(1.5rem,3.8vw,2.5rem)] font-bold leading-[1.1] tracking-[-0.01em]`}
@@ -1046,10 +941,9 @@ export default function ProductDetailPage() {
                   { icon: '↩️', label: 'Easy Returns' },
                   { icon: '◆', label: 'Curated Collection' },
                 ].map((badge) => (
-                  <motion.div
+                  <div
                     key={badge.label}
-                    whileHover={{ y: -2 }}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-full border text-[9px] tracking-[0.12em] uppercase transition-all duration-300 hover:border-opacity-60"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-full border text-[9px] tracking-[0.12em] uppercase transition-all duration-300 hover:-translate-y-0.5 hover:border-opacity-60"
                     style={{
                       borderColor: 'var(--color-border)',
                       color: C.muted,
@@ -1058,10 +952,9 @@ export default function ProductDetailPage() {
                   >
                     <span style={{ color: C.champagne }}>{badge.icon}</span>
                     <span className={`${inter.className}`}>{badge.label}</span>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
-
 
               {/* ── Accent divider ── */}
               <div className="h-px w-full" style={{ background: `linear-gradient(to right, ${C.champagne}20, transparent)` }} />
@@ -1100,14 +993,12 @@ export default function ProductDetailPage() {
 
               {/* ── Accordion Sections ── */}
               <div className="space-y-3 pt-2">
-                {/* Product Description */}
                 <AccordionPanel title="Product Description">
                   <p className={`${inter.className} text-sm leading-[1.9]`} style={{ color: C.muted }}>
                     {product.detailedDescription || product.description}
                   </p>
                 </AccordionPanel>
 
-                {/* Specifications */}
                 {specEntries.length > 0 && (
                   <AccordionPanel title="Specifications">
                     <div className="space-y-3">
@@ -1134,7 +1025,6 @@ export default function ProductDetailPage() {
                   </AccordionPanel>
                 )}
 
-                {/* Shipping Information */}
                 <AccordionPanel title="Shipping Information">
                   <p className={`${inter.className} text-sm leading-[1.9]`} style={{ color: C.muted }}>
                     Orders are carefully prepared and shipped worldwide. Estimated delivery times vary by destination.
@@ -1142,7 +1032,6 @@ export default function ProductDetailPage() {
                   </p>
                 </AccordionPanel>
 
-                {/* Returns & Refunds */}
                 <AccordionPanel title="Returns & Refunds">
                   <p className={`${inter.className} text-sm leading-[1.9]`} style={{ color: C.muted }}>
                     We accept returns on eligible items within our return window. Please review our{" "}
@@ -1156,7 +1045,6 @@ export default function ProductDetailPage() {
                   )}
                 </AccordionPanel>
 
-                {/* Product Care */}
                 <AccordionPanel title="Product Care">
                   <div className="space-y-3">
                     {product.material && (
@@ -1177,7 +1065,6 @@ export default function ProductDetailPage() {
                   </div>
                 </AccordionPanel>
 
-                {/* Brand Promise */}
                 <AccordionPanel title="Brand Promise">
                   <p className={`${inter.className} text-sm leading-[1.9]`} style={{ color: C.muted }}>
                     Every piece at THE KYNXZ BRAND is selected with a commitment to timeless elegance, premium quality, and exceptional customer experience. We stand behind the craftsmanship of every item in our collection and are dedicated to ensuring your complete satisfaction.
@@ -1185,7 +1072,7 @@ export default function ProductDetailPage() {
                   <div className="mt-4 h-px w-12" style={{ background: C.champagne, opacity: 0.3 }} />
                 </AccordionPanel>
               </div>
-            </motion.div>
+            </div>
           </div>
         </section>
 
@@ -1196,15 +1083,11 @@ export default function ProductDetailPage() {
           <section className="relative overflow-hidden py-12 md:py-16 detail-section-alt">
             <div className="max-w-[1200px] mx-auto px-6">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-                <motion.div
-                  initial={{ opacity: 0, x: -40 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                  className="hidden lg:block"
+                <div
+                  className="block"
                 >
                   <div
-                    className="relative w-full aspect-square rounded-[2px] overflow-hidden"
+                    className="relative w-full max-h-[260px] sm:max-h-[400px] aspect-square rounded-[2px] overflow-hidden"
                     style={{ border: "1px solid var(--color-border)", background: product.galleryGradients?.[0] || product.gradient }}
                   >
                     <div
@@ -1217,37 +1100,28 @@ export default function ProductDetailPage() {
                     }}
                   />
                   </div>
-                </motion.div>
+                </div>
 
                 <div className="space-y-8">
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                  >
+                  <div>
                     <p className={`${inter.className} text-[10px] tracking-[0.25em] uppercase mb-3`} style={{ color: C.bronze }}>Key Features</p>
                     <h2 className={`${playfair.className} text-2xl md:text-3xl font-bold`} style={{ color: C.ivory }}>
                       What sets this{" "}
                       <span className="italic font-normal" style={{ color: C.champagne }}>piece apart</span>
                     </h2>
                     <div className="mt-4 w-16 h-px" style={{ background: C.bronze, opacity: 0.4 }} />
-                  </motion.div>
+                  </div>
 
                   <div className="space-y-4">
                     {product.features.map((feature, i) => (
-                      <motion.div
+                      <div
                         key={i}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                         className="detail-feature-item flex items-start gap-4 p-4 rounded-[2px]"
                         style={{ borderBottom: "1px solid var(--color-border)" }}
                       >
                         <span className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: C.bronze, opacity: 0.5 }} />
                         <p className={`${inter.className} text-sm leading-[1.7]`} style={{ color: C.muted }}>{feature}</p>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -1271,12 +1145,7 @@ export default function ProductDetailPage() {
            ═══════════════════════════════════════ */}
         <section className="relative overflow-hidden py-10 md:py-14" style={{ background: C.bg }}>
           <div className="max-w-[1200px] mx-auto px-6 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            >
+            <div>
               <Link
                 href="/collections"
                 className="group inline-flex items-center gap-3 px-8 py-3.5 rounded-full border text-xs tracking-[0.2em] uppercase transition-all duration-500 hover:-translate-y-0.5"
@@ -1287,7 +1156,7 @@ export default function ProductDetailPage() {
                 </svg>
                 <span>Explore All Collections</span>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </section>
       </main>
@@ -1296,7 +1165,7 @@ export default function ProductDetailPage() {
           STICKY ADD TO CART — Mobile Only
          ═══════════════════════════════════════ */}
       <div
-        className={`detail-sticky-cart ${showMobileCart ? "detail-sticky-cart-visible" : ""} lg:hidden`}
+        className={`${showMobileCart ? "" : "hidden"} lg:hidden fixed bottom-0 left-0 right-0 z-40`}
         style={{ background: C.bgAlt, borderTop: "1px solid var(--color-border)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}
       >
         <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center justify-between gap-4">

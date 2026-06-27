@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
 import { playfair, cormorant, inter } from "../fonts";
 
 import { useTheme, THEME } from "../hooks/useTheme";
@@ -16,7 +15,6 @@ function CircleMark({ C }: { C: (typeof THEME)["dark"] }) {
       viewBox="0 0 72 72"
       fill="none"
       aria-hidden
-      className="kynxz-circle-mark"
     >
       {/* Outer ring */}
       <circle
@@ -62,13 +60,13 @@ function CircleMark({ C }: { C: (typeof THEME)["dark"] }) {
 }
 
 /* ───────────────────────────────────────────────
-   Decorative rotating ring (CSS-driven)
+   Decorative ring (CSS-driven)
    ─────────────────────────────────────────────── */
 function DecorativeRing({ C }: { C: (typeof THEME)["dark"] }) {
   return (
     <div
       aria-hidden
-      className="absolute pointer-events-none kynxz-newsletter-ring"
+      className="absolute pointer-events-none"
     >
       <svg
         width="280"
@@ -131,8 +129,6 @@ function DecorativeRing({ C }: { C: (typeof THEME)["dark"] }) {
    ═══════════════════════════════════════════════ */
 export default function NewsletterSection() {
   const C = useTheme();
-  const sectionRef = useRef<HTMLElement>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const [focused, setFocused] = useState(false);
@@ -148,8 +144,7 @@ export default function NewsletterSection() {
 
   return (
     <section
-      ref={sectionRef}
-      className="kynxz-newsletter-section relative overflow-hidden py-10 md:py-14 lg:py-16"
+      className="relative overflow-hidden py-6 md:py-8 lg:py-10"
       aria-labelledby="newsletter-heading"
     >
       {/* Background ambient glow */}
@@ -174,23 +169,18 @@ export default function NewsletterSection() {
         />
       </div>
 
-      {/* Decorative rotating ring — positioned off to the side */}
+      {/* Decorative ring — positioned off to the side */}
       <div className="absolute top-[10%] -left-[10%] md:left-[2%] opacity-40 md:opacity-100">
         <DecorativeRing C={C} />
       </div>
-      <div className="absolute bottom-[10%] -right-[15%] md:right-[2%] opacity-30 md:opacity-80 hidden md:block">
+      <div className="absolute bottom-[10%] -right-[15%] md:right-[2%] opacity-20 md:opacity-80">
         <DecorativeRing C={C} />
       </div>
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6">
         <div className="max-w-3xl mx-auto">
           {/* ── Eyebrow ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="text-center"
-          >
+          <div className="text-center">
             <CircleMark C={C} />
 
             <p
@@ -199,14 +189,11 @@ export default function NewsletterSection() {
             >
               Become an Insider
             </p>
-          </motion.div>
+          </div>
 
           {/* ── Main Heading ── */}
-          <motion.h2
+          <h2
             id="newsletter-heading"
-            initial={{ opacity: 0, y: 30, filter: "blur(6px)" }}
-            animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-            transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
             className={`${playfair.className} mt-8 text-[clamp(2.2rem,6vw,4rem)] font-bold leading-[1.08] tracking-[-0.01em] text-center`}
             style={{ color: C.ivory }}
           >
@@ -217,48 +204,34 @@ export default function NewsletterSection() {
             >
               THE KYNXZ BRAND Circle
               {/* Underline accent */}
-              <motion.span
-                initial={{ scaleX: 0 }}
-                animate={isInView ? { scaleX: 1 } : {}}
-                transition={{ duration: 1.5, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                className="absolute -bottom-2 left-0 right-0 h-px origin-left"
+              <span
+                className="absolute -bottom-2 left-0 right-0 h-px"
                 style={{ background: `linear-gradient(to right, ${C.champagne}, transparent)` }}
               />
             </span>
-          </motion.h2>
+          </h2>
 
           {/* ── Subheading ── */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+          <p
             className={`${cormorant.className} mt-8 text-base md:text-lg lg:text-xl text-center leading-relaxed italic font-light max-w-xl mx-auto`}
             style={{ color: C.champagne }}
           >
             &ldquo;Become part of a world where craftsmanship, meaning, and timeless living converge.&rdquo;
-          </motion.p>
+          </p>
 
           {/* ── Divider ── */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={isInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mx-auto mt-10 w-16 h-px"
+          <div
+            className="mx-auto mt-6 w-16 h-px"
             style={{ background: C.bronze, opacity: 0.4 }}
           />
 
           {/* ── Benefits microcopy ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.9, delay: 0.45, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3"
-          >
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
             {[
               "Early Access to Collections",
               "Curated Editorial Content",
               "Exclusive Invitations",
-            ].map((benefit, i) => (
+            ].map((benefit) => (
               <div key={benefit} className="flex items-center gap-2">
                 <span
                   className="w-1 h-1 rounded-full"
@@ -272,22 +245,12 @@ export default function NewsletterSection() {
                 </span>
               </div>
             ))}
-          </motion.div>
+          </div>
 
           {/* ── Email Form ── */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mt-10 max-w-lg mx-auto"
-          >
+          <div className="mt-10 max-w-lg mx-auto">
             {subscribed ? (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-                className="text-center py-6"
-              >
+              <div className="text-center py-6">
                 <div
                   className="w-12 h-12 mx-auto mb-4 rounded-full flex items-center justify-center"
                   style={{
@@ -319,7 +282,7 @@ export default function NewsletterSection() {
                 >
                   You&apos;ve been added. A confirmation awaits in your inbox.
                 </p>
-              </motion.div>
+              </div>
             ) : (
               <form
                 onSubmit={handleSubmit}
@@ -327,7 +290,7 @@ export default function NewsletterSection() {
               >
                 <div
                   className={`relative flex items-center rounded-full border transition-all duration-500 overflow-hidden ${
-                    focused ? "kynxz-newsletter-focused" : ""
+                    focused ? "shadow-[0_0_20px_rgba(214,207,199,0.08)]" : ""
                   }`}
                   style={{
                     borderColor: focused ? "var(--color-accent)" : "var(--color-border)",
@@ -356,7 +319,7 @@ export default function NewsletterSection() {
                     placeholder="Enter your email address"
                     required
                     aria-label="Email address"
-                    className="kynxz-newsletter-input flex-1 bg-transparent border-none outline-none px-6 py-3.5 md:py-4 text-sm placeholder:text-xs placeholder:tracking-[0.08em]"
+                    className="flex-1 bg-transparent border-none outline-none px-6 py-3.5 md:py-4 text-sm placeholder:text-xs placeholder:tracking-[0.08em]"
                     style={{
                       color: C.ivory,
                       caretColor: C.champagne,
@@ -366,7 +329,7 @@ export default function NewsletterSection() {
                   <div className="pr-2">
                     <button
                       type="submit"
-                      className="kynxz-newsletter-submit group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 rounded-full text-[10px] tracking-[0.2em] uppercase font-semibold transition-all duration-500"
+                      className="group relative overflow-hidden inline-flex items-center gap-2 px-5 py-2.5 md:px-6 md:py-3 rounded-full text-[10px] tracking-[0.2em] uppercase font-semibold transition-all duration-500"
                       style={{
                         background: `linear-gradient(135deg, ${C.champagne}, ${C.bronze})`,
                         color: "#fff",
@@ -410,18 +373,11 @@ export default function NewsletterSection() {
                 </p>
               </form>
             )}
-          </motion.div>
+          </div>
 
           {/* ── Bottom accent mark ── */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={isInView ? { opacity: 1 } : {}}
-            transition={{ duration: 1.5, delay: 0.9, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-            className="mt-14 text-center"
-          >
-            <div
-              className="inline-flex items-center gap-2"
-            >
+          <div className="mt-8 text-center">
+            <div className="inline-flex items-center gap-2">
               <span
                 className="w-1.5 h-1.5 rounded-full"
                 style={{ background: C.bronze, opacity: 0.25 }}
@@ -437,7 +393,7 @@ export default function NewsletterSection() {
                 style={{ background: C.bronze, opacity: 0.25 }}
               />
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
 

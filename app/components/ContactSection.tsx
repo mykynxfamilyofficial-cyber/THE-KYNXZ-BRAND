@@ -84,7 +84,7 @@ export default function ContactSection() {
   return (
     <section
       ref={sectionRef}
-      className="contact-section relative overflow-hidden py-8 md:py-10 lg:py-12"
+      className="contact-section relative overflow-hidden py-5 md:py-6 lg:py-8"
       aria-labelledby="contact-heading"
     >
       {/* Gradient bridge from CTA section */}
@@ -116,9 +116,7 @@ export default function ContactSection() {
 
       <div className="luxury-container relative z-10">
         <div className="max-w-3xl mx-auto">
-          {/* Section header */}
-          <div
-            className={`text-center mb-10 md:mb-12 transition-all duration-900 ${
+          {/* Section header */}          <div className={`text-center mb-5 md:mb-6 transition-all duration-900 ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
             style={{

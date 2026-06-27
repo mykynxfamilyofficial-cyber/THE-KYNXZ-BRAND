@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export default function CTASection() {
@@ -21,7 +22,7 @@ export default function CTASection() {
   return (
     <section
       ref={sectionRef}
-      className="cta-section relative overflow-hidden py-5 md:py-6 lg:py-8"
+      className="cta-section relative overflow-hidden py-3 md:py-4 lg:py-6"
       aria-labelledby="cta-heading"
     >
       {/* Gradient bridge from Why section */}
@@ -70,7 +71,7 @@ export default function CTASection() {
             }}
           />
 
-          <div className="relative z-10 px-8 py-12 md:px-14 md:py-16 lg:px-20 lg:py-20 flex flex-col items-center text-center">
+          <div className="relative z-10 px-8 py-8 md:px-14 md:py-10 lg:px-20 lg:py-12 flex flex-col items-center text-center">
             {/* Section eyebrow */}
             <p
               className={`text-xs tracking-[0.28em] uppercase mb-3 transition-all duration-900 ${
@@ -126,9 +127,9 @@ export default function CTASection() {
                 transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
               }}
             >
-              {/* Primary CTA */}
-              <a
-                href="#"
+              {/* Primary CTA — Explore Collections */}
+              <Link
+                href="/collections"
                 className="group inline-flex items-center justify-center rounded-full border px-8 py-3.5 text-sm tracking-[0.12em] uppercase font-semibold backdrop-blur transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_0_0_1px_rgba(0,0,0,0.04),0_20px_60px_rgba(212,168,79,0.18)]
                 border-[var(--color-accent)] bg-[var(--color-accent)]/10 text-[var(--color-accent)]
                 hover:bg-[var(--color-accent)]/20 hover:border-[var(--color-accent)]
@@ -146,11 +147,11 @@ export default function CTASection() {
                   className="h-2 w-2 rounded-full bg-[var(--color-accent)] opacity-80 transition-transform duration-500 group-hover:scale-110"
                   style={{ boxShadow: "0 0 12px rgba(212,168,79,0.4)" }}
                 />
-              </a>
+              </Link>
 
-              {/* Secondary CTA */}
-              <a
-                href="#"
+              {/* Secondary CTA — Contact Us */}
+              <Link
+                href="/contact"
                 className="group inline-flex items-center justify-center rounded-full border px-8 py-3.5 text-sm tracking-[0.12em] uppercase font-semibold backdrop-blur transition-all duration-500 hover:-translate-y-0.5
                 border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--color-text-primary)]
                 hover:border-[var(--color-accent)]/40 hover:bg-[var(--color-accent)]/5 hover:shadow-[0_0_40px_var(--color-glow)]
@@ -161,7 +162,7 @@ export default function CTASection() {
                   aria-hidden
                   className="ml-3 h-2 w-2 rounded-full bg-[var(--color-accent)]/60 transition-all duration-500 group-hover:bg-[var(--color-accent)] group-hover:scale-110"
                 />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

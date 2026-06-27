@@ -115,7 +115,7 @@ export default function WhySection() {
   return (
     <section
       ref={sectionRef}
-      className="why-section relative overflow-hidden py-5 md:py-6 lg:py-8"
+      className="why-section relative overflow-hidden py-3 md:py-4 lg:py-6"
       aria-labelledby="why-heading"
     >
       {/* Gradient bridge from World section */}

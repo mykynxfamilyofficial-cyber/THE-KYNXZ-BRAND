@@ -6,6 +6,7 @@ import LoadingScreen from "./components/LoadingScreen";
 import ClientEffects from "./components/ClientEffects";
 import ScrollToExplore from "./components/ScrollToExplore";
 
+
 export const metadata: Metadata = {
   title: "THE KYNXZ BRAND | Timeless Luxury. Refined Living.",
   description:
@@ -85,6 +86,7 @@ export default function RootLayout({
         <LoadingScreen />
         <ClientEffects>{children}</ClientEffects>
         <ScrollToExplore />
+
       </body>
     </html>
   );

@@ -1,13 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useMemo, useCallback } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useInView,
-  AnimatePresence,
-} from "framer-motion";
+import { useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
 import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
@@ -21,68 +14,15 @@ import {
 } from "./types";
 
 import { useTheme, THEME } from "../hooks/useTheme";
-/* ───────────────────────────────────────────────
-   Animation variants
-   ─────────────────────────────────────────────── */
-const fadeUp = {
-  hidden: { opacity: 0, y: 48 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 1.1, delay: i * 0.15, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-};
-
-const fadeIn = {
-  hidden: { opacity: 0 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    transition: { duration: 1.2, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  }),
-};
-
-const wordReveal = {
-  hidden: { opacity: 0, y: 30, filter: "blur(8px)" },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      duration: 1,
-      delay: i * 0.12,
-      ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-    },
-  }),
-};
 
 const heroLines = [["Curated"], ["Worlds"]];
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.1,
-    },
-  },
-};
-
-const cardReveal = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
-  },
-};
 
 /* ───────────────────────────────────────────────
    Auto-rotating image carousel for product cards
    - No visible navigation arrows
    - Auto-rotates every 4 seconds
    - Pauses on hover
-   - Smooth crossfade transitions
+   - CSS-only crossfade transitions
    ─────────────────────────────────────────────── */
 function CardImageCarousel({ product }: { product: Product }) {
   const images = useMemo(
@@ -94,7 +34,6 @@ function CardImageCarousel({ product }: { product: Product }) {
   const [isHovering, setIsHovering] = useState(false);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Auto-rotate every 4s, pause on hover
   useEffect(() => {
     if (totalImages <= 1) return;
     if (!isHovering) {
@@ -107,12 +46,10 @@ function CardImageCarousel({ product }: { product: Product }) {
     };
   }, [isHovering, totalImages]);
 
-  // Reset index when product changes
   useEffect(() => {
     setActiveIndex(0);
   }, [product.id]);
 
-  // Determine the background style based on whether it's an image URL or gradient
   const bgStyle = useMemo(() => {
     const bg = images[activeIndex];
     const isImageUrl = bg.startsWith("url(");
@@ -124,7 +61,6 @@ function CardImageCarousel({ product }: { product: Product }) {
     };
   }, [images, activeIndex]);
 
-  // Neutral background for image containment
   const neutralBg = "var(--color-surface)";
 
   return (
@@ -134,48 +70,27 @@ function CardImageCarousel({ product }: { product: Product }) {
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0"
-          style={bgStyle}
-        />
-      </AnimatePresence>
+      <div
+        key={activeIndex}
+        className="absolute inset-0 transition-opacity duration-700"
+        style={bgStyle}
+      />
     </div>
   );
 }
 
 /* ───────────────────────────────────────────────
    ProductCard – Luxury product card component
-   - Clean images (no watermarks, no overlays)
-   - Auto-rotating image carousel (4s, pause on hover)
-   - Full image visibility with contain sizing
-   - Equal height cards with consistent spacing
    ─────────────────────────────────────────────── */
 function ProductCard({
   product,
-  index,
   C,
 }: {
   product: Product;
-  index: number;
   C: (typeof THEME)["dark"];
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(cardRef, { once: true, margin: "-60px" });
-
   return (
-    <motion.div
-      ref={cardRef}
-      variants={cardReveal}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      className="h-full"
-    >
+    <div className="h-full">
       <Link
         href={`/collections/${product.id}`}
         className="luxury-product-card group relative block rounded-[2px] overflow-hidden h-full flex flex-col"
@@ -184,11 +99,9 @@ function ProductCard({
           background: C.surface,
         }}
       >
-        {/* ── Product Image Area (clean, no watermarks) ── */}
         <div className="relative overflow-hidden aspect-[4/3] shrink-0">
           <CardImageCarousel product={product} />
 
-          {/* Badges */}
           <div className="absolute top-3 left-3 flex gap-2 z-10">
             {product.featured && (
               <span
@@ -204,7 +117,7 @@ function ProductCard({
             )}
             {product.isNew && (
               <span
-                className="luxury-new-badge text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
+                className="text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
                 style={{
                   borderColor: product.accent,
                   color: product.accent,
@@ -216,7 +129,6 @@ function ProductCard({
             )}
           </div>
 
-          {/* Quick View indicator — View details arrow */}
           <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-400 z-10">
             <span
               className="inline-flex items-center gap-1.5 text-[8px] tracking-[0.2em] uppercase px-3 py-1.5 rounded-full border backdrop-blur-sm"
@@ -240,20 +152,9 @@ function ProductCard({
               </svg>
             </span>
           </div>
-
-          {/* Hover border accent */}
-          <div
-            className="absolute inset-0 border border-transparent group-hover:border-opacity-40 transition-all duration-700 pointer-events-none rounded-[2px] z-10"
-            style={{
-              borderColor: product.accent,
-              opacity: 0,
-            }}
-          />
         </div>
 
-        {/* ── Product Info ── */}
         <div className="p-5 md:p-6 space-y-3 flex-1 flex flex-col">
-          {/* Product name */}
           <h3
             className={`${playfair.className} text-lg md:text-xl font-bold leading-[1.2] tracking-[0.02em] line-clamp-2`}
             style={{ color: C.ivory }}
@@ -261,7 +162,6 @@ function ProductCard({
             {product.name}
           </h3>
 
-          {/* Tagline */}
           <p
             className={`${inter.className} text-xs tracking-[0.15em] uppercase`}
             style={{ color: C.bronze }}
@@ -269,7 +169,6 @@ function ProductCard({
             {product.tagline}
           </p>
 
-          {/* Description */}
           <p
             className={`${inter.className} text-sm leading-[1.7] line-clamp-2 flex-1`}
             style={{ color: C.muted }}
@@ -277,7 +176,6 @@ function ProductCard({
             {product.description}
           </p>
 
-          {/* Price & Rating row */}
           <div className="flex items-center justify-between pt-2">
             <div className="flex items-baseline gap-2">
               <span
@@ -311,7 +209,6 @@ function ProductCard({
             )}
           </div>
 
-          {/* Accent line on hover */}
           <div
             className="h-px w-8 transition-all duration-500 group-hover:w-full"
             style={{
@@ -320,7 +217,6 @@ function ProductCard({
             }}
           />
 
-          {/* Add to cart hint */}
           <p
             className="text-[9px] tracking-[0.25em] uppercase opacity-0 transition-all duration-500 group-hover:opacity-50 pt-1"
             style={{ color: product.accent }}
@@ -329,42 +225,28 @@ function ProductCard({
           </p>
         </div>
       </Link>
-    </motion.div>
+    </div>
   );
 }
 
 /* ───────────────────────────────────────────────
-   ComingSoonCard – For categories without products
+   ComingSoonCard
    ─────────────────────────────────────────────── */
 function ComingSoonCard({
   category,
-  index,
   C,
 }: {
   category: (typeof CATEGORIES)[0];
-  index: number;
   C: (typeof THEME)["dark"];
 }) {
-  const cardRef = useRef(null);
-  const isInView = useInView(cardRef, { once: true, margin: "-40px" });
-
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.9,
-        delay: index * 0.1,
-        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
-      }}
+    <div
       className="luxury-coming-soon relative rounded-[2px] overflow-hidden p-8 md:p-10 text-center cursor-default"
       style={{
         border: "1px solid var(--color-border)",
         background: C.surface,
       }}
     >
-      {/* Decorative icon */}
       <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center">
         <div
           className="w-full h-full rounded-full flex items-center justify-center"
@@ -413,7 +295,6 @@ function ComingSoonCard({
         </div>
       </div>
 
-      {/* Category name */}
       <h3
         className={`${playfair.className} text-2xl md:text-3xl font-bold mb-3`}
         style={{ color: C.ivory }}
@@ -428,40 +309,20 @@ function ComingSoonCard({
         {category.description}
       </p>
 
-      {/* Shimmer "Coming Soon" */}
       <div className="mt-6">
         <span
-          className={`${inter.className} luxury-shimmer inline-block text-xs tracking-[0.25em] uppercase font-semibold`}
+          className={`${inter.className} inline-block text-xs tracking-[0.25em] uppercase font-semibold`}
+          style={{ color: C.bronze }}
         >
           Coming Soon
         </span>
       </div>
 
-      {/* Decorative dot */}
       <div
         className="mx-auto mt-4 w-1.5 h-1.5 rounded-full"
         style={{ background: C.bronze, opacity: 0.3 }}
       />
-
-      {/* Notify me button */}
-      <button
-        type="button"
-        className="mt-6 inline-flex items-center gap-2 px-5 py-2.5 rounded-full border text-[9px] tracking-[0.22em] uppercase transition-all duration-400 hover:-translate-y-0.5"
-        style={{
-          borderColor: "var(--color-border)",
-          color: C.champagne,
-        }}
-        onClick={() => {
-          // Future: notify me functionality
-        }}
-      >
-        Notify When Available
-        <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
-          <path d="M5 1V9" />
-          <path d="M1 5H9" />
-        </svg>
-      </button>
-    </motion.div>
+    </div>
   );
 }
 
@@ -610,124 +471,70 @@ function FilterBar({
    SECTION 1 – Cinematic Hero
    ═══════════════════════════════════════════════ */
 function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 180]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-
   return (
-    <section className="min-h-[85dvh] flex items-center justify-center relative overflow-hidden">
+    <section className="min-h-[45dvh] pt-20 md:pt-24 lg:min-h-[70dvh] lg:pt-0 flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{ y: [0, -25, 0], scale: [1, 1.03, 1] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+        <div
           className="absolute top-[20%] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-[0.05]"
           style={{ background: "radial-gradient(circle at center, #D6CFC7, transparent 65%)", filter: "blur(100px)" }}
         />
-        <motion.div
-          animate={{ y: [0, 30, 0], x: [0, -15, 0], scale: [1, 1.05, 1] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        <div
           className="absolute top-[55%] right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.03]"
           style={{ background: "radial-gradient(circle at center, #8B7355, transparent 60%)", filter: "blur(80px)" }}
         />
-        <motion.div
-          animate={{ y: [0, -20, 0], x: [0, 20, 0], scale: [1, 1.04, 1] }}
-          transition={{ duration: 24, repeat: Infinity, ease: "easeInOut", delay: 5 }}
+        <div
           className="absolute top-[15%] left-[5%] w-[350px] h-[350px] rounded-full opacity-[0.025]"
           style={{ background: "radial-gradient(circle at center, #F5F2ED, transparent 60%)", filter: "blur(70px)" }}
         />
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
+        <div
           className="absolute top-[25%] right-[8%] w-[280px] h-[280px] opacity-[0.015]"
           style={{ border: "1px solid rgba(214, 207, 199, 0.25)", borderRadius: "45% 55% 40% 60% / 50% 42% 58% 48%" }}
         />
-        <motion.div
-          animate={{ rotate: -360 }}
-          transition={{ duration: 90, repeat: Infinity, ease: "linear" }}
+        <div
           className="absolute bottom-[30%] left-[12%] w-[200px] h-[200px] opacity-[0.012]"
           style={{ border: "1px solid rgba(214, 207, 199, 0.15)", borderRadius: "55% 45% 60% 40% / 45% 55% 45% 55%" }}
         />
-        {Array.from({ length: 20 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-[2px] h-[2px] rounded-full"
-            style={{
-              background: C.champagne,
-              top: `${10 + Math.random() * 80}%`,
-              left: `${5 + Math.random() * 90}%`,
-              opacity: 0.03 + Math.random() * 0.05,
-            }}
-            animate={{
-              y: [0, -40 - Math.random() * 60, 0],
-              x: [0, 20 - Math.random() * 40, 0],
-              opacity: [0.03 + Math.random() * 0.03, 0.06 + Math.random() * 0.06, 0.03 + Math.random() * 0.03],
-            }}
-            transition={{
-              duration: 14 + Math.random() * 18,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: Math.random() * 10,
-            }}
-          />
-        ))}
       </div>
 
-      <motion.div
-        ref={ref}
-        style={{ y: heroY, opacity: heroOpacity }}
-        className="relative z-10 max-w-[1400px] mx-auto px-6 text-center"
-      >
-        <motion.p
-          variants={fadeUp} initial="hidden" animate="visible" custom={0}
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 text-center">
+        <p
           className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
           style={{ color: C.bronze }}
         >
           THE KYNXZ BRAND Collections
-        </motion.p>
+        </p>
 
         <h1
           className={`${playfair.className} text-[clamp(3rem,12vw,8rem)] font-bold leading-[1.05] tracking-[-0.02em]`}
           style={{ color: C.ivory }}
         >
           {heroLines.map((line, lineIdx) => (
-            <div key={lineIdx} className="overflow-hidden">
-              {line.map((word, wordIdx) => {
-                const globalIdx = heroLines.slice(0, lineIdx).reduce((acc, l) => acc + l.length, 0) + wordIdx;
-                return (
-                  <motion.span
-                    key={wordIdx}
-                    variants={wordReveal} initial="hidden" animate="visible" custom={globalIdx}
-                    className="inline-block mr-[0.3em] last:mr-0"
-                  >
-                    {word}
-                  </motion.span>
-                );
-              })}
+            <div key={lineIdx} className="">
+              {line.map((word, wordIdx) => (
+                <span
+                  key={wordIdx}
+                  className="inline-block mr-[0.3em] last:mr-0"
+                >
+                  {word}
+                </span>
+              ))}
             </div>
           ))}
         </h1>
 
-        <motion.p
-          variants={fadeUp} initial="hidden" animate="visible" custom={3}
+        <p
           className={`${cormorant.className} mt-8 text-lg md:text-xl lg:text-2xl max-w-2xl mx-auto leading-relaxed italic font-light`}
           style={{ color: C.champagne }}
         >
           &ldquo;A collection of objects chosen not merely for utility, but for meaning.&rdquo;
-        </motion.p>
+        </p>
 
-        <motion.div
-          variants={fadeIn} initial="hidden" animate="visible" custom={5}
-          className="mt-14 flex items-center justify-center gap-4"
-        >
+        <div className="mt-10 flex items-center justify-center gap-4">
           <span className="block w-16 h-px" style={{ background: C.bronze }} />
           <span className={`${cormorant.className} italic text-sm`} style={{ color: C.champagne }}>Mindfully Curated</span>
           <span className="block w-16 h-px" style={{ background: C.bronze }} />
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
 
       <div
         className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
@@ -745,8 +552,6 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ProductCategory | "all">("all");
   const [sortOption, setSortOption] = useState<SortOption>("featured");
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, margin: "-80px" });
 
   useEffect(() => {
     fetch("/api/products")
@@ -804,17 +609,11 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
     });
   }, [searchQuery, allProducts]);
 
-  const productCount = activeCategory === "all"
-    ? allProducts.length
-    : allProducts.filter((p) => p.category === activeCategory && !p.isComingSoon).length;
-
   return (
     <section
-      ref={sectionRef}
       id="collections-grid"
       className="collections-storefront-section relative overflow-hidden"
     >
-      {/* Ambient glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[8%] -translate-x-1/2 rounded-full
@@ -830,14 +629,8 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
         data-theme="light"
       />
 
-      {/* Section header */}
-      <div className="max-w-[1400px] mx-auto px-6 pt-12 md:pt-16 lg:pt-20 pb-8 md:pb-10">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="text-center max-w-3xl mx-auto"
-        >
+      <div className="max-w-[1400px] mx-auto px-6 pt-4 md:pt-5 lg:pt-6 pb-4 md:pb-5">
+        <div className="text-center max-w-3xl mx-auto">
           <p className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-4`} style={{ color: C.bronze }}>
             Browse Our Collection
           </p>
@@ -846,10 +639,9 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
             <span className="italic font-normal" style={{ color: C.champagne }}>intention</span>
           </h2>
           <div className="mx-auto mt-6 w-24 h-px" style={{ background: C.bronze, opacity: 0.5 }} />
-        </motion.div>
+        </div>
       </div>
 
-      {/* Filter bar */}
       <FilterBar
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
@@ -861,27 +653,21 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
         C={C}
       />
 
-      {/* Product grid — full-width responsive grid */}
-      <div className="max-w-[1400px] mx-auto px-6 pb-16 md:pb-20 lg:pb-24">
+      <div className="max-w-[1400px] mx-auto px-6 pt-4 md:pt-5 pb-10 md:pb-12 lg:pb-14">
         {visibleProducts.length > 0 ? (
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            animate="visible"
-            key={`${activeCategory}-${sortOption}-${searchQuery}`}
+          <div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-6"
           >
-            {visibleProducts.map((product, i) => (
+            {visibleProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
-                index={i}
                 C={C}
               />
             ))}
-          </motion.div>
+          </div>
         ) : (
-          <div className="luxury-empty-state text-center py-20 md:py-24">
+          <div className="luxury-empty-state text-center py-12 md:py-14">
             <div
               className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
               style={{ background: `radial-gradient(circle at 40% 35%, ${C.bronze}15, transparent 70%)` }}
@@ -914,10 +700,9 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
           </div>
         )}
 
-        {/* Coming Soon sections */}
         {categoriesWithoutProducts.length > 0 && (
-          <div className="mt-16 md:mt-20">
-            <div className="text-center mb-10">
+          <div className="mt-10 md:mt-12">
+            <div className="text-center mb-6">
               <div className="mx-auto mb-6 w-12 h-px" style={{ background: C.bronze, opacity: 0.4 }} />
               <h3 className={`${playfair.className} text-xl md:text-2xl font-bold`} style={{ color: C.ivory }}>
                 Coming Collections
@@ -927,216 +712,13 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
-              {categoriesWithoutProducts.slice(0, 3).map((cat, i) => (
-                <ComingSoonCard key={cat.slug} category={cat} index={i} C={C} />
+              {categoriesWithoutProducts.slice(0, 3).map((cat) => (
+                <ComingSoonCard key={cat.slug} category={cat} C={C} />
               ))}
             </div>
           </div>
         )}
       </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════
-   SECTION 3 – Curatorial Philosophy
-   ═══════════════════════════════════════════════ */
-function CuratorialPhilosophy({ C }: { C: (typeof THEME)["dark"] }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-80px" });
-
-  return (
-    <section
-      ref={ref}
-      className="relative overflow-hidden py-16 md:py-20 lg:py-24 min-h-[70dvh] flex items-center justify-center"
-      style={{ background: C.bgAlt }}
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(ellipse 50% 40% at 50% 45%, rgba(214, 207, 199, 0.03), transparent 55%),
-            radial-gradient(ellipse 40% 30% at 50% 20%, rgba(139, 115, 85, 0.025), transparent 50%),
-            radial-gradient(ellipse 40% 30% at 50% 80%, rgba(139, 115, 85, 0.02), transparent 50%)
-          `,
-        }}
-      />
-
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mb-10"
-        >
-          <span className={`${playfair.className} text-6xl md:text-8xl leading-none`} style={{ color: C.bronze, opacity: 0.12 }}>
-            &ldquo;
-          </span>
-        </motion.div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 40, filter: "blur(4px)" }}
-          animate={isInView ? { opacity: 1, y: 0, filter: "blur(0px)" } : {}}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className={`${playfair.className} text-[clamp(2rem,6vw,4.5rem)] font-light italic leading-[1.2] max-w-5xl mx-auto`}
-          style={{ color: C.ivory }}
-        >
-          We do not collect objects.
-          <br />
-          <span className="font-normal not-italic" style={{ color: C.champagne }}>We curate meaning.</span>
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mt-10"
-        >
-          <span className={`${playfair.className} text-6xl md:text-8xl leading-none`} style={{ color: C.bronze, opacity: 0.12 }}>
-            &rdquo;
-          </span>
-        </motion.div>
-
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={isInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.5, delay: 0.7, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mx-auto mt-14 w-24 h-px"
-          style={{ background: C.bronze, opacity: 0.5 }}
-        />
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, delay: 0.9, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className={`${inter.className} mt-10 text-sm md:text-base max-w-2xl mx-auto leading-relaxed`}
-          style={{ color: C.muted }}
-        >
-          Every piece in our collection is chosen for its ability to elevate the everyday — to transform the ordinary into the extraordinary through uncompromising quality, timeless design, and intentional craftsmanship.
-        </motion.p>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════
-   SECTION 4 – Final CTA
-   ═══════════════════════════════════════════════ */
-function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const bgScale = useTransform(scrollYProgress, [0, 1], [0.95, 1.05]);
-
-  return (
-    <section
-      ref={ref}
-      className="min-h-[80dvh] flex items-center justify-center relative overflow-hidden"
-      style={{ background: C.bgAlt }}
-    >
-      <motion.div style={{ scale: bgScale }} className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 60% 50% at 50% 45%, rgba(214, 207, 199, 0.04), transparent 55%),
-              radial-gradient(ellipse 40% 30% at 50% 20%, rgba(139, 115, 85, 0.03), transparent 50%),
-              radial-gradient(ellipse 40% 30% at 50% 80%, rgba(139, 115, 85, 0.02), transparent 50%)
-            `,
-          }}
-        />
-      </motion.div>
-
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{ y: [0, -20, 0], opacity: [0.02, 0.05, 0.02] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[15%] left-[8%] w-[300px] h-[300px] rounded-full"
-          style={{ background: `radial-gradient(circle at center, ${C.champagne}, transparent 60%)`, filter: "blur(60px)" }}
-        />
-        <motion.div
-          animate={{ y: [0, 15, 0], opacity: [0.015, 0.04, 0.015] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut", delay: 4 }}
-          className="absolute bottom-[20%] right-[10%] w-[250px] h-[250px] rounded-full"
-          style={{ background: `radial-gradient(circle at center, ${C.bronze}, transparent 60%)`, filter: "blur(50px)" }}
-        />
-      </div>
-
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className={`${inter.className} text-xs tracking-[0.25em] uppercase mb-8`}
-          style={{ color: C.bronze }}
-        >Begin Your Journey</motion.p>
-
-        <motion.h2
-          initial={{ opacity: 0, y: 60, scale: 0.95 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className={`${playfair.className} text-[clamp(2.8rem,9vw,6rem)] font-bold leading-[1.05] tracking-[-0.02em]`}
-          style={{ color: C.ivory }}
-        >
-          A World<br />
-          <span className="italic font-normal" style={{ color: C.champagne }}>Crafted For You</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className={`${inter.className} mt-8 text-base md:text-lg max-w-xl mx-auto leading-relaxed`}
-          style={{ color: C.muted }}
-        >
-          Every piece tells a story. Every collection invites you into a world of timeless elegance, uncompromising quality, and refined living.
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1, delay: 0.8, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mt-12"
-        >
-          <a
-            href="/contact"
-            className="group inline-flex items-center gap-3 px-10 py-4 rounded-full border transition-all duration-500 hover:-translate-y-1"
-            style={{ borderColor: C.champagne, color: C.ivory, background: "rgba(214, 207, 199, 0.04)" }}
-          >
-            <span className={`${inter.className} text-sm tracking-[0.15em] uppercase`}>Inquire Within</span>
-            <motion.span
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="text-lg"
-              style={{ color: C.champagne }}
-            >&rarr;</motion.span>
-          </a>
-        </motion.div>
-
-        <motion.div
-          initial={{ scaleX: 0 }}
-          whileInView={{ scaleX: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1.5, delay: 1, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
-          className="mx-auto mt-16 w-24 h-px"
-          style={{ background: C.bronze }}
-        />
-      </div>
-
-      <div
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-        style={{ background: `linear-gradient(to bottom, transparent, ${C.bg})` }}
-      />
     </section>
   );
 }
@@ -1167,8 +749,7 @@ export default function CollectionsPage() {
       >
         <CollectionsHero C={C} />
         <ProductGrid C={C} />
-        <CuratorialPhilosophy C={C} />
-        <FinalCTA C={C} />
+
       </main>
 
       <NewsletterSection />

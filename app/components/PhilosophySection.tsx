@@ -61,7 +61,7 @@ export default function PhilosophySection() {
     <section
       id="philosophy"
       ref={sectionRef}
-      className="philosophy-section relative overflow-hidden py-5 md:py-6 lg:py-8"
+      className="philosophy-section relative overflow-hidden py-3 md:py-4 lg:py-6"
       aria-labelledby="philosophy-heading"
     >
       {/* Gradient bridge — blends hero background into this section */}

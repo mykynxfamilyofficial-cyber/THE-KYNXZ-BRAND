@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const navItems = [
   { href: "/", label: "Home" },
@@ -13,7 +13,9 @@ const navItems = [
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
+  const [hidden, setHidden] = useState(false);
+  const lastScrollY = useRef(0);
 
   const isBrowser = typeof window !== "undefined";
 
@@ -47,6 +49,39 @@ export default function Header() {
       // ignore
     }
   }, [isBrowser]);
+
+  // Auto-hide header on scroll down, reveal on scroll up.
+  useEffect(() => {
+    if (!isBrowser) return;
+
+    const THRESHOLD = 10;
+
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY.current;
+
+      if (currentY <= 0) {
+        setHidden(false);
+      } else if (delta > THRESHOLD) {
+        setHidden(true);
+      } else if (delta < -THRESHOLD) {
+        setHidden(false);
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    // Initialize
+    lastScrollY.current = window.scrollY;
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isBrowser]);
+
+  // When mobile menu opens, always show the header.
+  useEffect(() => {
+    if (menuOpen) setHidden(false);
+  }, [menuOpen]);
 
   // Scroll lock for the mobile overlay.
   useEffect(() => {
@@ -85,8 +120,11 @@ export default function Header() {
 
   return (
     <header
-      className="site-header fixed top-0 left-0 w-full z-50 border-b border-white/10 backdrop-blur-xl"
-      style={theme === "light" ? { borderColor: "rgba(17, 17, 17, 0.12)" } : undefined}
+      className="site-header fixed top-0 left-0 w-full z-50 border-b border-white/10 backdrop-blur-xl transition-transform duration-300"
+      style={{
+        transform: hidden ? "translateY(-100%)" : "translateY(0)",
+        ...(theme === "light" ? { borderColor: "rgba(17, 17, 17, 0.12)" } : {}),
+      }}
     >
       <div className="luxury-container h-16 md:h-20 flex items-center justify-between">
         <div className="site-header-logo flex items-center">

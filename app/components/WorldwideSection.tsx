@@ -164,7 +164,7 @@ export default function WorldwideSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden py-5 md:py-6 lg:py-8"
+      className="relative overflow-hidden py-3 md:py-4 lg:py-6"
       aria-labelledby="worldwide-heading"
     >
       {/* Gradient bridge from Experience section */}

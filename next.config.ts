@@ -26,7 +26,6 @@ const nextConfig: NextConfig = {
   // Experimental optimizations
   experimental: {
     optimizePackageImports: [
-      "framer-motion",
       "next-sanity",
       "@sanity/image-url",
     ],
