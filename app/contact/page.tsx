@@ -5,7 +5,8 @@ import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
 
-import { useTheme, THEME } from "../hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
+import type { ThemeColors } from "../hooks/useTheme";
 
 const heroLines = [
   ["Let", "Us"],
@@ -32,7 +33,7 @@ Section.displayName = "Section";
 /* ═══════════════════════════════════════════════
    SECTION 1 – Cinematic Hero
    ═══════════════════════════════════════════════ */
-function ContactHero({ C }: { C: (typeof THEME)["dark"] }) {
+function ContactHero({ C }: { C: ThemeColors }) {
   return (
     <section className="min-h-[40dvh] pt-20 md:pt-24 lg:min-h-[60dvh] lg:pt-0 flex items-center justify-center relative overflow-hidden">
       {/* Static decorative orbs */}
@@ -49,7 +50,7 @@ function ContactHero({ C }: { C: (typeof THEME)["dark"] }) {
           className="absolute top-[60%] right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.03]"
           style={{
             background:
-              "radial-gradient(circle at center, #8B7355, transparent 60%)",
+              "radial-gradient(circle at center, #4A3A2C, transparent 60%)",
             filter: "blur(80px)",
           }}
         />
@@ -142,7 +143,7 @@ function ContactHero({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 2 – Contact Information
    ═══════════════════════════════════════════════ */
-function ContactInfo({ C }: { C: (typeof THEME)["dark"] }) {
+function ContactInfo({ C }: { C: ThemeColors }) {
   const contactDetails = [
     {
       label: "Business Entity",
@@ -291,7 +292,7 @@ function ContactInfo({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 3 – Where Our Journey Begins
    ═══════════════════════════════════════════════ */
-function HeadquartersSection({ C }: { C: (typeof THEME)["dark"] }) {
+function HeadquartersSection({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4 relative min-h-[40dvh] flex items-center" style={{ background: C.bgAlt }}>
       {/* Static ambient glow canvas */}
@@ -466,7 +467,7 @@ function HeadquartersSection({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 4 – Partnerships & Global Collaborations
    ═══════════════════════════════════════════════ */
-function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
+function PartnershipsSection({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4 relative min-h-[40dvh] flex items-center">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -622,7 +623,7 @@ function PartnershipsSection({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 5 – Let Us Begin Something Meaningful
    ═══════════════════════════════════════════════ */
-function ContactFormSection({ C }: { C: (typeof THEME)["dark"] }) {
+function ContactFormSection({ C }: { C: ThemeColors }) {
   /* ── Form state ──────────────────────────────── */
   const [formData, setFormData] = useState({
     name: "",

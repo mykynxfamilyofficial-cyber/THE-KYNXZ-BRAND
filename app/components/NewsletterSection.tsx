@@ -3,11 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { playfair, cormorant, inter } from "../fonts";
 
-import { useTheme, THEME } from "../hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
+import type { ThemeColors } from "../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Decorative SVG: Interlocking circles mark
    ─────────────────────────────────────────────── */
-function CircleMark({ C }: { C: (typeof THEME)["dark"] }) {
+function CircleMark({ C }: { C: ThemeColors }) {
   return (
     <svg
       width="72"
@@ -62,7 +63,7 @@ function CircleMark({ C }: { C: (typeof THEME)["dark"] }) {
 /* ───────────────────────────────────────────────
    Decorative ring (CSS-driven)
    ─────────────────────────────────────────────── */
-function DecorativeRing({ C }: { C: (typeof THEME)["dark"] }) {
+function DecorativeRing({ C }: { C: ThemeColors }) {
   return (
     <div
       aria-hidden

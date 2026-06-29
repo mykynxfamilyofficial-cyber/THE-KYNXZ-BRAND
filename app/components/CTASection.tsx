@@ -34,22 +34,11 @@ export default function CTASection() {
         }}
       />
 
-      {/* Dark: gold ambient glow */}
+      {/* Warm ambient glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3 rounded-full
-        opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[600px] w-[1400px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.12),rgba(212,168,79,0.025),transparent)] blur-3xl animate-cta-float"
-        data-theme="dark"
-      />
-
-      {/* Light: warm ambient glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3 rounded-full
-        opacity-0 data-[theme=light]:opacity-100 transition-opacity duration-700
         h-[550px] w-[1300px] bg-[radial-gradient(circle_at_center,#EDE9E2/50,#F3F1EC/20,transparent)] blur-3xl animate-cta-float"
-        data-theme="light"
       />
 
       <div className="luxury-container relative z-10">

@@ -4,7 +4,8 @@ import { useEffect, forwardRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { playfair, cormorant, inter } from "../fonts";
-import { useTheme, THEME } from "../hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
+import type { ThemeColors } from "../hooks/useTheme";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
 import SectionLazy from "../components/SectionLazy";
@@ -37,7 +38,7 @@ Section.displayName = "Section";
 /* ═══════════════════════════════════════════════
    Cinematic Hero (above the fold — loads immediately)
    ═══════════════════════════════════════════════ */
-function CinematicHero({ C: _C }: { C: (typeof THEME)["dark"] }) {
+function CinematicHero({ C: _C }: { C: ThemeColors }) {
   return (
     <Section className="min-h-[50dvh] pt-20 md:pt-24 lg:min-h-[80dvh] lg:pt-0 flex items-center justify-center relative">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -47,7 +48,7 @@ function CinematicHero({ C: _C }: { C: (typeof THEME)["dark"] }) {
         />
         <div
           className="absolute bottom-[15%] left-[5%] w-[380px] h-[380px] rounded-full opacity-[0.06]"
-          style={{ background: "radial-gradient(circle at center, #8B7355, transparent 60%)", filter: "blur(70px)" }}
+          style={{ background: "radial-gradient(circle at center, #4A3A2C, transparent 60%)", filter: "blur(70px)" }}
         />
         <div
           className="absolute top-[20%] left-[10%] w-[300px] h-[300px] opacity-[0.04]"
@@ -98,7 +99,7 @@ function CinematicHero({ C: _C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 2 – The Story
    ═══════════════════════════════════════════════ */
-function TheStory({ C }: { C: (typeof THEME)["dark"] }) {
+function TheStory({ C }: { C: ThemeColors }) {
   return (
     <Section className="pt-1 md:pt-2 lg:pt-3 pb-3 md:pb-4 lg:pb-5">
       <div className="max-w-[1400px] mx-auto px-6">
@@ -175,7 +176,7 @@ const philosophies = [
 
 function PhilosophyScene({ item, C }: {
   item: (typeof philosophies)[0];
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   const imageFirst = item.side === "left";
 
@@ -218,7 +219,7 @@ function PhilosophyScene({ item, C }: {
   );
 }
 
-function PhilosophyGallery({ C }: { C: (typeof THEME)["dark"] }) {
+function PhilosophyGallery({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4">
       <div className="max-w-[1400px] mx-auto px-6 space-y-6 md:space-y-8">
@@ -241,11 +242,11 @@ function PhilosophyGallery({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 4 – Dream Wall
    ═══════════════════════════════════════════════ */
-function DreamWall({ C }: { C: (typeof THEME)["dark"] }) {
+function DreamWall({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-3 md:py-4 lg:py-5 relative" style={{ background: C.bgAlt }}>
       <div className="absolute inset-0 pointer-events-none"
-        style={{ background: `radial-gradient(ellipse 60% 40% at 50% 50%, rgba(214, 207, 199, 0.06), transparent 60%), radial-gradient(ellipse 50% 30% at 50% 30%, rgba(139, 115, 85, 0.04), transparent 50%)` }}
+        style={{ background: `radial-gradient(ellipse 60% 40% at 50% 50%, rgba(214, 207, 199, 0.06), transparent 60%), radial-gradient(ellipse 50% 30% at 50% 30%, rgba(74, 58, 44, 0.04), transparent 50%)` }}
       />
 
       <div className="relative z-10 max-w-[1400px] mx-auto px-6">
@@ -310,7 +311,7 @@ const values = [
 
 function ValueIsland({ value, C }: {
   value: (typeof values)[0];
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   return (
     <div
@@ -330,7 +331,7 @@ function ValueIsland({ value, C }: {
   );
 }
 
-function ValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
+function ValuesSection({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4">
       <div className="absolute inset-0 pointer-events-none"
@@ -358,7 +359,7 @@ function ValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 6 – Vision of Tomorrow
    ═══════════════════════════════════════════════ */
-function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
+function VisionOfTomorrow({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-3 md:py-4 lg:py-5 relative" style={{ background: C.bgAlt }}>
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -367,7 +368,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
           style={{ background: "linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.08), transparent)" }} />
         <div
           className="absolute top-0 left-[30%] w-[1px] h-full"
-          style={{ background: "linear-gradient(to bottom, transparent, rgba(139, 115, 85, 0.06), transparent)" }} />
+          style={{ background: "linear-gradient(to bottom, transparent, rgba(74, 58, 44, 0.06), transparent)" }} />
         <div
           className="absolute top-0 right-[30%] w-[1px] h-full"
           style={{ background: "linear-gradient(to bottom, transparent, rgba(214, 207, 199, 0.06), transparent)" }} />
@@ -407,7 +408,7 @@ function VisionOfTomorrow({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 7 – The Visionary
    ═══════════════════════════════════════════════ */
-function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
+function TheVisionary({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4 relative">
       <div className="absolute inset-0 pointer-events-none"
@@ -472,7 +473,7 @@ function TheVisionary({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 8 – Final CTA
    ═══════════════════════════════════════════════ */
-function FinalCTA({ C }: { C: (typeof THEME)["dark"] }) {
+function FinalCTA({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-3 md:py-4 lg:py-5 relative min-h-[60dvh] flex items-center" style={{ background: C.bgAlt }}>
       <div className="absolute inset-0 pointer-events-none"

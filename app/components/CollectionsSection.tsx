@@ -172,22 +172,11 @@ export default function CollectionsSection() {
         }}
       />
 
-      {/* Dark: ambient champagne glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[15%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[600px] w-[1400px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.10),rgba(212,168,79,0.03),transparent)] blur-3xl"
-        data-theme="dark"
-      />
-
-      {/* Light: warm ambient glow */}
+      {/* Warm ambient glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[20%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=light]:opacity-100 transition-opacity duration-700
         h-[500px] w-[1300px] bg-[radial-gradient(circle_at_center,#EDE9E2/45,#F3F1EC/20,transparent)] blur-3xl"
-        data-theme="light"
       />
 
       <div className="luxury-container relative z-10">

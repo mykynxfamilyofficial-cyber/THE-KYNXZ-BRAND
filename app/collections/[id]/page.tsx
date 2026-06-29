@@ -8,7 +8,8 @@ import Header from "../../components/Header";
 import FooterSection from "../../components/FooterSection";
 import { Product } from "../types";
 
-import { useTheme, THEME } from "../../hooks/useTheme";
+import { useTheme } from "../../hooks/useTheme";
+import type { ThemeColors } from "../../hooks/useTheme";
 
 /* ───────────────────────────────────────────────
    Luxury Accordion Panel
@@ -103,7 +104,7 @@ function QuantitySelector({
 }: {
   value: number;
   onChange: (v: number) => void;
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   return (
     <div className="flex items-center gap-3">
@@ -151,7 +152,7 @@ function ImageGallery({
   C,
 }: {
   product: Product;
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   const allImages = useMemo(
     () => [product.gradient, ...(product.galleryGradients || [])],
@@ -445,7 +446,7 @@ function ReviewsSection({
   C,
 }: {
   product: Product;
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   const reviewList = product.reviews?.list || [];
   const avgRating = product.reviews?.rating || 0;
@@ -513,7 +514,7 @@ function RelatedProducts({
 }: {
   product: Product;
   allProducts: Product[];
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   const sectionRef = useRef(null);
   const scrollRef = useRef<HTMLDivElement>(null);

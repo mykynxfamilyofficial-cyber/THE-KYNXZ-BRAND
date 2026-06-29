@@ -5,7 +5,8 @@ import { playfair, cormorant, inter } from "../fonts";
 import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
 
-import { useTheme, THEME } from "../hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
+import type { ThemeColors } from "../hooks/useTheme";
 /* ───────────────────────────────────────────────
    Policy content data
    ─────────────────────────────────────────────── */
@@ -239,7 +240,7 @@ function PolicySection({
 }: {
   section: (typeof sections)[0];
   index: number;
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   return (
     <section
@@ -325,7 +326,7 @@ export default function PrivacyPolicyPage() {
             style={{
               background: `
                 radial-gradient(ellipse 60% 40% at 50% 40%, rgba(214, 207, 199, 0.04), transparent 55%),
-                radial-gradient(ellipse 40% 30% at 50% 20%, rgba(139, 115, 85, 0.03), transparent 50%)
+                radial-gradient(ellipse 40% 30% at 50% 20%, rgba(74, 58, 44, 0.03), transparent 50%)
               `,
             }}
           />
@@ -342,7 +343,7 @@ export default function PrivacyPolicyPage() {
             <div
               className="absolute bottom-[20%] left-[8%] w-[250px] h-[250px] rounded-full opacity-[0.02]"
               style={{
-                background: "radial-gradient(circle at center, #8B7355, transparent 60%)",
+                background: "radial-gradient(circle at center, #4A3A2C, transparent 60%)",
                 filter: "blur(60px)",
               }}
             />

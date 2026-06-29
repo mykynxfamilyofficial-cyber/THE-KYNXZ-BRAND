@@ -13,7 +13,8 @@ import {
   CATEGORIES,
 } from "./types";
 
-import { useTheme, THEME } from "../hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
+import type { ThemeColors } from "../hooks/useTheme";
 
 const heroLines = [["Curated"], ["Worlds"]];
 
@@ -87,7 +88,7 @@ function ProductCard({
   C,
 }: {
   product: Product;
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   return (
     <div className="h-full">
@@ -237,7 +238,7 @@ function ComingSoonCard({
   C,
 }: {
   category: (typeof CATEGORIES)[0];
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   return (
     <div
@@ -346,7 +347,7 @@ function FilterBar({
   sortOption: SortOption;
   onSortChange: (sort: SortOption) => void;
   resultCount: number;
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   const [scrolled, setScrolled] = useState(
     typeof window !== "undefined" ? window.scrollY > 80 : false
@@ -470,7 +471,7 @@ function FilterBar({
 /* ═══════════════════════════════════════════════
    SECTION 1 – Cinematic Hero
    ═══════════════════════════════════════════════ */
-function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
+function CollectionsHero({ C }: { C: ThemeColors }) {
   return (
     <section className="min-h-[45dvh] pt-20 md:pt-24 lg:min-h-[70dvh] lg:pt-0 flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -480,7 +481,7 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
         />
         <div
           className="absolute top-[55%] right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.03]"
-          style={{ background: "radial-gradient(circle at center, #8B7355, transparent 60%)", filter: "blur(80px)" }}
+          style={{ background: "radial-gradient(circle at center, #4A3A2C, transparent 60%)", filter: "blur(80px)" }}
         />
         <div
           className="absolute top-[15%] left-[5%] w-[350px] h-[350px] rounded-full opacity-[0.025]"
@@ -547,7 +548,7 @@ function CollectionsHero({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 2 – Product Grid with Filters
    ═══════════════════════════════════════════════ */
-function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
+function ProductGrid({ C }: { C: ThemeColors }) {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState<ProductCategory | "all">("all");
@@ -616,17 +617,8 @@ function ProductGrid({ C }: { C: (typeof THEME)["dark"] }) {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[8%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.04),rgba(212,168,79,0.01),transparent)] blur-3xl"
-        data-theme="dark"
-      />
-      <div
-        aria-hidden
         className="pointer-events-none absolute left-1/2 top-[12%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=light]:opacity-100 transition-opacity duration-700
         h-[400px] w-[1100px] bg-[radial-gradient(circle_at_center,#EDE9E2/40,#F3F1EC/15,transparent)] blur-3xl"
-        data-theme="light"
       />
 
       <div className="max-w-[1400px] mx-auto px-6 pt-4 md:pt-5 lg:pt-6 pb-4 md:pb-5">

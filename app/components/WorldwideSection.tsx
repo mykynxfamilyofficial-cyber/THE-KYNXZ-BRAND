@@ -176,22 +176,11 @@ export default function WorldwideSection() {
         }}
       />
 
-      {/* Dark: gold ambient glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[12%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.05),rgba(212,168,79,0.01),transparent)] blur-3xl"
-        data-theme="dark"
-      />
-
-      {/* Light: warm ambient glow */}
+      {/* Warm ambient glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[18%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=light]:opacity-100 transition-opacity duration-700
         h-[450px] w-[1150px] bg-[radial-gradient(circle_at_center,#EDE9E2/40,#F3F1EC/15,transparent)] blur-3xl"
-        data-theme="light"
       />
 
       <div className="luxury-container relative z-10">

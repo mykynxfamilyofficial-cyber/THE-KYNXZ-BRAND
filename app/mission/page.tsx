@@ -7,7 +7,8 @@ import Header from "../components/Header";
 import FooterSection from "../components/FooterSection";
 
 
-import { useTheme, THEME } from "../hooks/useTheme";
+import { useTheme } from "../hooks/useTheme";
+import type { ThemeColors } from "../hooks/useTheme";
 
 const heroLines = [
   ["We", "Are", "Building"],
@@ -35,7 +36,7 @@ Section.displayName = "Section";
 /* ═══════════════════════════════════════════════
    SECTION 1 – Cinematic Hero
    ═══════════════════════════════════════════════ */
-function MissionHero({ C }: { C: (typeof THEME)["dark"] }) {
+function MissionHero({ C }: { C: ThemeColors }) {
   const ref = useRef(null);
 
   return (
@@ -54,7 +55,7 @@ function MissionHero({ C }: { C: (typeof THEME)["dark"] }) {
           className="absolute top-[60%] right-[10%] w-[400px] h-[400px] rounded-full opacity-[0.03]"
           style={{
             background:
-              "radial-gradient(circle at center, #8B7355, transparent 60%)",
+              "radial-gradient(circle at center, #4A3A2C, transparent 60%)",
             filter: "blur(80px)",
           }}
         />
@@ -146,7 +147,7 @@ function MissionHero({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 2 – Our Mission
    ═══════════════════════════════════════════════ */
-function OurMission({ C }: { C: (typeof THEME)["dark"] }) {
+function OurMission({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4">
       <div className="max-w-[1400px] mx-auto px-6">
@@ -251,7 +252,7 @@ const coreValues = [
     gradient: `
       linear-gradient(160deg, #0A0A0A 0%, #111111 35%, #1B1610 100%),
       radial-gradient(ellipse at 40% 30%, rgba(214, 207, 199, 0.06), transparent 50%),
-      radial-gradient(ellipse at 60% 70%, rgba(139, 115, 85, 0.04), transparent 45%)
+      radial-gradient(ellipse at 60% 70%, rgba(74, 58, 44, 0.04), transparent 45%)
     `,
     number: "01",
   },
@@ -262,7 +263,7 @@ const coreValues = [
     gradient: `
       linear-gradient(200deg, #111111 0%, #0A0A0A 40%, #1B1610 100%),
       radial-gradient(ellipse at 60% 25%, rgba(214, 207, 199, 0.05), transparent 50%),
-      radial-gradient(ellipse at 30% 75%, rgba(139, 115, 85, 0.05), transparent 45%)
+      radial-gradient(ellipse at 30% 75%, rgba(74, 58, 44, 0.05), transparent 45%)
     `,
     number: "02",
   },
@@ -273,7 +274,7 @@ const coreValues = [
     gradient: `
       linear-gradient(180deg, #1B1610 0%, #111111 30%, #0A0A0A 100%),
       radial-gradient(ellipse at 50% 40%, rgba(214, 207, 199, 0.07), transparent 50%),
-      radial-gradient(ellipse at 50% 60%, rgba(139, 115, 85, 0.03), transparent 45%)
+      radial-gradient(ellipse at 50% 60%, rgba(74, 58, 44, 0.03), transparent 45%)
     `,
     number: "03",
   },
@@ -284,7 +285,7 @@ const coreValues = [
     gradient: `
       linear-gradient(160deg, #111111 0%, #0A0A0A 40%, #1B1610 100%),
       radial-gradient(ellipse at 30% 35%, rgba(214, 207, 199, 0.06), transparent 50%),
-      radial-gradient(ellipse at 70% 65%, rgba(139, 115, 85, 0.04), transparent 45%)
+      radial-gradient(ellipse at 70% 65%, rgba(74, 58, 44, 0.04), transparent 45%)
     `,
     number: "04",
   },
@@ -295,7 +296,7 @@ const coreValues = [
     gradient: `
       linear-gradient(220deg, #0A0A0A 0%, #1B1610 40%, #111111 100%),
       radial-gradient(ellipse at 50% 25%, rgba(214, 207, 199, 0.05), transparent 50%),
-      radial-gradient(ellipse at 50% 75%, rgba(139, 115, 85, 0.04), transparent 45%)
+      radial-gradient(ellipse at 50% 75%, rgba(74, 58, 44, 0.04), transparent 45%)
     `,
     number: "05",
   },
@@ -306,7 +307,7 @@ function ValueCard({
   C,
 }: {
   value: (typeof coreValues)[0];
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   return (
     <div
@@ -381,7 +382,7 @@ function ValueCard({
   );
 }
 
-function CoreValuesSection({ C }: { C: (typeof THEME)["dark"] }) {
+function CoreValuesSection({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4 relative">
       <div
@@ -487,7 +488,7 @@ function TimelineEvent({
 }: {
   event: (typeof timelineEvents)[0];
   index: number;
-  C: (typeof THEME)["dark"];
+  C: ThemeColors;
 }) {
   const isLeft = index % 2 === 0;
 
@@ -585,7 +586,7 @@ function TimelineEvent({
   );
 }
 
-function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
+function VisionTimeline({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-3 md:py-4 lg:py-5 relative" style={{ background: C.bgAlt }}>
       {/* Animated background rays — simplified CSS */}
@@ -599,7 +600,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
         <div
           className="absolute top-0 left-[25%] w-[1px] h-full"
           style={{
-            background: `linear-gradient(to bottom, transparent, rgba(139, 115, 85, 0.03), transparent)`,
+            background: `linear-gradient(to bottom, transparent, rgba(74, 58, 44, 0.03), transparent)`,
           }}
         />
         <div
@@ -656,7 +657,7 @@ function VisionTimeline({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 5 – Inspirational Quote
    ═══════════════════════════════════════════════ */
-function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
+function QuoteSection({ C }: { C: ThemeColors }) {
   return (
     <Section className="py-2 md:py-3 lg:py-4 relative min-h-[25dvh] flex items-center justify-center">
       <div
@@ -664,8 +665,8 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
         style={{
           background: `
             radial-gradient(ellipse 50% 40% at 50% 45%, rgba(214, 207, 199, 0.03), transparent 55%),
-            radial-gradient(ellipse 40% 30% at 50% 20%, rgba(139, 115, 85, 0.025), transparent 50%),
-            radial-gradient(ellipse 40% 30% at 50% 80%, rgba(139, 115, 85, 0.02), transparent 50%)
+            radial-gradient(ellipse 40% 30% at 50% 20%, rgba(74, 58, 44, 0.025), transparent 50%),
+            radial-gradient(ellipse 40% 30% at 50% 80%, rgba(74, 58, 44, 0.02), transparent 50%)
           `,
         }}
       />
@@ -710,7 +711,7 @@ function QuoteSection({ C }: { C: (typeof THEME)["dark"] }) {
 /* ═══════════════════════════════════════════════
    SECTION 6 – Our Shared Journey (Cinematic Closing)
    ═══════════════════════════════════════════════ */
-function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
+function SharedJourneySection({ C }: { C: ThemeColors }) {
   return (
     <Section className="relative min-h-[80dvh] flex items-center py-3 md:py-4 lg:py-5 overflow-hidden"
       style={{ background: C.bgAlt }}
@@ -720,8 +721,8 @@ function SharedJourneySection({ C }: { C: (typeof THEME)["dark"] }) {
         <div className="absolute inset-0" style={{
           background: `
             radial-gradient(ellipse 70% 55% at 50% 40%, rgba(214, 207, 199, 0.04), transparent 58%),
-            radial-gradient(ellipse 50% 35% at 50% 15%, rgba(139, 115, 85, 0.03), transparent 50%),
-            radial-gradient(ellipse 50% 35% at 50% 85%, rgba(139, 115, 85, 0.025), transparent 50%)
+            radial-gradient(ellipse 50% 35% at 50% 15%, rgba(74, 58, 44, 0.03), transparent 50%),
+            radial-gradient(ellipse 50% 35% at 50% 85%, rgba(74, 58, 44, 0.025), transparent 50%)
           `,
         }} />
       </div>

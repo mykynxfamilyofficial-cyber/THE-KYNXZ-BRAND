@@ -74,22 +74,11 @@ export default function PhilosophySection() {
         }}
       />
 
-      {/* Dark: champagne glow behind the content */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/4 rounded-full
-        opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[500px] w-[1200px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.12),rgba(212,168,79,0.04),transparent)] blur-3xl"
-        data-theme="dark"
-      />
-
-      {/* Light: warm ambient glow */}
+      {/* Warm ambient glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/3 rounded-full
-        opacity-0 data-[theme=light]:opacity-100 transition-opacity duration-700
         h-[420px] w-[1100px] bg-[radial-gradient(circle_at_center,#EDE9E2/50,#F3F1EC/25,transparent)] blur-3xl"
-        data-theme="light"
       />
 
       <div className="luxury-container relative z-10">

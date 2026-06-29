@@ -154,22 +154,11 @@ export default function WorldSection() {
         }}
       />
 
-      {/* Dark: refined gold ambient glow */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[12%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=dark]:opacity-100 transition-opacity duration-700
-        h-[550px] w-[1300px] bg-[radial-gradient(circle_at_center,rgba(212,168,79,0.08),rgba(212,168,79,0.016),transparent)] blur-3xl"
-        data-theme="dark"
-      />
-
-      {/* Light: warm ambient glow */}
+      {/* Warm ambient glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[18%] -translate-x-1/2 rounded-full
-        opacity-0 data-[theme=light]:opacity-100 transition-opacity duration-700
         h-[480px] w-[1250px] bg-[radial-gradient(circle_at_center,#EDE9E2/35,#F3F1EC/12,transparent)] blur-3xl"
-        data-theme="light"
       />
 
       <div className="luxury-container relative z-10">

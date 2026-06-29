@@ -4,13 +4,9 @@ import { useState, useEffect, useRef } from "react";
 
 /* ───────────────────────────────────────────────
    Theme-aware color tokens — single source of truth
+   Now permanently set to the light/warm neutral theme.
    ─────────────────────────────────────────────── */
 
-/**
- * ThemeColors interface — defines the shape of color tokens for both themes.
- * Using a shared interface (instead of `as const` inference) ensures that
- * THEME[theme] passes strict TypeScript without readonly incompatibilities.
- */
 export interface ThemeColors {
   bg: string;
   bgAlt: string;
@@ -25,73 +21,30 @@ export interface ThemeColors {
   circleGlow: string;
 }
 
-type Theme = "dark" | "light";
-
-export const THEME: Record<Theme, ThemeColors> = {
-  dark: {
-    bg: "#0A0A0A",
-    bgAlt: "#111114",
-    warm: "#1B1610",
-    champagne: "#D6CFC7",
-    bronze: "#8B7355",
-    ivory: "#F5F2ED",
-    muted: "#B8B3AA",
-    surface: "rgba(255,255,255,0.04)",
-    surfaceHover: "rgba(255,255,255,0.08)",
-    circleBorder: "rgba(214, 207, 199, 0.08)",
-    circleGlow: "rgba(212, 168, 79, 0.06)",
-  },
-  light: {
-    bg: "#F8F6F2",
-    bgAlt: "#F6F3EE",
-    warm: "#F0EBE2",
-    champagne: "#8B7355",
-    bronze: "#6B5B4A",
-    ivory: "#1A1815",
-    muted: "#6B6358",
-    surface: "rgba(255,255,255,0.7)",
-    surfaceHover: "rgba(255,255,255,0.85)",
-    circleBorder: "rgba(139, 115, 85, 0.1)",
-    circleGlow: "rgba(139, 115, 85, 0.04)",
-  },
+/**
+ * Constant light-theme color tokens. The dark/light toggle
+ * has been removed — the site uses one permanent design system.
+ */
+export const THEME_COLORS: ThemeColors = {
+  bg: "#F8F6F2",
+  bgAlt: "#F6F3EE",
+  warm: "#F0EBE2",
+  champagne: "#4A3A2C",
+  bronze: "#3D2E22",
+  ivory: "#1A1815",
+  muted: "#5C5148",
+  surface: "rgba(255,255,255,0.7)",
+  surfaceHover: "rgba(255,255,255,0.85)",
+  circleBorder: "rgba(74, 58, 44, 0.1)",
+  circleGlow: "rgba(74, 58, 44, 0.04)",
 };
 
 /**
- * Optimized useTheme hook that:
- * 1. Reads theme from CSS custom properties (no duplicate state sync)
- * 2. Uses a single MutationObserver per hook instance
- * 3. Returns cached color tokens
+ * Always returns the light theme color tokens.
+ * Theme switching has been removed from the project.
  */
 export function useTheme(): ThemeColors {
-  const [theme, setTheme] = useState<Theme>("light");
-  const observerRef = useRef<MutationObserver | null>(null);
-
-  useEffect(() => {
-    const root = document.documentElement;
-    const current = (root.getAttribute("data-theme") as Theme) || "light";
-    setTheme(current);
-
-    // Use a single observer for theme changes
-    if (!observerRef.current) {
-      observerRef.current = new MutationObserver(() => {
-        const t = (root.getAttribute("data-theme") as Theme) || "light";
-        setTheme(t);
-      });
-      observerRef.current.observe(root, {
-        attributes: true,
-        attributeFilter: ["data-theme"],
-      });
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-        observerRef.current = null;
-      }
-    };
-  }, []);
-
-  return THEME[theme];
+  return THEME_COLORS;
 }
 
 /**

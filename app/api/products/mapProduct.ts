@@ -74,7 +74,7 @@ const GRADIENT_MAP: Record<string, string> = {
   'home-living': `
     linear-gradient(145deg, #1A1612 0%, #2A241E 35%, #3D342C 65%, #1A1612 100%),
     radial-gradient(ellipse at 30% 25%, rgba(214, 207, 199, 0.1), transparent 50%),
-    radial-gradient(ellipse at 70% 75%, rgba(139, 115, 85, 0.08), transparent 45%)
+    radial-gradient(ellipse at 70% 75%, rgba(74, 58, 44, 0.08), transparent 45%)
   `,
   'pet-essentials': `
     linear-gradient(200deg, #1A1612 0%, #2C241E 35%, #3D342C 70%, #1A1612 100%),
@@ -84,7 +84,7 @@ const GRADIENT_MAP: Record<string, string> = {
   travel: `
     linear-gradient(160deg, #1A1612 0%, #2A241E 30%, #3D342C 60%, #1A1612 100%),
     radial-gradient(ellipse at 30% 25%, rgba(214, 207, 199, 0.08), transparent 50%),
-    radial-gradient(ellipse at 70% 65%, rgba(139, 115, 85, 0.06), transparent 45%)
+    radial-gradient(ellipse at 70% 65%, rgba(74, 58, 44, 0.06), transparent 45%)
   `,
   lifestyle: `
     linear-gradient(220deg, #1A1612 0%, #2A241E 35%, #3D342C 65%, #1A1612 100%),
@@ -101,7 +101,7 @@ const GRADIENT_MAP: Record<string, string> = {
 const DEFAULT_GRADIENT = `
   linear-gradient(145deg, #1A1612 0%, #2A241E 35%, #3D342C 65%, #1A1612 100%),
   radial-gradient(ellipse at 30% 25%, rgba(214, 207, 199, 0.08), transparent 50%),
-  radial-gradient(ellipse at 70% 60%, rgba(139, 115, 85, 0.05), transparent 45%)
+  radial-gradient(ellipse at 70% 60%, rgba(74, 58, 44, 0.05), transparent 45%)
 `
 
 /* ───────────────────────────────────────────────
